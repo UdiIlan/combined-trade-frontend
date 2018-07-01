@@ -1,0 +1,27 @@
+
+@import "~styles/colors.scss";
+.app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    .content {
+        padding: 0px 25px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        // background-color: black;
+    }
+    footer {
+        background-color: $BlueBackground;
+        color: white;
+        padding: 10px;
+
+        .supportLink {
+            margin-left: 5px;
+            color: white;
+        }
+    }
+}

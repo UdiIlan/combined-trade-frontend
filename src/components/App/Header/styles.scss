@@ -1,0 +1,23 @@
+@import "~styles/colors.scss";
+.header {
+    background-color: $BlueBackground;
+    display: flex;
+    align-items: center;
+
+    .logo {
+        background-image: url('assets/images/logo.png');
+        background-repeat: no-repeat;
+        height: 65px;
+        width: 200px;
+        margin-right: 25px;
+        margin-left: 10px;
+        
+    }
+    .mainHeader {
+        color: white;
+        font-size: 2rem;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        padding: 15px 10px;
+    }
+}
