@@ -1,5 +1,5 @@
 const AppActions = {
-    LOGIN: "APP/LOGIN"
+    LOGIN: 'APP/LOGIN'
 };
 
 export default AppActions;

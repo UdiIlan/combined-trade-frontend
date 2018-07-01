@@ -1,5 +1,5 @@
-import * as React from "react";
-const styles = require("./styles.scss");
+import * as React from 'react';
+const styles = require('./styles.scss');
 
 const Header = (props) => {
     return (

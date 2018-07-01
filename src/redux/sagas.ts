@@ -1,8 +1,8 @@
 
-// import { AppSagas } from "components/App/sagas";
+// import { AppSagas } from 'components/App/sagas';
 
-import { actionChannel, fork, take, call, all } from "redux-saga/effects";
-import { delay } from "redux-saga";
+import { actionChannel, fork, take, call, all } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 
 export const throttle = (ms, pattern, task, ...args) => fork(function* () {
     const throttleChannel = yield actionChannel(pattern);

@@ -1,5 +1,5 @@
-import AppActions from "./constants";
-import { handleActions, Action } from "redux-actions";
+import AppActions from './constants';
+import { handleActions, Action } from 'redux-actions';
 
 export interface AppState {
 }
