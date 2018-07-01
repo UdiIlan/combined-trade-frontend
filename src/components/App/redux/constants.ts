@@ -1,5 +1,5 @@
 const AppActions = {
-    LOGIN: 'APP/LOGIN'
+    SET_LANG: 'APP/SET_LANG'
 };
 
 export default AppActions;

@@ -1,5 +1,5 @@
 
-// import { AppSagas } from 'components/App/sagas';
+import { AppSagas } from 'components/App/redux/sagas';
 
 import { actionChannel, fork, take, call, all } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
@@ -26,7 +26,7 @@ export function* takeFirst(pattern, saga, ...args) {
 
 export default function* rootSaga(): any {
     yield all([
-        // AppSagas()
+        AppSagas()
     ]);
 
 }

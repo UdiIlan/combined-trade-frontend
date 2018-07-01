@@ -3,12 +3,11 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
 require('styles/global.scss');
-import initialState from './redux/initialState';
 import configureStore from './redux/configureStore';
 import Router from './routes';
 
 
-const store = configureStore(initialState, () => {
+const store = configureStore( () => {
 
     render(
         <Provider store={store}>

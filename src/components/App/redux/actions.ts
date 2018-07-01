@@ -1,4 +1,5 @@
 import AppAction from './constants';
 import { createAction } from 'redux-actions';
+import { SupportedLanguages } from 'lang';
 
-export const login = createAction(AppAction.LOGIN, (userName: string, password: string) => { return { userName, password }; });
+export const sesLanguage = createAction(AppAction.SET_LANG, (newLang: SupportedLanguages) => newLang);

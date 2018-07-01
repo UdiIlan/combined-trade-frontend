@@ -13,7 +13,7 @@ export const history = createHashHistory();
 const sagaMiddleware = createSagaMiddleware();
 const middleware = applyMiddleware(routerMiddleware(history), sagaMiddleware);
 
-const persitingReducers = createFilter('app', ['currentUser']);
+const persitingReducers = createFilter('app', ['language']);
 const persistConfig = {
     key: 'app',
     storage: storage,
@@ -23,18 +23,18 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 
-export default function configureStore(initialState, cb) {
+export default function configureStore(cb) {
     let store;
 
     if (process.env.NODE_ENV === 'production') {
         console.log('Running on production environments');
-        store = createStore(connectRouter(history)(persistedReducer), initialState, compose(middleware, f => f));
+        store = createStore(connectRouter(history)(persistedReducer), {}, compose(middleware, f => f));
     }
     else {
         console.log('Running on dev environments');
         const devtools: any = window['devToolsExtension'] ? window['devToolsExtension']() : (f: any) => f; // add support for Redux dev tools
 
-        store = createStore(connectRouter(history)(persistedReducer), initialState, compose(middleware, devtools));
+        store = createStore(connectRouter(history)(persistedReducer), {}, compose(middleware, devtools));
     }
 
     sagaMiddleware.run(rootSaga);
