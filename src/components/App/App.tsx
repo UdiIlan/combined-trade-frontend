@@ -1,30 +1,44 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import { connect } from 'react-redux';
 const styles = require('./styles.scss');
 import Header from './Header';
 import { SupportedLanguages, getLocalizedText } from 'lang';
-import { sesLanguage } from './redux/actions';
+import { SupportedCoins } from 'businessLogic/model';
+import { sesLanguage, setCurrency } from './redux/actions';
 
 export interface AppProps {
     currentLang: SupportedLanguages;
+    currentCurrency: SupportedCoins;
     sesLanguage(newLang: SupportedLanguages);
+    setCurrency(newCurrency: SupportedCoins);
 }
 
 class App extends React.Component<AppProps, any> {
 
     constructor(props) {
         super(props);
+        this.setNewCurrency = this.setNewCurrency.bind(this);
     }
 
     componentWillMount() {
         this.props.sesLanguage(this.props.currentLang);
     }
 
+    setNewCurrency(newCurrency: SupportedCoins) {
+        this.props.setCurrency(newCurrency);
+    }
+
     render() {
         return (
             <div className={styles.app}>
 
-                <Header currentLang={this.props.currentLang} sesLanguage={this.props.sesLanguage} />
+                <Header
+                    currentCurrency={this.props.currentCurrency}
+                    currentLang={this.props.currentLang}
+                    sesLanguage={this.props.sesLanguage}
+                    setCurrency={this.setNewCurrency}
+                />
 
                 <div className={styles.content}>
                 </div>
@@ -39,13 +53,15 @@ class App extends React.Component<AppProps, any> {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        currentLang: state.app.language
+        currentLang: _.get(state, 'app.language', 'en_us'),
+        currentCurrency: _.get(state, 'app.currency', 'BTC')
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        sesLanguage: (newLang: SupportedLanguages) => dispatch(sesLanguage(newLang))
+        sesLanguage: (newLang: SupportedLanguages) => dispatch(sesLanguage(newLang)),
+        setCurrency: (newCurrency: SupportedCoins) => dispatch(setCurrency(newCurrency))
     };
 };
 

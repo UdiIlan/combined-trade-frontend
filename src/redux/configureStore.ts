@@ -13,7 +13,7 @@ export const history = createHashHistory();
 const sagaMiddleware = createSagaMiddleware();
 const middleware = applyMiddleware(routerMiddleware(history), sagaMiddleware);
 
-const persitingReducers = createFilter('app', ['language']);
+const persitingReducers = createFilter('app', ['language', 'currency']);
 const persistConfig = {
     key: 'app',
     storage: storage,

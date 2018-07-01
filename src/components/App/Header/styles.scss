@@ -21,11 +21,19 @@
         padding: 15px 10px;
     }
 
-    .langMenu {
+    .currencyMenu {
         flex: 1;
         align-items: flex-end;
         display: flex;
         flex-direction: column;
+    }
+
+    .langMenu {
+        // flex: 1;
+        // align-items: flex-end;
+        // display: flex;
+        // flex-direction: column;
+        margin-left: 10px;
     }
 }
 
