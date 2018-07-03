@@ -6,7 +6,7 @@ const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import Spinner from 'components/common/core/Spinner';
 import { SupportedCurrencies, Exchange as IExchange } from 'businessLogic/model';
-import { getExchanges } from './redux/actions';
+import { getExchanges, getActiveOrderBooks } from './redux/actions';
 import Exchange from 'components/Exchange';
 
 export interface OrderBookProps {
@@ -14,6 +14,7 @@ export interface OrderBookProps {
     exchanges: IExchange[];
     loading?: boolean;
     getExchanges();
+    getActiveOrderBooks();
 }
 
 class OrderBook extends React.Component<OrderBookProps, any> {
@@ -22,8 +23,19 @@ class OrderBook extends React.Component<OrderBookProps, any> {
         super(props);
     }
 
+    private timerObj;
+
     componentWillMount() {
         this.props.getExchanges();
+        this.restartTimer();
+    }
+
+    restartTimer() {
+        clearTimeout(this.timerObj);
+        this.timerObj = setTimeout(() => {
+            if (!this.props.loading) this.props.getActiveOrderBooks();
+            this.restartTimer();
+        }, 3000);
     }
 
 
@@ -60,7 +72,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getExchanges: () => dispatch(getExchanges())
+        getExchanges: () => dispatch(getExchanges()),
+        getActiveOrderBooks: () => dispatch(getActiveOrderBooks())
     };
 };
 

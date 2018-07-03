@@ -1,5 +1,7 @@
+@import '~styles/colors.scss';
+
 .spinner {
-    color: #2196f3;
+    color: $MainBlue;
 
     .text {
         font-size: inherit;

@@ -1,9 +1,13 @@
 .exchangeInfo {
-  display: flex;
-  flex-direction: column;
+  padding: 0px 5px;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 5px;
+  background: lightslategray;
+  color: white;
 
   .headerText {
-    font-weight: bold;
+    font-weight: normal;
+    text-decoration: underline;
   }
 
   .balanceContainer {

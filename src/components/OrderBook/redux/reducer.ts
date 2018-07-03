@@ -1,6 +1,7 @@
+import * as _ from 'lodash';
 import { OrderBookActions } from './actions';
 import { handleActions, Action } from 'redux-actions';
-import { SupportedCurrencies, Exchange } from 'businessLogic/model';
+import { Exchange, ExchangeOrderBook } from 'businessLogic/model';
 
 export interface OrderBookState {
     exchanges: Exchange[];
@@ -22,12 +23,19 @@ reducerMap[OrderBookActions.SET_EXCHANGES] = (state: OrderBookState, action: Act
     return { ...state, exchanges: action.payload, loading: false };
 };
 
-reducerMap[OrderBookActions.GET_ACTIVE_ORDER_BOOKS] = (state: OrderBookState, action: Action<void>): OrderBookState => {
-    return { ...state };
-};
+// reducerMap[OrderBookActions.GET_ACTIVE_ORDER_BOOKS] = (state: OrderBookState, action: Action<void>): OrderBookState => {
+//     return { ...state };
+// };
 
-reducerMap[OrderBookActions.SET_ACTIVE_ORDER_BOOKS] = (state: OrderBookState, action: Action<any>): OrderBookState => {
-    return { ...state };
+reducerMap[OrderBookActions.SET_ACTIVE_ORDER_BOOKS] = (state: OrderBookState, action: Action<ExchangeOrderBook[]>): OrderBookState => {
+    const orderBooks = action.payload;
+    const exchanges = { ...state.exchanges };
+    _.forEach(orderBooks, ob => {
+        const exchange = _.find(exchanges, { name: ob.exchange });
+        if (!exchange) return;
+        exchange.orderBook = ob;
+    });
+    return { ...state, exchanges: exchanges };
 };
 
 export default handleActions<OrderBookState, any>(reducerMap, INITIAL_STATE);

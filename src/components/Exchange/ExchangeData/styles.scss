@@ -1,4 +1,39 @@
 .exchangeData {
-    display: flex;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex: 1;
+
+  .orderContainer {
+    height: 40%;
+
+    .header {
+      padding: 20px 5px;
+      margin: 0px;
+      border-bottom: 1px solid lightgray;
+    }
+
+    .order {
+      display: block;
+      border-bottom: 1px solid lightgray;
+      padding: 5px;
+      height: 20px;
+       
+      &:hover {
+          background: aliceblue;
+      }
+    }
+  }
+
+  .asks {
+    @extend .orderContainer;
+  }
+
+  .info {
+    height: 20%;
+  }
+
+  .bids {
+    @extend .orderContainer;
+  }
 }

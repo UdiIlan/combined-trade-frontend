@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
 const styles = require('./styles.scss');
 import { getLocalizedText, SupportedLanguages } from 'lang';
 import { SupportedCurrencies } from 'businessLogic/model';
@@ -60,7 +61,17 @@ export default class Header extends React.Component<HeaderProps, any> {
     private renderCurrencyMenu() {
         return (
             <div className={styles.currencyMenu}>
-                <Select native value={this.props.currentCurrency} onChange={(e) => this.props.setCurrency(e.target.value as SupportedCurrencies)}>
+                <Select
+                    native
+                    value={this.props.currentCurrency}
+                    onChange={(e) => this.props.setCurrency(e.target.value as SupportedCurrencies)}
+                    classes={{
+                        root: styles.whiteSelect,
+                        select: styles.whiteSelect,
+                        icon: styles.whiteSelect,
+                    }}
+                    input={<Input classes={{ root: styles.whiteInput, underline: styles.whiteInput }} />}
+                >
                     <option value='BTC'>{getLocalizedText('btc_usd_option')}</option>
                     <option value='BCH'>{getLocalizedText('bch_usd_option')}</option>
                 </Select>

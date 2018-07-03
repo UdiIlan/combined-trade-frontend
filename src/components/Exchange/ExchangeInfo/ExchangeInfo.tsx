@@ -5,9 +5,10 @@ import { ExchangeCoinBalance, SupportedCurrencies, ExchangeStatus } from 'busine
 
 export interface ExchangeInfoProps {
     name: string;
-    selectedCurrency: SupportedCurrencies;
     status: ExchangeStatus;
+    selectedCurrency: SupportedCurrencies;
     selectedCurrencyBalance?: ExchangeCoinBalance;
+    usdBalance?: ExchangeCoinBalance;
     totalUSD?: number;
     signedInUser?: string;
 }
@@ -20,7 +21,8 @@ export default class ExchangeInfo extends React.Component<ExchangeInfoProps, any
 
     render() {
 
-        const { name, selectedCurrency, status, selectedCurrencyBalance, totalUSD, signedInUser } = this.props;
+        const { name, status, selectedCurrency, selectedCurrencyBalance, totalUSD, signedInUser, usdBalance } = this.props;
+        const naText = getLocalizedText('not_available');
 
         return (
             <div className={styles.exchangeInfo}>
@@ -28,12 +30,16 @@ export default class ExchangeInfo extends React.Component<ExchangeInfoProps, any
 
                 <div className={styles.balanceContainer}>
                     <div className={styles.balanceItem}>
+                        <span className={styles.balanceItemLabel}>{getLocalizedText('usd_balance')}</span>
+                        <span className={styles.balanceItemValue}>{!!usdBalance ? usdBalance.amount : naText}</span>
+                    </div>
+                    <div className={styles.balanceItem}>
                         <span className={styles.balanceItemLabel}>{`${selectedCurrency} ${getLocalizedText('balance')}`}</span>
-                        <span className={styles.balanceItemValue}>{selectedCurrencyBalance}</span>
+                        <span className={styles.balanceItemValue}>{!!selectedCurrencyBalance ? selectedCurrencyBalance.amount : naText}</span>
                     </div>
                     <div className={styles.balanceItem}>
                         <span className={styles.balanceItemLabel}>{`${getLocalizedText('total')} ${getLocalizedText('usd_balance')}`}</span>
-                        <span className={styles.balanceItemValue}>{totalUSD}</span>
+                        <span className={styles.balanceItemValue}>{totalUSD || naText}</span>
                     </div>
                 </div>
             </div>

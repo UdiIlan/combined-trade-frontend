@@ -19,9 +19,10 @@ export default class Exchange extends React.Component<ExchangeProps, any> {
 
     render() {
 
-        const { name, balance, totalUSD, status, signedInUser } = this.props.exchange;
+        const { name, balance, totalUSD, status, signedInUser, orderBook } = this.props.exchange;
         const { selectedCurrency } = this.props;
         const selectedCurrencyBalance = _.find(balance, { coin: selectedCurrency });
+        const usdBalance = _.find(balance, { coin: 'USD' });
 
         return (
             <div className={styles.exchange}>
@@ -32,9 +33,10 @@ export default class Exchange extends React.Component<ExchangeProps, any> {
                     totalUSD={totalUSD}
                     signedInUser={signedInUser}
                     selectedCurrency={this.props.selectedCurrency}
+                    usdBalance={usdBalance}
                 />
 
-                <ExchangeData />
+                <ExchangeData orderBook={orderBook} />
             </div>
         );
     }

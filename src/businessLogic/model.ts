@@ -5,7 +5,7 @@ export type SupportedCurrencies = 'BTC' | 'BCH';
 
 /************************** Exchange ******************************************** */
 export interface ExchangeCoinBalance {
-    coin: SupportedCurrencies;
+    coin: SupportedCurrencies | 'USD';
     amount: number;
     available: number;
     price?: number;
@@ -30,4 +30,21 @@ export interface Exchange {
     totalUSD: number;
     status: ExchangeStatus;
     signedInUser?: string;
+    orderBook?: ExchangeOrderBook;
+}
+
+/************************** Exchange Order Book ******************************************** */
+export interface Order {
+    price: number;
+    size: number;
+    source: string;
+}
+
+export interface ExchangeOrderBook {
+    exchange: string;
+    asks?: Order[];
+    bids?: Order[];
+    averageSpread?: number;
+    currentSpread?: number;
+    lastPrice?: { price: number, time: Date, type: 'sell' | 'buy' };
 }
