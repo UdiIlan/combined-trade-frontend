@@ -1,0 +1,24 @@
+.exchangeInfo {
+  display: flex;
+  flex-direction: column;
+
+  .headerText {
+    font-weight: bold;
+  }
+
+  .balanceContainer {
+    margin-top: 7px;
+
+    .balanceItem {
+      display: flex;
+
+      .balanceItemLabel {
+        width: 125px;
+      }
+
+      .balanceItemValue {
+          margin-left: 2px;
+      }
+    }
+  }
+}

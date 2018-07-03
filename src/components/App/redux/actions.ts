@@ -1,8 +1,12 @@
-import AppAction from './constants';
 import { createAction } from 'redux-actions';
 import { SupportedLanguages } from 'lang';
-import { SupportedCoins } from 'businessLogic/model';
+import { SupportedCurrencies } from 'businessLogic/model';
 
-export const sesLanguage = createAction(AppAction.SET_LANG, (newLang: SupportedLanguages) => newLang);
+export const AppActions = {
+    SET_LANG: 'APP/SET_LANG',
+    SET_CURRENCY: 'APP/SET_CURRENCY'
+};
 
-export const setCurrency = createAction(AppAction.SET_CURRENCY, (newCurrency: SupportedCoins) => newCurrency);
+export const sesLanguage = createAction(AppActions.SET_LANG, (newLang: SupportedLanguages) => newLang);
+
+export const setCurrency = createAction(AppActions.SET_CURRENCY, (newCurrency: SupportedCurrencies) => newCurrency);

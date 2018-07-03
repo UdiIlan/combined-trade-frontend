@@ -4,14 +4,15 @@ import { connect } from 'react-redux';
 const styles = require('./styles.scss');
 import Header from './Header';
 import { SupportedLanguages, getLocalizedText } from 'lang';
-import { SupportedCoins } from 'businessLogic/model';
+import { SupportedCurrencies } from 'businessLogic/model';
 import { sesLanguage, setCurrency } from './redux/actions';
+import OrderBook from 'components/OrderBook';
 
 export interface AppProps {
     currentLang: SupportedLanguages;
-    currentCurrency: SupportedCoins;
+    currentCurrency: SupportedCurrencies;
     sesLanguage(newLang: SupportedLanguages);
-    setCurrency(newCurrency: SupportedCoins);
+    setCurrency(newCurrency: SupportedCurrencies);
 }
 
 class App extends React.Component<AppProps, any> {
@@ -25,7 +26,7 @@ class App extends React.Component<AppProps, any> {
         this.props.sesLanguage(this.props.currentLang);
     }
 
-    setNewCurrency(newCurrency: SupportedCoins) {
+    setNewCurrency(newCurrency: SupportedCurrencies) {
         this.props.setCurrency(newCurrency);
     }
 
@@ -41,6 +42,8 @@ class App extends React.Component<AppProps, any> {
                 />
 
                 <div className={styles.content}>
+                    {this.props.children}
+                    <OrderBook />
                 </div>
 
                 <footer>
@@ -61,7 +64,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         sesLanguage: (newLang: SupportedLanguages) => dispatch(sesLanguage(newLang)),
-        setCurrency: (newCurrency: SupportedCoins) => dispatch(setCurrency(newCurrency))
+        setCurrency: (newCurrency: SupportedCurrencies) => dispatch(setCurrency(newCurrency))
     };
 };
 

@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import appReducer from 'components/App/redux/reducer';
-// import { routerReducer } from 'react-router-redux';
+import orderBookReducer from 'components/OrderBook/redux/reducer';
+
 
 const rootReducer = combineReducers({
     // routing: routerReducer
-    app: appReducer
+    app: appReducer,
+    orderBook: orderBookReducer
 });
 
 export default rootReducer;

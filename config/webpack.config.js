@@ -123,7 +123,10 @@ const config = (env) => {
     },
     resolve: {
       modules: [path.resolve(APP_DIR), "node_modules"],
-      extensions: ['.js', '.jsx', '.ts', '.tsx', '.sass', 'scss', 'json', 'png', 'jpg']
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.sass', 'scss', 'json', 'png', 'jpg'],
+      alias: {
+        config: path.join(CONFIG_DIR, (prod ? 'production' : 'development'))
+      }
     }
   };
 }

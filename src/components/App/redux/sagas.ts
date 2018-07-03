@@ -1,5 +1,5 @@
 
-import AppActions from './constants';
+import { AppActions } from './actions';
 import { takeEvery, all } from 'redux-saga/effects';
 import {updateCurLang} from 'lang';
 

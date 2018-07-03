@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config ./config/webpack.config.js  --colors",
-    "build": "webpack --config ./config/webpack.config.js --env.prod --progress --colors"
+    "build": "webpack --config ./config/webpack.config.js --env.prod --progress --colors",
+    "postinstall": "node ./config/postinstall.js"
   },
   "repository": {
     "type": "git",
@@ -45,7 +46,8 @@
     "redux-actions": "^2.4.0",
     "redux-persist": "^5.10.0",
     "redux-persist-transform-filter": "0.0.18",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "rest-fetcher": "^1.0.7"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

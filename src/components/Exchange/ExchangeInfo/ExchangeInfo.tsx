@@ -1,0 +1,42 @@
+import * as React from 'react';
+const styles = require('./styles.scss');
+import { getLocalizedText } from 'lang';
+import { ExchangeCoinBalance, SupportedCurrencies, ExchangeStatus } from 'businessLogic/model';
+
+export interface ExchangeInfoProps {
+    name: string;
+    selectedCurrency: SupportedCurrencies;
+    status: ExchangeStatus;
+    selectedCurrencyBalance?: ExchangeCoinBalance;
+    totalUSD?: number;
+    signedInUser?: string;
+}
+
+export default class ExchangeInfo extends React.Component<ExchangeInfoProps, any> {
+
+    constructor(props: ExchangeInfoProps) {
+        super(props);
+    }
+
+    render() {
+
+        const { name, selectedCurrency, status, selectedCurrencyBalance, totalUSD, signedInUser } = this.props;
+
+        return (
+            <div className={styles.exchangeInfo}>
+                <h4 className={styles.headerText}>{`${name} ${getLocalizedText('account_details')}`}</h4>
+
+                <div className={styles.balanceContainer}>
+                    <div className={styles.balanceItem}>
+                        <span className={styles.balanceItemLabel}>{`${selectedCurrency} ${getLocalizedText('balance')}`}</span>
+                        <span className={styles.balanceItemValue}>{selectedCurrencyBalance}</span>
+                    </div>
+                    <div className={styles.balanceItem}>
+                        <span className={styles.balanceItemLabel}>{`${getLocalizedText('total')} ${getLocalizedText('usd_balance')}`}</span>
+                        <span className={styles.balanceItemValue}>{totalUSD}</span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}

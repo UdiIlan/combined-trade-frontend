@@ -1,0 +1,13 @@
+.orderBook {
+    display: flex;
+    flex: 1;
+
+    .loader {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+}

@@ -1,11 +1,11 @@
-import AppActions from './constants';
+import { AppActions } from './actions';
 import { handleActions, Action } from 'redux-actions';
 import { SupportedLanguages } from 'lang';
-import { SupportedCoins } from 'businessLogic/model';
+import { SupportedCurrencies } from 'businessLogic/model';
 
 export interface AppState {
     language: SupportedLanguages;
-    currency: SupportedCoins;
+    currency: SupportedCurrencies;
 }
 
 const INITIAL_STATE: AppState = {
@@ -19,7 +19,7 @@ reducerMap[AppActions.SET_LANG] = (state: AppState, action: Action<SupportedLang
     return { ...state, language: action.payload };
 };
 
-reducerMap[AppActions.SET_CURRENCY] = (state: AppState, action: Action<SupportedCoins>): AppState => {
+reducerMap[AppActions.SET_CURRENCY] = (state: AppState, action: Action<SupportedCurrencies>): AppState => {
     return { ...state, currency: action.payload };
 };
 
