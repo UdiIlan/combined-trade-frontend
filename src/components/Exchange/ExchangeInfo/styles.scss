@@ -10,12 +10,18 @@
     .balanceItem {
       display: flex;
 
+      .balanceItemText {
+        font-size: 1.1rem;
+      }
+
       .balanceItemLabel {
-        width: 125px;
+        @extend .balanceItemText;
+        width: 10rem;
       }
 
       .balanceItemValue {
-          margin-left: 2px;
+        @extend .balanceItemText;
+        margin-left: 2px;
       }
     }
   }
