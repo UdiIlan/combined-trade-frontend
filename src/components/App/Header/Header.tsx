@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from 'components/common/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';

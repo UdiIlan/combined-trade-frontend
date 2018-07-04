@@ -18,7 +18,7 @@ export interface ExchangeFees {
 
 export enum ExchangeStatus {
     RUNNING,
-    STOP,
+    STOPPED,
     LOGGING_IN,
     LOGGED_IN
 }

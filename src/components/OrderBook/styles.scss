@@ -3,6 +3,7 @@
     display: flex;
     flex-flow: row wrap;
     overflow: auto;
+    padding: 5px;
 
     .loader {
         flex: 1;

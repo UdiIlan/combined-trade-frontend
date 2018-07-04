@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { connect } from 'react-redux';
+import Card from '@material-ui/core/Card';
 const styles = require('./styles.scss');
 import { Exchange as IExchange, SupportedCurrencies } from 'businessLogic/model';
 import ExchangeInfo from './ExchangeInfo';
@@ -25,7 +25,8 @@ export default class Exchange extends React.Component<ExchangeProps, any> {
         const usdBalance = _.find(balance, { coin: 'USD' });
 
         return (
-            <div className={styles.exchange}>
+
+            < Card className={styles.exchange} >
                 <ExchangeInfo
                     name={name}
                     selectedCurrencyBalance={selectedCurrencyBalance}
@@ -37,7 +38,7 @@ export default class Exchange extends React.Component<ExchangeProps, any> {
                 />
 
                 <ExchangeData orderBook={orderBook} />
-            </div>
+            </Card >
         );
     }
 }

@@ -2,6 +2,7 @@ import * as React from 'react';
 const styles = require('./styles.scss');
 import { getLocalizedText } from 'lang';
 import { ExchangeCoinBalance, SupportedCurrencies, ExchangeStatus } from 'businessLogic/model';
+import ExchangeHeaderBar from './ExchangeHeaderBar';
 
 export interface ExchangeInfoProps {
     name: string;
@@ -26,7 +27,8 @@ export default class ExchangeInfo extends React.Component<ExchangeInfoProps, any
 
         return (
             <div className={styles.exchangeInfo}>
-                <h4 className={styles.headerText}>{`${name} ${getLocalizedText('account_details')}`}</h4>
+
+                <ExchangeHeaderBar status={status} signedInUser={signedInUser} name={name} />
 
                 <div className={styles.balanceContainer}>
                     <div className={styles.balanceItem}>

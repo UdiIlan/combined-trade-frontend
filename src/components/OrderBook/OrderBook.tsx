@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
-import Spinner from 'components/common/core/Spinner';
+import Spinner from '../common/core/Spinner';
 import { SupportedCurrencies, Exchange as IExchange } from 'businessLogic/model';
 import { getExchanges, getActiveOrderBooks } from './redux/actions';
-import Exchange from 'components/Exchange';
+import Exchange from '../Exchange';
 
 export interface OrderBookProps {
     currentCurrency: SupportedCurrencies;

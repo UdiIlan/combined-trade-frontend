@@ -6,7 +6,7 @@ import Header from './Header';
 import { SupportedLanguages, getLocalizedText } from 'lang';
 import { SupportedCurrencies } from 'businessLogic/model';
 import { sesLanguage, setCurrency } from './redux/actions';
-import OrderBook from 'components/OrderBook';
+import OrderBook from '../OrderBook';
 
 export interface AppProps {
     currentLang: SupportedLanguages;
