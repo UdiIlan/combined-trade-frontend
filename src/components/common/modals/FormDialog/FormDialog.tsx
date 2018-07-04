@@ -14,6 +14,7 @@ export interface FormDialogProps {
     subTitle?: string;
     open?: boolean;
     okBtnText?: string;
+    okBtnDisabled?: boolean;
     cancelBtnText?: string;
     children: any;
     onOkClick?();
@@ -56,7 +57,7 @@ export default class FormDialog extends React.Component<FormDialogProps, any> {
                         <Button onClick={() => this.handleClose(false)} color='primary'>
                             {this.props.cancelBtnText || getLocalizedText('cancel')}
                         </Button>
-                        <Button onClick={() => this.handleClose(true)} color='primary'>
+                        <Button disabled={this.props.okBtnDisabled} onClick={() => this.handleClose(true)} color='primary'>
                             {this.props.okBtnText || getLocalizedText('ok')}
                         </Button>
                     </DialogActions>
