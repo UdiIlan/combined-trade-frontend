@@ -1,4 +1,3 @@
-
 /************************** Common ******************************************** */
 export type SupportedCurrencies = 'BTC' | 'BCH';
 
@@ -31,7 +30,19 @@ export interface Exchange {
     status: ExchangeStatus;
     signedInUser?: string;
     orderBook?: ExchangeOrderBook;
+    invalidLogin?: Error;
 }
+
+
+export interface AccountCredentials {
+    username: string;
+    key: string;
+    secret: string;
+    exchange: string;
+    taker_fee?: number;
+    maker_fee?: number;
+}
+
 
 /************************** Exchange Order Book ******************************************** */
 export interface Order {

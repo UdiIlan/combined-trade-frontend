@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { OrderBookActions } from './actions';
 import { handleActions, Action } from 'redux-actions';
-import { Exchange, ExchangeOrderBook } from 'businessLogic/model';
+import { Exchange, ExchangeOrderBook, AccountCredentials, ExchangeStatus } from 'businessLogic/model';
 
 export interface OrderBookState {
     exchanges: Exchange[];
@@ -35,6 +35,31 @@ reducerMap[OrderBookActions.SET_ACTIVE_ORDER_BOOKS] = (state: OrderBookState, ac
         if (!exchange) return;
         exchange.orderBook = ob;
     });
+    return { ...state, exchanges: exchanges };
+};
+
+reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE] = (state: OrderBookState, action: Action<AccountCredentials>): OrderBookState => {
+    const exchanges = { ...state.exchanges };
+    const exchange: Exchange = _.find(exchanges, { name: action.payload.exchange });
+    if (!exchange) return state;
+    exchange.status = ExchangeStatus.LOGGING_IN;
+    return { ...state, exchanges: exchanges };
+};
+
+reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE_RESULT] = (state: OrderBookState, action: Action<{ exchange: string, err: Error }>): OrderBookState => {
+    const exchanges = { ...state.exchanges };
+    const exchange: Exchange = _.find(exchanges, { name: action.payload.exchange });
+    if (!exchange) return state;
+
+    if (!action.payload.err) {
+        exchange.invalidLogin = undefined;
+        exchange.status = ExchangeStatus.LOGGED_IN;
+    }
+    else {
+        exchange.status = ExchangeStatus.RUNNING;
+        exchange.invalidLogin = action.payload.err;
+    }
+
     return { ...state, exchanges: exchanges };
 };
 

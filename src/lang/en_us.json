@@ -67,5 +67,7 @@
     "last": "Last:",
     "total": "Total",
     "timed order": "Timed Order",
-    "supportLink": "For support please contact:"
+    "supportLink": "For support please contact:",
+    "cancel": "Cancel",
+    "ok": "OK"
 }

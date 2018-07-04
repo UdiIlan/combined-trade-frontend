@@ -1,8 +1,7 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 const styles = require('./styles.scss');
 import { getLocalizedText } from 'lang';
-// import Icon from '@material-ui/core/Icon';
-// import IconButton from '@material-ui/core/IconButton';
 import IconButton from 'components/common/core/IconButton';
 import { ExchangeStatus } from 'businessLogic/model';
 
@@ -10,12 +9,17 @@ export interface ExchangeHeaderBarProps {
     status: ExchangeStatus;
     signedInUser?: string;
     name: string;
+    signInToExchange();
 }
 
-export default class ExchangeActions extends React.Component<ExchangeHeaderBarProps, any> {
+export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBarProps, any> {
 
     constructor(props: ExchangeHeaderBarProps) {
         super(props);
+    }
+
+    shouldComponentUpdate(nextProps: ExchangeHeaderBarProps) {
+        return !_.isEqual(this.props, nextProps);
     }
 
 
@@ -34,15 +38,14 @@ export default class ExchangeActions extends React.Component<ExchangeHeaderBarPr
                 {isExchangedStopped ?
                     <IconButton disabled aria-label='Play' iconName='play_circle_filled_white' onClick={(e) => alert('Hey')} />
                     :
-                    <IconButton aria-label='Stop' iconName='pause_circle_outline'  onClick={(e) => alert('Hey')} />
+                    <IconButton aria-label='Stop' iconName='pause_circle_outline' onClick={(e) => alert('Hey')} />
                 }
 
                 {isExchangedStopped || isRunningButLoggedOut ?
-                    <IconButton disabled={isExchangedStopped} aria-label='log-in' iconName='vpn_key' />
+                    <IconButton onClick={(e) => this.props.signInToExchange()} disabled={isExchangedStopped} aria-label='log-in' iconName='vpn_key' />
                     :
                     <IconButton disabled={isUserLoggingIn} aria-label='log-out' iconName='exit_to_app' />
                 }
-
 
             </div>
         );

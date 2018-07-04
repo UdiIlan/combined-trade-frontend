@@ -1,6 +1,6 @@
 const config = require('config');
 import { Fetcher } from 'rest-fetcher';
-import {SupportedCurrencies} from './model';
+import { AccountCredentials } from './model';
 
 const fetcher = new Fetcher(config.baseUrl);
 
@@ -21,5 +21,11 @@ export const getExchangesAccountBalance = async (): Promise<any> => {
 
 export const getActiveOrderBook = async (currency): Promise<any> => {
     const res = await fetcher.get(`/ActiveOrderbooks/${currency}-USD`);
+    return textToJson(res);
+};
+
+
+export const signInToExchange = async (creds: AccountCredentials): Promise<any> => {
+    const res = await fetcher.post('/SetClientCredentials', creds);
     return textToJson(res);
 };

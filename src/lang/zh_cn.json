@@ -67,5 +67,7 @@
     "last": "持续",
     "total": "总",
     "timed order": "待处理订",
-    "supportLink": "如需支持，请联系"
+    "supportLink": "如需支持，请联系",
+    "cancel": "取消",
+    "ok": "好"
 }

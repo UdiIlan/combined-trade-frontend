@@ -1,8 +1,8 @@
 
 import * as _ from 'lodash';
-import { OrderBookActions, setExchanges, serActiveOrderBooks } from './actions';
+import { OrderBookActions, setExchanges, serActiveOrderBooks, setSignInToExchangeResult } from './actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
-import { getExchangesSignedInInfo, getExchangesAccountBalance, getActiveOrderBook } from 'businessLogic/serverApi';
+import { getExchangesSignedInInfo, getExchangesAccountBalance, getActiveOrderBook, signInToExchange } from 'businessLogic/serverApi';
 import { Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook } from 'businessLogic/model';
 
 const getSelectedCurrency = (state) => state.app.currency;
@@ -73,9 +73,22 @@ function* getActiveOrdersAsync(action) {
     }
 }
 
+function* signInToExchangeAsync(action) {
+    const {exchange} = action.payload.exchange;
+    try {
+        yield signInToExchange(action.payload);
+        yield put(setSignInToExchangeResult(exchange, undefined));
+    }
+    catch (err) {
+        yield put(setSignInToExchangeResult(exchange, err));
+        console.error('Failed to sign-in to exchange: ', err);
+    }
+}
+
 export function* OrderBookSagas() {
     return yield all([
         takeEvery(OrderBookActions.GET_EXCHANGES, getExchangesAsync),
-        takeEvery(OrderBookActions.GET_ACTIVE_ORDER_BOOKS, getActiveOrdersAsync)
+        takeEvery(OrderBookActions.GET_ACTIVE_ORDER_BOOKS, getActiveOrdersAsync),
+        takeEvery(OrderBookActions.SIGN_IN_TO_EXCHANGE, signInToExchangeAsync)
     ]);
 }

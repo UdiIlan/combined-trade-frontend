@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import bmTheme from 'themes';
 const styles = require('./styles.scss');
 import Header from './Header';
 import { SupportedLanguages, getLocalizedText } from 'lang';
@@ -32,24 +34,26 @@ class App extends React.Component<AppProps, any> {
 
     render() {
         return (
-            <div className={styles.app}>
+            <MuiThemeProvider theme={bmTheme}>
+                <div className={styles.app}>
 
-                <Header
-                    currentCurrency={this.props.currentCurrency}
-                    currentLang={this.props.currentLang}
-                    sesLanguage={this.props.sesLanguage}
-                    setCurrency={this.setNewCurrency}
-                />
+                    <Header
+                        currentCurrency={this.props.currentCurrency}
+                        currentLang={this.props.currentLang}
+                        sesLanguage={this.props.sesLanguage}
+                        setCurrency={this.setNewCurrency}
+                    />
 
-                <div className={styles.content}>
-                    {this.props.children}
-                    <OrderBook />
+                    <div className={styles.content}>
+                        {this.props.children}
+                        <OrderBook />
+                    </div>
+
+                    <footer>
+                        {getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a>
+                    </footer>
                 </div>
-
-                <footer>
-                    {getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a>
-                </footer>
-            </div>
+            </MuiThemeProvider >
         );
     }
 }

@@ -77,10 +77,11 @@ export type localizedKeys =
     'not_started' |
     'running' |
     'pending' |
-    'cancelled' |
     'done' |
     'last' |
     'total' |
     'timed order' |
-    'supportLink'
+    'supportLink' |
+    'cancel' |
+    'ok'
     ;

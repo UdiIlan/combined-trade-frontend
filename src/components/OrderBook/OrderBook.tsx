@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
-import Spinner from '../common/core/Spinner';
-import { SupportedCurrencies, Exchange as IExchange } from 'businessLogic/model';
-import { getExchanges, getActiveOrderBooks } from './redux/actions';
-import Exchange from '../Exchange';
+import Spinner from 'components/common/core/Spinner';
+import { SupportedCurrencies, Exchange as IExchange, AccountCredentials } from 'businessLogic/model';
+import { getExchanges, getActiveOrderBooks, signInToExchange } from './redux/actions';
+import Exchange from 'components/Exchange';
 
 export interface OrderBookProps {
     currentCurrency: SupportedCurrencies;
@@ -15,6 +15,7 @@ export interface OrderBookProps {
     loading?: boolean;
     getExchanges();
     getActiveOrderBooks();
+    signInToExchange(creds: AccountCredentials);
 }
 
 class OrderBook extends React.Component<OrderBookProps, any> {
@@ -54,10 +55,12 @@ class OrderBook extends React.Component<OrderBookProps, any> {
     }
 
     renderExchanges(exchanges: IExchange[]) {
-        return _.map(exchanges, (exchange: IExchange) => <Exchange key={exchange.name}
-            selectedCurrency={this.props.currentCurrency}
-            exchange={exchange}
-        />);
+        return _.map(exchanges, (exchange: IExchange) =>
+            <Exchange key={exchange.name}
+                selectedCurrency={this.props.currentCurrency}
+                exchange={exchange}
+                signInToExchange={this.props.signInToExchange}
+            />);
     }
 
 }
@@ -73,7 +76,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getExchanges: () => dispatch(getExchanges()),
-        getActiveOrderBooks: () => dispatch(getActiveOrderBooks())
+        getActiveOrderBooks: () => dispatch(getActiveOrderBooks()),
+        signInToExchange: (creds: AccountCredentials) => dispatch(signInToExchange(creds))
     };
 };
 
