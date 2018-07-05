@@ -1,7 +1,6 @@
+@import '~styles/colors.scss';
+
 .exchange {
-    // display: flex;
-    // flex-direction: column;
-    // border: 1px solid lightgray;
     margin-right: 15px;
     width: 15%;
     min-width: 200px;
@@ -9,8 +8,8 @@
 
     .exchangeHeader {
         padding: 5px;
-        border-bottom: 1px solid lightgray;
-        background: lightslategray;
-        color: white;
+        border-bottom: 1px solid $borderColor;
+        background: $listHeaderBackground;
+        color: $whiteText;
     }
 }

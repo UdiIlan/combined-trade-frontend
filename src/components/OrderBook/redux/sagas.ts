@@ -1,8 +1,15 @@
 
 import * as _ from 'lodash';
-import { OrderBookActions, setExchanges, serActiveOrderBooks, setSignInToExchangeResult } from './actions';
+import {
+    OrderBookActions, setExchanges, serActiveOrderBooks, setSignInToExchangeResult,
+    setLogOutFromExchangeResult
+} from './actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
-import { getExchangesSignedInInfo, getExchangesAccountBalance, getActiveOrderBook, signInToExchange } from 'businessLogic/serverApi';
+import {
+    getExchangesSignedInInfo, getExchangesAccountBalance, getActiveOrderBook,
+    signInToExchange, logOutFromExchange
+}
+    from 'businessLogic/serverApi';
 import { Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook } from 'businessLogic/model';
 
 const getSelectedCurrency = (state) => state.app.currency;
@@ -74,10 +81,13 @@ function* getActiveOrdersAsync(action) {
 }
 
 function* signInToExchangeAsync(action) {
-    const {exchange} = action.payload.exchange;
+    const { exchange } = action.payload;
     try {
-        yield signInToExchange(action.payload);
-        yield put(setSignInToExchangeResult(exchange, undefined));
+        const res = yield signInToExchange(action.payload);
+        if (res && res.set_credentials_status === 'True')
+            yield put(setSignInToExchangeResult(exchange, undefined));
+        else
+            yield put(setSignInToExchangeResult(exchange, new Error('Invalid credentials.')));
     }
     catch (err) {
         yield put(setSignInToExchangeResult(exchange, err));
@@ -85,10 +95,23 @@ function* signInToExchangeAsync(action) {
     }
 }
 
+function* logOutFromExchangeAsync(action) {
+    const exchange = action.payload;
+    try {
+        const res = yield logOutFromExchange(exchange);
+        yield put(setLogOutFromExchangeResult(exchange, undefined));
+    }
+    catch (err) {
+        yield put(setLogOutFromExchangeResult(exchange, err));
+        console.error('Failed to log-out from exchange: ', err);
+    }
+}
+
 export function* OrderBookSagas() {
     return yield all([
         takeEvery(OrderBookActions.GET_EXCHANGES, getExchangesAsync),
         takeEvery(OrderBookActions.GET_ACTIVE_ORDER_BOOKS, getActiveOrdersAsync),
-        takeEvery(OrderBookActions.SIGN_IN_TO_EXCHANGE, signInToExchangeAsync)
+        takeEvery(OrderBookActions.SIGN_IN_TO_EXCHANGE, signInToExchangeAsync),
+        takeEvery(OrderBookActions.LOG_OUT_FROM_EXCHANGE, logOutFromExchangeAsync)
     ]);
 }

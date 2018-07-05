@@ -10,6 +10,7 @@ export interface ExchangeHeaderBarProps {
     signedInUser?: string;
     name: string;
     signInToExchange();
+    logOutFromExchange();
 }
 
 export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBarProps, any> {
@@ -36,15 +37,15 @@ export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBar
                 <h4 className={styles.headerText}>{this.props.name}</h4>
 
                 {isExchangedStopped ?
-                    <IconButton disabled aria-label='Play' iconName='play_circle_filled_white' onClick={(e) => alert('Hey')} />
+                    <IconButton disabled tooltip='Start' aria-label='Play' iconName='play_circle_filled_white' onClick={(e) => alert('Hey')} />
                     :
-                    <IconButton aria-label='Stop' iconName='pause_circle_outline' onClick={(e) => alert('Hey')} />
+                    <IconButton tooltip='Stop' aria-label='Stop' iconName='pause_circle_outline' onClick={(e) => alert('Hey')} />
                 }
 
                 {isExchangedStopped || isRunningButLoggedOut ?
-                    <IconButton onClick={(e) => this.props.signInToExchange()} disabled={isExchangedStopped} aria-label='log-in' iconName='vpn_key' />
+                    <IconButton tooltip='Log In' onClick={(e) => this.props.signInToExchange()} disabled={isExchangedStopped} aria-label='log-in' iconName='vpn_key' />
                     :
-                    <IconButton disabled={isUserLoggingIn} aria-label='log-out' iconName='exit_to_app' />
+                    <IconButton tooltip={getLocalizedText('logout', 'Log Out')} onClick={(e) => this.props.logOutFromExchange()} disabled={isUserLoggingIn} aria-label='log-out' iconName='exit_to_app' />
                 }
 
             </div>

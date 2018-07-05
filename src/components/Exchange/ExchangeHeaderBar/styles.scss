@@ -1,5 +1,7 @@
+@import '~styles/colors.scss';
+
 .exchangeActions {
-  background: white;
+  background: $whiteBackground;
   border-radius: 3px;
   height: 30px;
   display: flex;
@@ -11,6 +13,6 @@
     text-decoration: underline;
     margin: 5px;
     flex: 1;
-    color: black;
+    color: $blackText;
   }
 }

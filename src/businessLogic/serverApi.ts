@@ -24,8 +24,12 @@ export const getActiveOrderBook = async (currency): Promise<any> => {
     return textToJson(res);
 };
 
-
 export const signInToExchange = async (creds: AccountCredentials): Promise<any> => {
     const res = await fetcher.post('/SetClientCredentials', creds);
+    return textToJson(res);
+};
+
+export const logOutFromExchange = async (exchange: string): Promise<any> => {
+    const res = await fetcher.get(`/Logout/${exchange}`);
     return textToJson(res);
 };

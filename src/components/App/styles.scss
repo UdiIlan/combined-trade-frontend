@@ -72,12 +72,12 @@ body {
     }
     footer {
         background-color: $MainBlue;
-        color: white;
+        color: $whiteText;
         padding: 10px;
 
         .supportLink {
             margin-left: 5px;
-            color: white;
+            color: $whiteText;
         }
     }
 }

@@ -1,7 +1,18 @@
+@import '~styles/colors.scss';
+
 .signInDialogContent {
-    display: flex;
-    flex-direction: column;
-    width: 25vw;
-    justify-content: space-around;
-    height: 25vh;
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+  justify-content: space-around;
+  height: 25vh;
+}
+
+.footer {
+  margin-top: 20px;
+  height: 20px;
+
+  .invalidLogin {
+    color: $redError;
   }
+}

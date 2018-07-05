@@ -6,7 +6,7 @@ const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import Spinner from 'components/common/core/Spinner';
 import { SupportedCurrencies, Exchange as IExchange, AccountCredentials } from 'businessLogic/model';
-import { getExchanges, getActiveOrderBooks, signInToExchange } from './redux/actions';
+import { getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange } from './redux/actions';
 import Exchange from 'components/Exchange';
 
 export interface OrderBookProps {
@@ -16,6 +16,7 @@ export interface OrderBookProps {
     getExchanges();
     getActiveOrderBooks();
     signInToExchange(creds: AccountCredentials);
+    logOutFromExchange(exchange: string);
 }
 
 class OrderBook extends React.Component<OrderBookProps, any> {
@@ -60,6 +61,7 @@ class OrderBook extends React.Component<OrderBookProps, any> {
                 selectedCurrency={this.props.currentCurrency}
                 exchange={exchange}
                 signInToExchange={this.props.signInToExchange}
+                logOutFromExchange={this.props.logOutFromExchange}
             />);
     }
 
@@ -77,7 +79,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getExchanges: () => dispatch(getExchanges()),
         getActiveOrderBooks: () => dispatch(getActiveOrderBooks()),
-        signInToExchange: (creds: AccountCredentials) => dispatch(signInToExchange(creds))
+        signInToExchange: (creds: AccountCredentials) => dispatch(signInToExchange(creds)),
+        logOutFromExchange: (exchange: string) => dispatch(logOutFromExchange(exchange))
     };
 };
 

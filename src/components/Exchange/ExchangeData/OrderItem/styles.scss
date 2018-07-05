@@ -1,0 +1,66 @@
+@import '~styles/colors.scss';
+
+.order {
+  border-bottom: 1px solid $borderColor;
+  padding: 5px;
+  height: 20px;
+  display: flex;
+  justify-content: space-around;
+  animation: swing 0.5s linear;
+
+  &:hover {
+    background: $listItemHoverBackground;
+  }
+
+  .orderItem {
+    display: inline-block;
+    width: 25%;
+    cursor: context-menu;
+  }
+
+  .orderSize {
+    @extend .orderItem;
+  }
+
+  .orderPrice {
+    @extend .orderItem;
+  }
+
+  .orderSource {
+    width: 25%;
+    align-self: flex-start;
+  }
+
+  .orderAt {
+    display: inline-block;
+    width: 10%;
+  }
+}
+
+
+// Animations
+$total-items: 7;
+
+// Set delay per List Item
+@for $i from 1 through $total-items {
+  .order:nth-child(#{$i}) {
+    animation-delay: .10s * $i;
+  }
+}
+
+// Keyframe animation
+@-webkit-keyframes swing {
+  0% {
+    transform: rotateY(-90deg);
+    transition: all 0.5s cubic-bezier(.36, -0.64, .34, 1.76);
+  }
+
+  75% {
+    transform: rotateY(-90deg);
+    transition: all 0.5s cubic-bezier(.36, -0.64, .34, 1.76);
+  }
+
+  100% {
+    transform: rotateY(0deg);
+  }
+}

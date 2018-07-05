@@ -16,7 +16,7 @@
   }
 
   .mainHeader {
-    color: white;
+    color: $whiteText;
     font-size: 2rem;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -39,21 +39,21 @@
   }
 
   .whiteSelect {
-    color: white;
+    color: $whiteText;
 
     option {
-      color: black;
+      color: $blackText;
     }
   }
 
   .whiteInput {
 
     &::before {
-      border-bottom-color: white;
+      border-bottom-color: $whiteText;
     }
 
     &:hover {
-      border-bottom: 2px solid white;
+      border-bottom: 2px solid $whiteText;
 
       &::before {
         border-bottom: none !important;

@@ -12,10 +12,12 @@ export interface ExchangeProps {
     exchange: IExchange;
     selectedCurrency: SupportedCurrencies;
     signInToExchange(creds: AccountCredentials);
+    logOutFromExchange(exchange: string);
 }
 
 interface ExchangeState {
     openSignInDialog?: boolean;
+    openLogOutDialog?: boolean;
 }
 
 export default class Exchange extends React.Component<ExchangeProps, ExchangeState> {
@@ -27,8 +29,11 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
 
 
     componentWillReceiveProps(nextProps: ExchangeProps) {
-        if (this.props.exchange.status === ExchangeStatus.LOGGING_IN && nextProps.exchange.status === ExchangeStatus.LOGGED_IN) {
+        if (this.state.openSignInDialog && nextProps.exchange.status === ExchangeStatus.LOGGED_IN) {
             this.setState({ openSignInDialog: false });
+        }
+        if (this.state.openLogOutDialog && nextProps.exchange.status !== ExchangeStatus.LOGGED_IN) {
+            this.setState({ openLogOutDialog: false });
         }
     }
 
@@ -36,7 +41,7 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
     render() {
 
         const { name, balance, totalUSD, status, signedInUser, orderBook } = this.props.exchange;
-        const { selectedCurrency, signInToExchange } = this.props;
+        const { selectedCurrency } = this.props;
         const selectedCurrencyBalance = _.find(balance, { coin: selectedCurrency });
         const usdBalance = _.find(balance, { coin: 'USD' });
 
@@ -45,14 +50,16 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
             < Card className={styles.exchange} >
 
                 <div className={styles.exchangeHeader}>
-                    <ExchangeHeaderBar status={status} signedInUser={signedInUser} name={name} signInToExchange={() => this.setState({ openSignInDialog: true })} />
+                    <ExchangeHeaderBar
+                        status={status}
+                        signedInUser={signedInUser}
+                        name={name}
+                        signInToExchange={() => this.setState({ openSignInDialog: true })}
+                        logOutFromExchange={() => this.props.logOutFromExchange(this.props.exchange.name)/*  this.setState({ openLogOutDialog: true }) */} />
 
                     <ExchangeInfo
-                        name={name}
                         selectedCurrencyBalance={selectedCurrencyBalance}
-                        status={status}
                         totalUSD={totalUSD}
-                        signedInUser={signedInUser}
                         selectedCurrency={this.props.selectedCurrency}
                         usdBalance={usdBalance}
                     />
@@ -60,19 +67,22 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
 
                 <ExchangeData orderBook={orderBook} />
 
-                {this.renderSignInDialog()}
+                {this.state.openSignInDialog && this.renderSignInDialog()}
 
             </Card >
         );
     }
 
     renderSignInDialog() {
+        const { exchange, signInToExchange } = this.props;
         return (
             <SignInExchangeDialog
-                open={this.state.openSignInDialog}
-                exchange={this.props.exchange.name}
-                signInToExchange={this.props.signInToExchange}
+                open={true}
+                exchange={exchange.name}
+                signInToExchange={signInToExchange}
                 onCancel={() => this.setState({ openSignInDialog: false })}
+                invalidLogin={exchange.invalidLogin}
+                loggingIn={exchange.status === ExchangeStatus.LOGGING_IN}
             />
         );
     }

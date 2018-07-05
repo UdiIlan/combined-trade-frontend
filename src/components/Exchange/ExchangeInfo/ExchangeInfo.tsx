@@ -2,16 +2,12 @@ import * as React from 'react';
 const styles = require('./styles.scss');
 import { getLocalizedText } from 'lang';
 import { ExchangeCoinBalance, SupportedCurrencies, ExchangeStatus } from 'businessLogic/model';
-// import ExchangeHeaderBar from './ExchangeHeaderBar';
 
 export interface ExchangeInfoProps {
-    name: string;
-    status: ExchangeStatus;
     selectedCurrency: SupportedCurrencies;
     selectedCurrencyBalance?: ExchangeCoinBalance;
     usdBalance?: ExchangeCoinBalance;
     totalUSD?: number;
-    signedInUser?: string;
 }
 
 export default class ExchangeInfo extends React.Component<ExchangeInfoProps, any> {
@@ -22,13 +18,11 @@ export default class ExchangeInfo extends React.Component<ExchangeInfoProps, any
 
     render() {
 
-        const { name, status, selectedCurrency, selectedCurrencyBalance, totalUSD, signedInUser, usdBalance } = this.props;
+        const { selectedCurrency, selectedCurrencyBalance, totalUSD, usdBalance } = this.props;
         const naText = getLocalizedText('not_available');
 
         return (
             <div className={styles.exchangeInfo}>
-
-                {/* <ExchangeHeaderBar status={status} signedInUser={signedInUser} name={name} /> */}
 
                 <div className={styles.balanceContainer}>
                     <div className={styles.balanceItem}>

@@ -1,8 +1,11 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 const styles = require('./styles.scss');
+const classNames = require('classnames/bind');
+const cx = classNames.bind(styles);
 import { ExchangeOrderBook, Order } from 'businessLogic/model';
 import { getLocalizedText } from 'lang';
+import OrderItem from './OrderItem';
 
 export interface ExchangeDataProps {
     orderBook: ExchangeOrderBook;
@@ -15,37 +18,45 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
     }
 
     render() {
+
+        const naText = getLocalizedText('not_available');
+
+        if (!this.props.orderBook) return naText;
+
+        const { lastPrice, averageSpread, currentSpread } = this.props.orderBook;
+
         return (
             <div className={styles.exchangeData}>
                 {this.renderOrders('asks')}
-                <div className={styles.info}></div>
+
+                <div className={styles.info}>
+                    <h4 className={styles.spreadHeader}>{getLocalizedText('spread')}</h4>
+                    <div className={styles.infoItem}>
+                        <span >{getLocalizedText('current')}</span>
+                        <span>{currentSpread.toFixed(2)}</span>
+                    </div>
+                    <div className={styles.infoItem}>
+                        <span>{getLocalizedText('average')}</span>
+                        <span>
+                            {averageSpread ? averageSpread : naText}
+                        </span>
+                    </div>
+                    <div className={styles.infoItem}>
+                        <span>{getLocalizedText('last')}</span>
+                        <span className={cx({ lastPricePos: lastPrice && lastPrice.price >= 0 }, { lastPriceNeg: lastPrice && lastPrice.price < 0 })}>
+                            {lastPrice ?
+                                `${lastPrice.price.toFixed(2)} ${new Date(lastPrice.time).toLocaleTimeString()}`
+                                :
+                                naText
+                            }
+                        </span>
+                    </div>
+                </div>
+
                 {this.renderOrders('bids')}
             </div>
         );
     }
-
-
-    // renderAsks() {
-    //     if (!this.props.orderBook) return;
-    //     const asks = this.props.orderBook.asks;
-    //     return (
-    //         <div className={styles.asks}>
-    //             <h4>{`${this.props.orderBook.exchange} ${getLocalizedText('asks')}`}</h4>
-    //             {_.map(asks, (ask: Order, index) => <span key={index} className={styles.ask}>{`${ask.size} ${getLocalizedText('buy_at')} ${ask.price}`}</span>)}
-    //         </div>
-    //     );
-    // }
-
-    // renderBids() {
-    //     if (!this.props.orderBook) return;
-    //     const bids = this.props.orderBook.bids;
-    //     return (
-    //         <div className={styles.bids}>
-    //             <h4>{`${this.props.orderBook.exchange} ${getLocalizedText('bids')}`}</h4>
-    //             {_.map(bids, (bid: Order, index) => <span key={index} className={styles.bid}>{`${bid.size} ${getLocalizedText('buy_at')} ${bid.price}`}</span>)}
-    //         </div>
-    //     );
-    // }
 
     renderOrders(type: 'asks' | 'bids') {
         if (!this.props.orderBook) return;
@@ -53,7 +64,9 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
         return (
             <div className={styles[type]}>
                 <h4 className={styles.header}>{`${this.props.orderBook.exchange} ${getLocalizedText(type)}`}</h4>
-                {_.map(orders, (order: Order, index) => <span key={index} className={styles.order}>{`${order.size.toFixed(2)} ${getLocalizedText('buy_at')} ${order.price.toFixed(2)}`}</span>)}
+                {_.map(orders, (order: Order, index) =>
+                    <OrderItem key={`${index}-${order.source}-${order.size}-${order.price}`} order={order} showSource={this.props.orderBook.exchange === 'Unified'} />
+                )}
             </div>
         );
     }

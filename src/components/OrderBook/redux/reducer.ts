@@ -43,6 +43,7 @@ reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE] = (state: OrderBookState, actio
     const exchange: Exchange = _.find(exchanges, { name: action.payload.exchange });
     if (!exchange) return state;
     exchange.status = ExchangeStatus.LOGGING_IN;
+    exchange.invalidLogin = undefined;
     return { ...state, exchanges: exchanges };
 };
 
@@ -59,6 +60,22 @@ reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE_RESULT] = (state: OrderBookState
         exchange.status = ExchangeStatus.RUNNING;
         exchange.invalidLogin = action.payload.err;
     }
+
+    return { ...state, exchanges: exchanges };
+};
+
+
+reducerMap[OrderBookActions.LOG_OUT_FROM_EXCHANGE_RESULT] = (state: OrderBookState, action: Action<{ exchange: string, err: Error }>): OrderBookState => {
+    const exchanges = { ...state.exchanges };
+    const exchange: Exchange = _.find(exchanges, { name: action.payload.exchange });
+    if (!exchange) return state;
+
+    if (!action.payload.err) {
+        exchange.status = ExchangeStatus.RUNNING;
+    }
+    // else {
+    //     exchange.status = ExchangeStatus.RUNNING;
+    // }
 
     return { ...state, exchanges: exchanges };
 };

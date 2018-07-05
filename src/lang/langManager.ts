@@ -8,8 +8,8 @@ export function updateCurLang(langOption: SupportedLanguages) {
     cur_lang = require(`json-loader!lang/${langOption}.json`);
 }
 
-export function getLocalizedText(key: localizedKeys) {
-    const localizedStr = !!cur_lang[key] ? cur_lang[key] : key;
+export function getLocalizedText(key: localizedKeys, fallBack?: string) {
+    const localizedStr = !!cur_lang[key] ? cur_lang[key] : (fallBack || key);
     return localizedStr;
 }
 

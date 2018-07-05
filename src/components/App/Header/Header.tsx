@@ -89,6 +89,7 @@ export default class Header extends React.Component<HeaderProps, any> {
                     aria-label='More'
                     aria-owns={langMenu ? 'simple-menu' : null}
                     aria-haspopup='true'
+                    tooltip='Change Language'
                     onClick={this.handleClick}>
                     <img className={styles.langIco} src={require(`assets/icons/${this.props.currentLang}.ico`)} />
                 </IconButton>
