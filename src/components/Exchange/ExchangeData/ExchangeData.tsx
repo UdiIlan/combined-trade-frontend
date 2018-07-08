@@ -54,7 +54,7 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
                                 <span>{getLocalizedText('last')}</span>
                                 <span className={cx({ valuePos: lastPrice && lastPrice.price >= 0 }, { valueNeg: lastPrice && lastPrice.price < 0 })}>
                                     {lastPrice ?
-                                        `${lastPrice.price.toFixed(2)} ${new Date(lastPrice.time).toLocaleTimeString()}`
+                                        `${lastPrice.price.toFixed(2)} ${new Date(Number(lastPrice.time)).toLocaleTimeString()}`
                                         :
                                         naText
                                     }
