@@ -3,7 +3,7 @@
 .exchangeData {
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  height: 88%;
   flex: 1;
 
   .info {
@@ -24,63 +24,24 @@
       display: flex;
       justify-content: space-between;
 
-      .lastPricePos {
+      .valuePos {
         color: $green;
       }
 
-      .lastPriceNeg {
+      .valueNeg {
         color: $red;
       }
     }
   }
 
-  // .orderItem {
-  //   display: inline-block;
-  //   width: 25%;
-  //   cursor: context-menu;
-  // }
 
   .orderContainer {
-    height: 40%;
 
     .header {
-      padding: 20px 5px;
+      padding: 10px 5px;
       margin: 0px;
       border-bottom: 1px solid $borderColor;
     }
-
-    // .order {
-    //   border-bottom: 1px solid $borderColor;
-    //   padding: 5px;
-    //   height: 20px;
-    //   display: flex;
-    //   justify-content: space-around;
-    //   // animation: swing 0.5s linear;
-    //   animation: fadeIn 0.5s linear;
-    //   animation-fill-mode: both;
-
-    //   &:hover {
-    //     background: $listItemHoverBackground;
-    //   }
-
-    //   .orderSize {
-    //     @extend .orderItem;
-    //   }
-
-    //   .orderPrice {
-    //     @extend .orderItem;
-    //   }
-
-    //   .orderSource {
-    //     width: 25%;
-    //     align-self: flex-start;
-    //   }
-
-    //   .orderAt {
-    //     display: inline-block;
-    //     width: 10%;
-    //   }
-    // }
   }
 
   .asks {

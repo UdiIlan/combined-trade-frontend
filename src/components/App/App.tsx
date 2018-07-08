@@ -8,11 +8,13 @@ import Header from './Header';
 import { SupportedLanguages, getLocalizedText } from 'lang';
 import { SupportedCurrencies } from 'businessLogic/model';
 import { sesLanguage, setCurrency } from './redux/actions';
-import OrderBook from '../OrderBook';
+import OrderBook from 'components/OrderBook';
+import { default as Toast, ToastProps } from 'components/common/core/Toast';
 
 export interface AppProps {
     currentLang: SupportedLanguages;
     currentCurrency: SupportedCurrencies;
+    toast?: ToastProps;
     sesLanguage(newLang: SupportedLanguages);
     setCurrency(newCurrency: SupportedCurrencies);
 }
@@ -49,6 +51,8 @@ class App extends React.Component<AppProps, any> {
                         <OrderBook />
                     </div>
 
+                    {!!this.props.toast && <Toast intent={this.props.toast.intent} message={this.props.toast.message} open={true} />}
+
                     <footer>
                         {getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a>
                     </footer>
@@ -61,7 +65,8 @@ class App extends React.Component<AppProps, any> {
 const mapStateToProps = (state, ownProps) => {
     return {
         currentLang: _.get(state, 'app.language', 'en_us'),
-        currentCurrency: _.get(state, 'app.currency', 'BTC')
+        currentCurrency: _.get(state, 'app.currency', 'BTC'),
+        toast: _.get(state, 'app.toast', undefined)
     };
 };
 

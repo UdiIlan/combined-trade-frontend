@@ -4,6 +4,7 @@ import Icon from '@material-ui/core/Icon';
 import { default as MUIconButton } from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
+
 export interface IconButtonProps {
     disabled?: boolean;
     className?: string;
@@ -16,7 +17,7 @@ export interface IconButtonProps {
 export default function IconButton(props: IconButtonProps) {
     const { iconName, tooltip, ...btnProps } = props;
     const button =
-        <MUIconButton {...btnProps}>
+        <MUIconButton type='btn' {...btnProps}>
             {!!iconName && <Icon>
                 {props.iconName}
             </Icon>}

@@ -1,0 +1,39 @@
+@import '~styles/colors.scss';
+
+.toast {
+  .content {
+    .message {
+      display: flex;
+      align-items: center;
+
+      icon {
+        font-size: 1.1rem,
+      }
+
+      .iconVariant {
+        opacity: 0.9;
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .success {
+    @extend .content;
+    background-color: $green;
+  }
+
+  .error {
+    @extend .content;
+    background-color: $redError;
+  }
+
+  .info {
+    @extend .content;
+    background-color: $infoBackground;
+  }
+
+  .warning {
+    @extend .content;
+    background-color: $warningBackground;
+  }
+}

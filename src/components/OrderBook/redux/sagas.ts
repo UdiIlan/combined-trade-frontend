@@ -2,8 +2,9 @@
 import * as _ from 'lodash';
 import {
     OrderBookActions, setExchanges, serActiveOrderBooks, setSignInToExchangeResult,
-    setLogOutFromExchangeResult
+    setLogOutFromExchangeResult, getExchanges
 } from './actions';
+import { showToast } from 'components/App/redux/actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import {
     getExchangesSignedInInfo, getExchangesAccountBalance, getActiveOrderBook,
@@ -13,7 +14,7 @@ import {
 import { Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook } from 'businessLogic/model';
 
 const getSelectedCurrency = (state) => state.app.currency;
-const getExchanges = (state) => state.orderBook.exchanges;
+// const getExchanges = (state) => state.orderBook.exchanges;
 
 function* getExchangesAsync(action) {
     try {
@@ -84,8 +85,11 @@ function* signInToExchangeAsync(action) {
     const { exchange } = action.payload;
     try {
         const res = yield signInToExchange(action.payload);
-        if (res && res.set_credentials_status === 'True')
+        if (res && res.set_credentials_status === 'True') {
+            yield put(getExchanges());
             yield put(setSignInToExchangeResult(exchange, undefined));
+            yield put(showToast({intent: 'success', message: `Successfully connected to ${exchange}.`}));
+        }
         else
             yield put(setSignInToExchangeResult(exchange, new Error('Invalid credentials.')));
     }
@@ -99,7 +103,9 @@ function* logOutFromExchangeAsync(action) {
     const exchange = action.payload;
     try {
         const res = yield logOutFromExchange(exchange);
+        yield put(getExchanges());
         yield put(setLogOutFromExchangeResult(exchange, undefined));
+        yield put(showToast({intent: 'info', message: `Disconnected from ${exchange}.`}));
     }
     catch (err) {
         yield put(setLogOutFromExchangeResult(exchange, err));
