@@ -1,15 +1,17 @@
 @import '~styles/colors.scss';
 
 .exchange {
-    margin-right: 15px;
-    width: 15%;
-    min-width: 200px;
-    margin-bottom: 5px;
+  margin-right: 15px;
+  width: 15vw;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
-    .exchangeHeader {
-        padding: 5px;
-        border-bottom: 1px solid $borderColor;
-        background: $listHeaderBackground;
-        color: $whiteText;
-    }
+  .exchangeHeader {
+    padding: 5px;
+    border-bottom: 1px solid $borderColor;
+    background: $listHeaderBackground;
+    color: $whiteText;
+  }
 }

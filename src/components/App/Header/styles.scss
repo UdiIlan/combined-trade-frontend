@@ -23,19 +23,26 @@
     padding: 15px 10px;
   }
 
-  .currencyMenu {
+  .actions {
     flex: 1;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: flex-end;
     display: flex;
-    flex-direction: column;
-  }
 
-  .langMenu {
-    // flex: 1;
-    // align-items: flex-end;
-    // display: flex;
-    // flex-direction: column;
-    margin-left: 10px;
+    .buySellBtn {
+      margin-right: 20px;
+      width: 125px;
+      background-color: $whiteBackground;
+      font-weight: 600;
+
+      .buySellBtnIco {
+        margin-right: 5px;
+      }
+    }
+
+    .langMenu {
+      margin-left: 10px;
+    }
   }
 
   .whiteSelect {
@@ -47,7 +54,6 @@
   }
 
   .whiteInput {
-
     &::before {
       border-bottom-color: $whiteText;
     }

@@ -1,16 +1,21 @@
 @import '~styles/colors.scss';
 
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
 .exchangeData {
+  overflow: auto;
   display: flex;
   flex-direction: column;
-  height: 88%;
-  flex: 1;
 
   .info {
-    height: 20%;
+    height: 130px;
     padding: 0px 5px;
     border-bottom: 1px solid $borderColor;
-    padding-bottom: 5px;
 
     .spreadHeader {
       padding: 10px 0px;
@@ -34,9 +39,7 @@
     }
   }
 
-
   .orderContainer {
-
     .header {
       padding: 10px 5px;
       margin: 0px;
@@ -46,10 +49,6 @@
 
   .asks {
     @extend .orderContainer;
-  }
-
-  .info {
-    height: 20%;
   }
 
   .bids {

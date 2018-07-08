@@ -54,6 +54,7 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
                         status={status}
                         signedInUser={signedInUser}
                         name={name}
+                        hideActions={name === 'Unified'}
                         signInToExchange={() => this.setState({ openSignInDialog: true })}
                         logOutFromExchange={() => this.props.logOutFromExchange(this.props.exchange.name)/*  this.setState({ openLogOutDialog: true }) */} />
 

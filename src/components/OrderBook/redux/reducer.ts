@@ -29,7 +29,7 @@ reducerMap[OrderBookActions.SET_EXCHANGES] = (state: OrderBookState, action: Act
 
 reducerMap[OrderBookActions.SET_ACTIVE_ORDER_BOOKS] = (state: OrderBookState, action: Action<ExchangeOrderBook[]>): OrderBookState => {
     const orderBooks = action.payload;
-    const exchanges = { ...state.exchanges };
+    const exchanges = [ ...state.exchanges ];
     _.forEach(orderBooks, ob => {
         const exchange = _.find(exchanges, { name: ob.exchange });
         if (!exchange) return;
@@ -39,7 +39,7 @@ reducerMap[OrderBookActions.SET_ACTIVE_ORDER_BOOKS] = (state: OrderBookState, ac
 };
 
 reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE] = (state: OrderBookState, action: Action<AccountCredentials>): OrderBookState => {
-    const exchanges = { ...state.exchanges };
+    const exchanges = [ ...state.exchanges ];
     const exchange: Exchange = _.find(exchanges, { name: action.payload.exchange });
     if (!exchange) return state;
     exchange.status = ExchangeStatus.LOGGING_IN;
@@ -48,7 +48,7 @@ reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE] = (state: OrderBookState, actio
 };
 
 reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE_RESULT] = (state: OrderBookState, action: Action<{ exchange: string, err: Error }>): OrderBookState => {
-    const exchanges = { ...state.exchanges };
+    const exchanges = [...state.exchanges ];
     const exchange: Exchange = _.find(exchanges, { name: action.payload.exchange });
     if (!exchange) return state;
 
@@ -66,7 +66,7 @@ reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE_RESULT] = (state: OrderBookState
 
 
 reducerMap[OrderBookActions.LOG_OUT_FROM_EXCHANGE_RESULT] = (state: OrderBookState, action: Action<{ exchange: string, err: Error }>): OrderBookState => {
-    const exchanges = { ...state.exchanges };
+    const exchanges = [ ...state.exchanges ];
     const exchange: Exchange = _.find(exchanges, { name: action.payload.exchange });
     if (!exchange) return state;
 

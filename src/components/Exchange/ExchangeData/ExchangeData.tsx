@@ -6,6 +6,7 @@ const cx = classNames.bind(styles);
 import { ExchangeOrderBook, Order } from 'businessLogic/model';
 import { getLocalizedText } from 'lang';
 import OrderItem from './OrderItem';
+import Spinner from 'components/common/core/Spinner';
 
 export interface ExchangeDataProps {
     orderBook: ExchangeOrderBook;
@@ -21,7 +22,7 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
 
         const naText = getLocalizedText('not_available');
 
-        if (!this.props.orderBook) return naText;
+        if (!this.props.orderBook) return <div className={styles.loading}><Spinner size={20} /></div>;
 
         const { lastPrice, averageSpread, currentSpread } = this.props.orderBook;
         const isUnifiedEx = this.props.orderBook.exchange === 'Unified';

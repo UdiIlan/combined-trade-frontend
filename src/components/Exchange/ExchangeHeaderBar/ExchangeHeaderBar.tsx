@@ -9,6 +9,7 @@ export interface ExchangeHeaderBarProps {
     status: ExchangeStatus;
     signedInUser?: string;
     name: string;
+    hideActions?: boolean;
     signInToExchange();
     logOutFromExchange();
 }
@@ -31,22 +32,32 @@ export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBar
         const isUserLoggingIn = this.props.status === ExchangeStatus.LOGGING_IN;
         const isRunningButLoggedOut = this.props.status === ExchangeStatus.RUNNING;
 
+        const actions = [];
+        if (!this.props.hideActions) {
+
+            if (isExchangedStopped)
+                actions.push(<IconButton
+                    key='start' disabled tooltip='Start' aria-label='Play' iconName='play_circle_filled_white' onClick={(e) => alert('Start')} />);
+            else
+                actions.push(<IconButton key='stop' tooltip='Stop' aria-label='Stop' iconName='pause_circle_outline' onClick={(e) => alert('Stop')} />);
+
+
+            if (isExchangedStopped || isRunningButLoggedOut)
+                actions.push(<IconButton key='logIn' tooltip='Log In'
+                    onClick={(e) => this.props.signInToExchange()} disabled={isExchangedStopped} aria-label='log-in' iconName='vpn_key' />);
+            else
+                actions.push(<IconButton className={styles.logOut} key='logOut' tooltip={`${getLocalizedText('logout', 'Log Out')} - (${this.props.signedInUser})`}
+                    onClick={(e) => this.props.logOutFromExchange()} disabled={isUserLoggingIn} aria-label='log-out' iconName='exit_to_app' />);
+
+            actions.push(<IconButton key='remove' tooltip='Remove' aria-label='Remove' iconName='visibility_off' onClick={(e) => alert('Remove')} />);
+        }
+
         return (
             <div className={styles.exchangeActions}>
 
                 <h4 className={styles.headerText}>{this.props.name}</h4>
 
-                {isExchangedStopped ?
-                    <IconButton disabled tooltip='Start' aria-label='Play' iconName='play_circle_filled_white' onClick={(e) => alert('Hey')} />
-                    :
-                    <IconButton tooltip='Stop' aria-label='Stop' iconName='pause_circle_outline' onClick={(e) => alert('Hey')} />
-                }
-
-                {isExchangedStopped || isRunningButLoggedOut ?
-                    <IconButton tooltip='Log In' onClick={(e) => this.props.signInToExchange()} disabled={isExchangedStopped} aria-label='log-in' iconName='vpn_key' />
-                    :
-                    <IconButton tooltip={getLocalizedText('logout', 'Log Out')} onClick={(e) => this.props.logOutFromExchange()} disabled={isUserLoggingIn} aria-label='log-out' iconName='exit_to_app' />
-                }
+                {!this.props.hideActions && actions}
 
             </div>
         );

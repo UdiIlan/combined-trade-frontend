@@ -5,6 +5,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 const styles = require('./styles.scss');
@@ -49,33 +51,40 @@ export default class Header extends React.Component<HeaderProps, any> {
                 </h1>
 
 
-                {this.renderCurrencyMenu()}
+                <div className={styles.actions}>
 
-                {this.renderLanguageMenu()}
+                    <Button variant='extendedFab' aria-label='Buy or Cell' className={styles.buySellBtn}>
+                        <Icon  className={styles.buySellBtnIco}>
+                            compare_arrows
+                        </Icon>
+                        Trade
+                    </Button>
 
+                    {this.renderCurrencyMenu()}
 
+                    {this.renderLanguageMenu()}
+
+                </div>
             </header>
         );
     }
 
     private renderCurrencyMenu() {
         return (
-            <div className={styles.currencyMenu}>
-                <Select
-                    native
-                    value={this.props.currentCurrency}
-                    onChange={(e) => this.props.setCurrency(e.target.value as SupportedCurrencies)}
-                    classes={{
-                        root: styles.whiteSelect,
-                        select: styles.whiteSelect,
-                        icon: styles.whiteSelect,
-                    }}
-                    input={<Input classes={{ root: styles.whiteInput, underline: styles.whiteInput }} />}
-                >
-                    <option value='BTC'>{getLocalizedText('btc_usd_option')}</option>
-                    <option value='BCH'>{getLocalizedText('bch_usd_option')}</option>
-                </Select>
-            </div>
+            <Select
+                native
+                value={this.props.currentCurrency}
+                onChange={(e) => this.props.setCurrency(e.target.value as SupportedCurrencies)}
+                classes={{
+                    root: styles.whiteSelect,
+                    select: styles.whiteSelect,
+                    icon: styles.whiteSelect,
+                }}
+                input={<Input classes={{ root: styles.whiteInput, underline: styles.whiteInput }} />}
+            >
+                <option value='BTC'>{getLocalizedText('btc_usd_option')}</option>
+                <option value='BCH'>{getLocalizedText('bch_usd_option')}</option>
+            </Select>
         );
     }
 
