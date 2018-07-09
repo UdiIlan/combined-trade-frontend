@@ -1,15 +1,11 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import IconButton from 'components/common/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
+
 const styles = require('./styles.scss');
+import { Menu, MenuItem } from 'components/common/core/Menu';
+import Button from 'components/common/core/Button';
+import Select from 'components/common/core//Select';
+import IconButton from 'components/common/core/IconButton';
 import { getLocalizedText, SupportedLanguages } from 'lang';
 import { SupportedCurrencies } from 'businessLogic/model';
 
@@ -31,13 +27,13 @@ export default class Header extends React.Component<HeaderProps, any> {
         this.setState({ langMenu: event.currentTarget });
     }
 
-    handleClose = () => {
-        this.setState({ langMenu: null });
-    }
+    // handleClose = () => {
+    //     this.setState({ langMenu: null });
+    // }
 
     selectLang(lang: SupportedLanguages) {
         this.props.sesLanguage(lang);
-        this.handleClose();
+        this.setState({ langMenu: null });
     }
 
     render() {
@@ -53,12 +49,7 @@ export default class Header extends React.Component<HeaderProps, any> {
 
                 <div className={styles.actions}>
 
-                    <Button variant='extendedFab' aria-label='Buy or Cell' className={styles.buySellBtn}>
-                        <Icon  className={styles.buySellBtnIco}>
-                            compare_arrows
-                        </Icon>
-                        Trade
-                    </Button>
+                    <Button type='inline-floating' iconName='compare_arrows' aria-label='Buy or Cell' className={styles.buySellBtn}>Trade</Button>
 
                     {this.renderCurrencyMenu()}
 
@@ -72,16 +63,9 @@ export default class Header extends React.Component<HeaderProps, any> {
     private renderCurrencyMenu() {
         return (
             <Select
-                native
-                value={this.props.currentCurrency}
+                selectedValue={this.props.currentCurrency}
                 onChange={(e) => this.props.setCurrency(e.target.value as SupportedCurrencies)}
-                classes={{
-                    root: styles.whiteSelect,
-                    select: styles.whiteSelect,
-                    icon: styles.whiteSelect,
-                }}
-                input={<Input classes={{ root: styles.whiteInput, underline: styles.whiteInput }} />}
-            >
+                theme='white'>
                 <option value='BTC'>{getLocalizedText('btc_usd_option')}</option>
                 <option value='BCH'>{getLocalizedText('bch_usd_option')}</option>
             </Select>
@@ -104,26 +88,25 @@ export default class Header extends React.Component<HeaderProps, any> {
                 </IconButton>
                 <Menu
                     id='lang-menu'
-                    anchorEl={langMenu}
-                    open={Boolean(langMenu)}
-                    onClose={this.handleClose}>
-                    {this.renderLanguageOptions()}
-                </Menu>
+                    /* anchorEl={langMenu} */
+                    openTarget={langMenu}
+                    /* onClose={this.handleClose} */
+                    options={this.getLanguageOptions()} />
             </div>
         );
     }
 
-    renderLanguageOptions() {
-        return _.map([{ lang: 'en_us', displayName: 'English' }, { lang: 'zh_cn', displayName: '中文' }, { lang: 'he_il', displayName: 'עברית' }], (item, index) => {
-            return (
-                <MenuItem key={index} selected={this.props.currentLang === item.lang} onClick={() => this.selectLang(item.lang)}>
-                    <ListItemIcon>
-                        <img className={styles.langIco} src={require(`assets/icons/${item.lang}.ico`)} />
-                    </ListItemIcon >
-                    <ListItemText inset primary={item.displayName} />
-                </MenuItem>
-            );
+    getLanguageOptions() {
+        return _.map([{ lang: 'en_us', displayName: 'English' }, { lang: 'zh_cn', displayName: '中文' }, { lang: 'he_il', displayName: 'עברית' }], (item) => {
+            return {
+                displayText: item.displayName,
+                icoSrc: require(`assets/icons/${item.lang}.ico`),
+                icoStyle: styles.langIco,
+                onClick: () => this.selectLang(item.lang),
+                selected: this.props.currentLang === item.lang
+            } as MenuItem;
         });
     }
+
 
 }

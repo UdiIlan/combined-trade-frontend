@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import Card from '@material-ui/core/Card';
+import Card from 'components/common/containers/Card';
 const styles = require('./styles.scss');
 import { Exchange as IExchange, SupportedCurrencies, AccountCredentials, ExchangeStatus } from 'businessLogic/model';
 import ExchangeInfo from './ExchangeInfo';

@@ -34,36 +34,10 @@
       width: 125px;
       background-color: $whiteBackground;
       font-weight: 600;
-
-      .buySellBtnIco {
-        margin-right: 5px;
-      }
     }
 
     .langMenu {
       margin-left: 10px;
-    }
-  }
-
-  .whiteSelect {
-    color: $whiteText;
-
-    option {
-      color: $blackText;
-    }
-  }
-
-  .whiteInput {
-    &::before {
-      border-bottom-color: $whiteText;
-    }
-
-    &:hover {
-      border-bottom: 2px solid $whiteText;
-
-      &::before {
-        border-bottom: none !important;
-      }
     }
   }
 }

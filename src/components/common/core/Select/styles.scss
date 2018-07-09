@@ -1,0 +1,26 @@
+@import "~styles/colors.scss";
+
+.select {
+}
+
+.whiteSelect {
+    color: $whiteText !important;
+
+    option {
+      color: $blackText;
+    }
+  }
+
+  .whiteInput {
+    &::before {
+      border-bottom-color: $whiteText !important;
+    }
+
+    &:hover {
+      border-bottom: 2px solid $whiteText !important;
+
+      &::before {
+        border-bottom: none !important;
+      }
+    }
+  }

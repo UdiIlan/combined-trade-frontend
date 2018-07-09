@@ -8,9 +8,7 @@ import Spinner from 'components/common/core/Spinner';
 import { SupportedCurrencies, Exchange as IExchange, AccountCredentials } from 'businessLogic/model';
 import { getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange } from './redux/actions';
 import Exchange from 'components/Exchange';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import Divider from '@material-ui/core/Divider';
+import Button from 'components/common/core/Button';
 
 export interface OrderBookProps {
     currentCurrency: SupportedCurrencies;
@@ -58,11 +56,7 @@ class OrderBook extends React.Component<OrderBookProps, any> {
                 </div>
 
                 <div className={styles.addContainer}>
-                    <Button variant='fab' className={styles.addExhBtn} color={'primary'}>
-                        <Icon>
-                            add
-                    </Icon>
-                    </Button>
+                    <Button type='floating' className={styles.addExhBtn} iconName='add' intent='primary'/>
                 </div>
             </div>
         );
@@ -85,8 +79,7 @@ class OrderBook extends React.Component<OrderBookProps, any> {
                         signInToExchange={this.props.signInToExchange}
                         logOutFromExchange={this.props.logOutFromExchange}
                     />
-
-                    <Divider className={styles.divider} key='exchange-divider' />
+                    <div className={styles.divider} key='exchange-divider' />
                 </div>
                 <div className={styles.exchanges}>
                     {_.map(exchanges, (exchange: IExchange) =>

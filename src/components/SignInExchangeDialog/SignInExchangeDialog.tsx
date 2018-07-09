@@ -4,7 +4,7 @@ import { getLocalizedText } from 'lang';
 import Spinner from 'components/common/core/Spinner';
 import FormDialog from 'components/common/modals/FormDialog';
 import { AccountCredentials } from 'businessLogic/model';
-import InputText from 'components/common/core/InputText/InputText';
+import InputText from 'components/common/core/InputText';
 
 export interface SignInExchangeDialogProps {
     exchange: string;
