@@ -5,10 +5,11 @@ const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import Spinner from 'components/common/core/Spinner';
-import { SupportedCurrencies, Exchange as IExchange, AccountCredentials } from 'businessLogic/model';
+import { SupportedCurrencies, Exchange as IExchange, AccountCredentials, ExchangeStatus } from 'businessLogic/model';
 import { getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange, startExchange, stopExchange } from './redux/actions';
 import Exchange from 'components/Exchange';
 import Button from 'components/common/core/Button';
+import TradeActionDialog from 'components/TradeActionDialog';
 
 export interface OrderBookProps {
     currentCurrency: SupportedCurrencies;
@@ -22,11 +23,17 @@ export interface OrderBookProps {
     startExchange(exchange: string);
 }
 
-class OrderBook extends React.Component<OrderBookProps, any> {
+export interface OrderBookState {
+    openTradingDialog?: boolean;
+}
+
+class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
 
     constructor(props) {
         super(props);
+        this.state = {};
         this.renderExchange = this.renderExchange.bind(this);
+        this.trade = this.trade.bind(this);
     }
 
     private timerObj;
@@ -61,6 +68,12 @@ class OrderBook extends React.Component<OrderBookProps, any> {
                 <div className={styles.addContainer}>
                     <Button type='floating' className={styles.addExhBtn} iconName='add' intent='primary' />
                 </div>
+
+                {this.state.openTradingDialog &&
+                    <TradeActionDialog
+                        exchanges={_.map(_.filter(exchanges, (exchange: IExchange) => exchange.status === ExchangeStatus.LOGGED_IN), exchange => exchange.name)}
+                        onCancel={() => this.setState({ openTradingDialog: false })} />}
+
             </div>
         );
     }
@@ -99,6 +112,10 @@ class OrderBook extends React.Component<OrderBookProps, any> {
 
     }
 
+    trade() {
+        this.setState({ openTradingDialog: true });
+    }
+
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -120,4 +137,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderBook);
+export default connect(mapStateToProps, mapDispatchToProps, undefined, { withRef: true })(OrderBook);

@@ -26,6 +26,8 @@ class App extends React.Component<AppProps, any> {
         this.setNewCurrency = this.setNewCurrency.bind(this);
     }
 
+    private orderBook;
+
     componentWillMount() {
         this.props.sesLanguage(this.props.currentLang);
     }
@@ -44,11 +46,17 @@ class App extends React.Component<AppProps, any> {
                         currentLang={this.props.currentLang}
                         sesLanguage={this.props.sesLanguage}
                         setCurrency={this.setNewCurrency}
+                        trade={this.orderBook ? this.orderBook.trade : undefined}
                     />
 
                     <div className={styles.content}>
                         {this.props.children}
-                        <OrderBook />
+                        <OrderBook ref={(orderBook: any) => {
+                            if (!this.orderBook) {
+                                this.orderBook = orderBook.getWrappedInstance();
+                                this.forceUpdate();
+                            }
+                        }} />
                     </div>
 
                     {!!this.props.toast && <Toast intent={this.props.toast.intent} message={this.props.toast.message} open={true} />}

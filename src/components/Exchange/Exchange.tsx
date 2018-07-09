@@ -130,7 +130,6 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
         const { exchange, signInToExchange } = this.props;
         return (
             <SignInExchangeDialog
-                open={true}
                 exchange={exchange.name}
                 signInToExchange={signInToExchange}
                 onCancel={() => this.setState({ openSignInDialog: false })}

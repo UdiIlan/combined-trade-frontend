@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { default as MISelect } from '@material-ui/core/Select';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
@@ -9,13 +12,16 @@ export interface SelectProps {
     selectedValue?: any;
     className?: string;
     theme?: 'default' | 'white' | 'dark';
-    onChange?();
+    formControl?: boolean;
+    formHelperText?: string;
+    formLabelText?: string;
+    onChange?(e);
 }
 
-export default class Select extends React.Component<any, any> {
+export default class Select extends React.Component<SelectProps, any> {
 
     render() {
-        return (
+        const select = (
             <MISelect
                 native
                 className={cx(styles.select, this.props.className)}
@@ -32,6 +38,16 @@ export default class Select extends React.Component<any, any> {
             >
                 {this.props.children}
             </MISelect>
+        );
+
+        if (!this.props.formControl) return select;
+
+        return (
+            <FormControl>
+                {!!this.props.formLabelText && <InputLabel>{this.props.formLabelText}</InputLabel>}
+                {select}
+                {!!this.props.formHelperText && <FormHelperText>{this.props.formHelperText}</FormHelperText>}
+            </FormControl>
         );
     }
 

@@ -8,7 +8,6 @@ import InputText from 'components/common/core/InputText';
 
 export interface SignInExchangeDialogProps {
     exchange: string;
-    open?: boolean;
     loggingIn?: boolean;
     invalidLogin?: Error;
     signInToExchange(creds: AccountCredentials);
@@ -44,7 +43,7 @@ export default class SignInExchangeDialog extends React.Component<SignInExchange
 
         return (
             <Dialog
-                open={this.props.open}
+                open={true}
                 okBtnText='Login'
                 okBtnDisabled={!username || !key || !secret}
                 title={`Sign in to ${this.props.exchange}`}

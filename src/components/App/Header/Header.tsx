@@ -10,10 +10,11 @@ import { getLocalizedText, SupportedLanguages } from 'lang';
 import { SupportedCurrencies } from 'businessLogic/model';
 
 export interface HeaderProps {
-    sesLanguage(newLang: SupportedLanguages);
-    setCurrency(newCurrency: SupportedCurrencies);
     currentLang: SupportedLanguages;
     currentCurrency: SupportedCurrencies;
+    sesLanguage(newLang: SupportedLanguages);
+    setCurrency(newCurrency: SupportedCurrencies);
+    trade();
 }
 
 export default class Header extends React.Component<HeaderProps, any> {
@@ -26,10 +27,6 @@ export default class Header extends React.Component<HeaderProps, any> {
     handleClick = event => {
         this.setState({ langMenu: event.currentTarget });
     }
-
-    // handleClose = () => {
-    //     this.setState({ langMenu: null });
-    // }
 
     selectLang(lang: SupportedLanguages) {
         this.props.sesLanguage(lang);
@@ -49,7 +46,7 @@ export default class Header extends React.Component<HeaderProps, any> {
 
                 <div className={styles.actions}>
 
-                    <Button type='inline-floating' iconName='compare_arrows' aria-label='Buy or Cell' className={styles.buySellBtn}>Trade</Button>
+                    <Button onClick={this.props.trade} type='inline-floating' iconName='compare_arrows' aria-label='Buy or Cell' className={styles.buySellBtn}>Trade</Button>
 
                     {this.renderCurrencyMenu()}
 
@@ -88,9 +85,7 @@ export default class Header extends React.Component<HeaderProps, any> {
                 </IconButton>
                 <Menu
                     id='lang-menu'
-                    /* anchorEl={langMenu} */
                     openTarget={langMenu}
-                    /* onClose={this.handleClose} */
                     options={this.getLanguageOptions()} />
             </div>
         );
