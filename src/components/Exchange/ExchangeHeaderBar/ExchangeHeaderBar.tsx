@@ -12,6 +12,8 @@ export interface ExchangeHeaderBarProps {
     hideActions?: boolean;
     signInToExchange();
     logOutFromExchange();
+    stopExchange();
+    startExchange();
 }
 
 export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBarProps, any> {
@@ -37,9 +39,9 @@ export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBar
 
             if (isExchangedStopped)
                 actions.push(<IconButton
-                    key='start' disabled tooltip='Start' aria-label='Play' iconName='play_circle_filled_white' onClick={(e) => alert('Start')} />);
+                    key='start' tooltip='Start' aria-label='Play' iconName='play_circle_filled_white' onClick={(e) => this.props.startExchange()} />);
             else
-                actions.push(<IconButton key='stop' tooltip='Stop' aria-label='Stop' iconName='pause_circle_outline' onClick={(e) => alert('Stop')} />);
+                actions.push(<IconButton key='stop' tooltip='Stop' aria-label='Stop' iconName='pause_circle_outline' onClick={(e) => this.props.stopExchange()} />);
 
 
             if (isExchangedStopped || isRunningButLoggedOut)

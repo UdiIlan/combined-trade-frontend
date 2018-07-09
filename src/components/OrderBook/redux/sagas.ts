@@ -8,7 +8,7 @@ import { showToast } from 'components/App/redux/actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import {
     getExchangesSignedInInfo, getExchangesAccountBalance, getActiveOrderBook,
-    signInToExchange, logOutFromExchange
+    signInToExchange, logOutFromExchange, startExchange, stopExchange
 }
     from 'businessLogic/serverApi';
 import { Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook } from 'businessLogic/model';
@@ -88,7 +88,7 @@ function* signInToExchangeAsync(action) {
         if (res && res.set_credentials_status === 'True') {
             yield put(getExchanges());
             yield put(setSignInToExchangeResult(exchange, undefined));
-            yield put(showToast({intent: 'success', message: `Successfully connected to ${exchange}.`}));
+            yield put(showToast({ intent: 'success', message: `Successfully connected to ${exchange}.` }));
         }
         else
             yield put(setSignInToExchangeResult(exchange, new Error('Invalid credentials.')));
@@ -105,11 +105,47 @@ function* logOutFromExchangeAsync(action) {
         const res = yield logOutFromExchange(exchange);
         yield put(getExchanges());
         yield put(setLogOutFromExchangeResult(exchange, undefined));
-        yield put(showToast({intent: 'info', message: `Disconnected from ${exchange}.`}));
+        yield put(showToast({ intent: 'info', message: `Disconnected from ${exchange}.` }));
     }
     catch (err) {
         yield put(setLogOutFromExchangeResult(exchange, err));
         console.error('Failed to log-out from exchange: ', err);
+    }
+}
+
+function* startExchangeAsync(action) {
+    const exchange = action.payload;
+    try {
+        const res = yield startExchange(exchange);
+        if (res && res.start_result === 'True') {
+            yield put(getExchanges());
+            yield put(showToast({ intent: 'success', message: `${exchange} was successfully started.` }));
+        }
+        else {
+            yield put(showToast({ intent: 'error', message: `Failed to start ${exchange}.` }));
+        }
+    }
+    catch (err) {
+        console.error('Failed to start exchange: ', err);
+        yield put(showToast({ intent: 'error', message: `Failed to start ${exchange}.` }));
+    }
+}
+
+function* stopExchangeAsync(action) {
+    const exchange = action.payload;
+    try {
+        const res = yield stopExchange(exchange);
+        if (res && res.stop_result === 'True') {
+            yield put(getExchanges());
+            yield put(showToast({ intent: 'info', message: `${exchange} was stopped.` }));
+        }
+        else {
+            yield put(showToast({ intent: 'error', message: `Failed to stop ${exchange}.` }));
+        }
+    }
+    catch (err) {
+        console.error('Failed to stop exchange: ', err);
+        yield put(showToast({ intent: 'error', message: `Failed to stop ${exchange}.` }));
     }
 }
 
@@ -118,6 +154,8 @@ export function* OrderBookSagas() {
         takeEvery(OrderBookActions.GET_EXCHANGES, getExchangesAsync),
         takeEvery(OrderBookActions.GET_ACTIVE_ORDER_BOOKS, getActiveOrdersAsync),
         takeEvery(OrderBookActions.SIGN_IN_TO_EXCHANGE, signInToExchangeAsync),
-        takeEvery(OrderBookActions.LOG_OUT_FROM_EXCHANGE, logOutFromExchangeAsync)
+        takeEvery(OrderBookActions.LOG_OUT_FROM_EXCHANGE, logOutFromExchangeAsync),
+        takeEvery(OrderBookActions.START_EXCHANGE, startExchangeAsync),
+        takeEvery(OrderBookActions.STOP_EXCHANGE, stopExchangeAsync)
     ]);
 }

@@ -23,23 +23,27 @@ reducerMap[OrderBookActions.SET_EXCHANGES] = (state: OrderBookState, action: Act
     return { ...state, exchanges: action.payload, loading: false };
 };
 
-// reducerMap[OrderBookActions.GET_ACTIVE_ORDER_BOOKS] = (state: OrderBookState, action: Action<void>): OrderBookState => {
-//     return { ...state };
-// };
-
 reducerMap[OrderBookActions.SET_ACTIVE_ORDER_BOOKS] = (state: OrderBookState, action: Action<ExchangeOrderBook[]>): OrderBookState => {
     const orderBooks = action.payload;
-    const exchanges = [ ...state.exchanges ];
-    _.forEach(orderBooks, ob => {
-        const exchange = _.find(exchanges, { name: ob.exchange });
-        if (!exchange) return;
-        exchange.orderBook = ob;
+    const exchanges = [...state.exchanges];
+
+    _.forEach(exchanges, exchange => {
+        const ob = _.find(orderBooks, { exchange: exchange.name });
+        if (!ob)
+            exchange.status = ExchangeStatus.STOPPED;
+        else
+            exchange.orderBook = ob;
     });
+    // _.forEach(orderBooks, ob => {
+    //     const exchange = _.find(exchanges, { name: ob.exchange });
+    //     if (!exchange) return;
+    //     exchange.orderBook = ob;
+    // });
     return { ...state, exchanges: exchanges };
 };
 
 reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE] = (state: OrderBookState, action: Action<AccountCredentials>): OrderBookState => {
-    const exchanges = [ ...state.exchanges ];
+    const exchanges = [...state.exchanges];
     const exchange: Exchange = _.find(exchanges, { name: action.payload.exchange });
     if (!exchange) return state;
     exchange.status = ExchangeStatus.LOGGING_IN;
@@ -48,7 +52,7 @@ reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE] = (state: OrderBookState, actio
 };
 
 reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE_RESULT] = (state: OrderBookState, action: Action<{ exchange: string, err: Error }>): OrderBookState => {
-    const exchanges = [...state.exchanges ];
+    const exchanges = [...state.exchanges];
     const exchange: Exchange = _.find(exchanges, { name: action.payload.exchange });
     if (!exchange) return state;
 
@@ -66,17 +70,13 @@ reducerMap[OrderBookActions.SIGN_IN_TO_EXCHANGE_RESULT] = (state: OrderBookState
 
 
 reducerMap[OrderBookActions.LOG_OUT_FROM_EXCHANGE_RESULT] = (state: OrderBookState, action: Action<{ exchange: string, err: Error }>): OrderBookState => {
-    const exchanges = [ ...state.exchanges ];
+    const exchanges = [...state.exchanges];
     const exchange: Exchange = _.find(exchanges, { name: action.payload.exchange });
     if (!exchange) return state;
 
     if (!action.payload.err) {
         exchange.status = ExchangeStatus.RUNNING;
     }
-    // else {
-    //     exchange.status = ExchangeStatus.RUNNING;
-    // }
-
     return { ...state, exchanges: exchanges };
 };
 

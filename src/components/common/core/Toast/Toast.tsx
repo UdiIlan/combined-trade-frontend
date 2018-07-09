@@ -61,8 +61,8 @@ export default class Toast extends React.Component<ToastProps, ToastState> {
             <Snackbar
                 className={styles.toast}
                 anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
+                    vertical: 'top',
+                    horizontal: 'center',
                 }}
                 open={this.state.open}
                 autoHideDuration={this.props.autoCloseTime || DEFAULT_AUTO_HIDE_TIME}

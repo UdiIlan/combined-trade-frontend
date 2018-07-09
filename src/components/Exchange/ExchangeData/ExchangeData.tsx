@@ -10,6 +10,7 @@ import Spinner from 'components/common/core/Spinner';
 
 export interface ExchangeDataProps {
     orderBook: ExchangeOrderBook;
+    stopped?: boolean;
 }
 
 export default class ExchangeData extends React.Component<ExchangeDataProps, any> {
@@ -21,6 +22,9 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
     render() {
 
         const naText = getLocalizedText('not_available');
+
+
+        if (this.props.stopped) return <div className={cx(styles.exchangeData, { stopped: true })}>Stopped</div>;
 
         if (!this.props.orderBook) return <div className={styles.loading}><Spinner size={20} /></div>;
 

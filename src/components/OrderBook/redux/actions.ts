@@ -9,7 +9,9 @@ export const OrderBookActions = {
     SIGN_IN_TO_EXCHANGE: 'OrderBook/SIGN_IN_TO_EXCHANGE',
     SIGN_IN_TO_EXCHANGE_RESULT: 'OrderBook/SIGN_IN_TO_EXCHANGE_RESULT',
     LOG_OUT_FROM_EXCHANGE: 'OrderBook/LOG_OUT_FROM_EXCHANGE',
-    LOG_OUT_FROM_EXCHANGE_RESULT: 'OrderBook/LOG_OUT_FROM_EXCHANGE_RESULT'
+    LOG_OUT_FROM_EXCHANGE_RESULT: 'OrderBook/LOG_OUT_FROM_EXCHANGE_RESULT',
+    STOP_EXCHANGE: 'OrderBook/STOP_EXCHANGE',
+    START_EXCHANGE: 'OrderBook/START_EXCHANGE',
 };
 
 export const getExchanges = createAction(OrderBookActions.GET_EXCHANGES);
@@ -27,3 +29,7 @@ export const setSignInToExchangeResult = createAction(OrderBookActions.SIGN_IN_T
 export const logOutFromExchange = createAction(OrderBookActions.LOG_OUT_FROM_EXCHANGE, (exchange: string) => exchange);
 
 export const setLogOutFromExchangeResult = createAction(OrderBookActions.LOG_OUT_FROM_EXCHANGE_RESULT, (exchange: string, err: Error) => { return { exchange, err }; });
+
+export const startExchange = createAction(OrderBookActions.START_EXCHANGE, (exchange: string) => exchange);
+
+export const stopExchange = createAction(OrderBookActions.STOP_EXCHANGE, (exchange: string) => exchange);

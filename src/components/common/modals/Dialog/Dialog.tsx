@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
+import { default as MUDialog } from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -8,43 +8,42 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { getLocalizedText } from 'lang';
 const styles = require('./styles.scss');
 
-export interface FormDialogProps {
+export interface DialogProps {
     title: string;
-    subTitle?: string;
+    subTitle?: string | JSX.Element;
     open?: boolean;
     okBtnText?: string;
     okBtnDisabled?: boolean;
     cancelBtnText?: string;
-    children: any;
     onOkClick?();
     onCancelClick?();
 }
 
 
-export default class FormDialog extends React.Component<FormDialogProps, any> {
+export default class Dialog extends React.Component<DialogProps, any> {
 
-    constructor(props: FormDialogProps) {
+    constructor(props: DialogProps) {
         super(props);
         this.handleClose = this.handleClose.bind(this);
     }
 
 
     handleClose = (ok?) => {
-        if (ok && this.props.onOkClick) this.props.onOkClick();
+        if (ok === true && this.props.onOkClick) this.props.onOkClick();
         else if (this.props.onCancelClick) this.props.onCancelClick();
     }
 
     render() {
         return (
-            <div className={styles.formDialog}>
-                <Dialog
+                <MUDialog
                     open={this.props.open}
                     onClose={this.handleClose}
+                    classes={{ paper: styles.dialog }}
                     aria-labelledby='form-dialog-title'>
 
                     <DialogTitle id='form-dialog-title'>{this.props.title}</DialogTitle>
 
-                    <DialogContent>
+                    <DialogContent className={styles.content}>
                         {this.props.subTitle && <DialogContentText>
                             {this.props.subTitle}
                         </DialogContentText>}
@@ -60,10 +59,7 @@ export default class FormDialog extends React.Component<FormDialogProps, any> {
                             {this.props.okBtnText || getLocalizedText('ok')}
                         </Button>
                     </DialogActions>
-                </Dialog>
-            </div>
+                </MUDialog>
         );
     }
 }
-
-// export default withTheme()(FormDialog);

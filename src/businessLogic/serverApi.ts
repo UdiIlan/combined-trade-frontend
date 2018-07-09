@@ -33,3 +33,13 @@ export const logOutFromExchange = async (exchange: string): Promise<any> => {
     const res = await fetcher.get(`/Logout/${exchange}`);
     return textToJson(res);
 };
+
+export const stopExchange = async (exchange: string): Promise<any> => {
+    const res = await fetcher.get(`/StopOrderbook/${exchange}`);
+    return textToJson(res);
+};
+
+export const startExchange = async (exchange: string): Promise<any> => {
+    const res = await fetcher.get(`/StartOrderbook/${exchange}`);
+    return textToJson(res);
+};

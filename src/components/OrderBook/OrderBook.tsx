@@ -6,7 +6,7 @@ const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import Spinner from 'components/common/core/Spinner';
 import { SupportedCurrencies, Exchange as IExchange, AccountCredentials } from 'businessLogic/model';
-import { getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange } from './redux/actions';
+import { getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange, startExchange, stopExchange } from './redux/actions';
 import Exchange from 'components/Exchange';
 import Button from 'components/common/core/Button';
 
@@ -18,12 +18,15 @@ export interface OrderBookProps {
     getActiveOrderBooks();
     signInToExchange(creds: AccountCredentials);
     logOutFromExchange(exchange: string);
+    stopExchange(exchange: string);
+    startExchange(exchange: string);
 }
 
 class OrderBook extends React.Component<OrderBookProps, any> {
 
     constructor(props) {
         super(props);
+        this.renderExchange = this.renderExchange.bind(this);
     }
 
     private timerObj;
@@ -56,7 +59,7 @@ class OrderBook extends React.Component<OrderBookProps, any> {
                 </div>
 
                 <div className={styles.addContainer}>
-                    <Button type='floating' className={styles.addExhBtn} iconName='add' intent='primary'/>
+                    <Button type='floating' className={styles.addExhBtn} iconName='add' intent='primary' />
                 </div>
             </div>
         );
@@ -65,32 +68,34 @@ class OrderBook extends React.Component<OrderBookProps, any> {
     renderExchanges(exchanges: IExchange[]) {
 
         if (!exchanges) return;
+        exchanges = [...exchanges];
         const unifiedIndex = _.findIndex(exchanges, { name: 'Unified' });
         const unified = exchanges[unifiedIndex];
         exchanges.splice(unifiedIndex, 1);
 
-
         return (
             <div className={styles.exchangesMain}>
                 <div className={styles.unified}>
-                    <Exchange key={unified.name}
-                        selectedCurrency={this.props.currentCurrency}
-                        exchange={unified}
-                        signInToExchange={this.props.signInToExchange}
-                        logOutFromExchange={this.props.logOutFromExchange}
-                    />
+                    {this.renderExchange(unified)}
                     <div className={styles.divider} key='exchange-divider' />
                 </div>
                 <div className={styles.exchanges}>
-                    {_.map(exchanges, (exchange: IExchange) =>
-                        <Exchange key={exchange.name}
-                            selectedCurrency={this.props.currentCurrency}
-                            exchange={exchange}
-                            signInToExchange={this.props.signInToExchange}
-                            logOutFromExchange={this.props.logOutFromExchange}
-                        />)}
+                    {_.map(exchanges, this.renderExchange)}
                 </div>
             </div>);
+
+    }
+
+    renderExchange(exchange: IExchange) {
+        return (
+            <Exchange key={exchange.name}
+                selectedCurrency={this.props.currentCurrency}
+                exchange={exchange}
+                signInToExchange={this.props.signInToExchange}
+                logOutFromExchange={this.props.logOutFromExchange}
+                startExchange={this.props.startExchange}
+                stopExchange={this.props.stopExchange}
+            />);
 
     }
 
@@ -99,7 +104,7 @@ class OrderBook extends React.Component<OrderBookProps, any> {
 const mapStateToProps = (state, ownProps) => {
     return {
         currentCurrency: _.get(state, 'app.currency', 'BTC'),
-        exchanges: [..._.get(state, 'orderBook.exchanges', [])],
+        exchanges: _.get(state, 'orderBook.exchanges', []),
         loading: _.get(state, 'orderBook.loading', false)
     };
 };
@@ -109,7 +114,9 @@ const mapDispatchToProps = (dispatch) => {
         getExchanges: () => dispatch(getExchanges()),
         getActiveOrderBooks: () => dispatch(getActiveOrderBooks()),
         signInToExchange: (creds: AccountCredentials) => dispatch(signInToExchange(creds)),
-        logOutFromExchange: (exchange: string) => dispatch(logOutFromExchange(exchange))
+        logOutFromExchange: (exchange: string) => dispatch(logOutFromExchange(exchange)),
+        stopExchange: (exchange: string) => dispatch(stopExchange(exchange)),
+        startExchange: (exchange: string) => dispatch(startExchange(exchange)),
     };
 };
 

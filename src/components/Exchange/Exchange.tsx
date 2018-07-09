@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import Card from 'components/common/containers/Card';
+import { default as Dialog, DialogProps } from 'components/common/modals/Dialog';
 const styles = require('./styles.scss');
 import { Exchange as IExchange, SupportedCurrencies, AccountCredentials, ExchangeStatus } from 'businessLogic/model';
 import ExchangeInfo from './ExchangeInfo';
@@ -13,11 +14,13 @@ export interface ExchangeProps {
     selectedCurrency: SupportedCurrencies;
     signInToExchange(creds: AccountCredentials);
     logOutFromExchange(exchange: string);
+    stopExchange(exchange: string);
+    startExchange(exchange: string);
 }
 
 interface ExchangeState {
     openSignInDialog?: boolean;
-    openLogOutDialog?: boolean;
+    confirmDialog?: DialogProps;
 }
 
 export default class Exchange extends React.Component<ExchangeProps, ExchangeState> {
@@ -25,6 +28,10 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
     constructor(props: ExchangeProps) {
         super(props);
         this.state = { openSignInDialog: false };
+        this.logIn = this.logIn.bind(this);
+        this.logOut = this.logOut.bind(this);
+        this.stop = this.stop.bind(this);
+        this.start = this.start.bind(this);
     }
 
 
@@ -32,10 +39,51 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
         if (this.state.openSignInDialog && nextProps.exchange.status === ExchangeStatus.LOGGED_IN) {
             this.setState({ openSignInDialog: false });
         }
-        if (this.state.openLogOutDialog && nextProps.exchange.status !== ExchangeStatus.LOGGED_IN) {
-            this.setState({ openLogOutDialog: false });
+        if (!!this.state.confirmDialog && this.props.exchange.status === ExchangeStatus.LOGGED_IN && nextProps.exchange.status !== ExchangeStatus.LOGGED_IN) {
+            this.setState({ confirmDialog: undefined });
         }
     }
+
+    logIn() {
+        this.setState({ openSignInDialog: true });
+    }
+
+    logOut() {
+        const name = this.props.exchange.name;
+        this.setState({
+            confirmDialog:
+            {
+                title: `Log Out ${name}`,
+                subTitle: <div><span>{`You are about to log out from ${name}.`}</span><br /><span>Are you sure?</span></div>,
+                onOkClick: () => this.props.logOutFromExchange(name),
+                onCancelClick: () => this.closeConfirmationDialog(),
+                okBtnText: 'Log Out'
+            }
+        });
+    }
+
+    start() {
+        this.props.startExchange(this.props.exchange.name);
+    }
+
+    stop() {
+        const name = this.props.exchange.name;
+        this.setState({
+            confirmDialog:
+            {
+                title: `Stop ${name}`,
+                subTitle: <div><span>{`You are about to stop ${name}.`}</span><br /><span>Are you sure?</span></div>,
+                onOkClick: () => this.props.stopExchange(name),
+                onCancelClick: () => this.closeConfirmationDialog(),
+                okBtnText: 'Stop'
+            }
+        });
+    }
+
+    closeConfirmationDialog() {
+        this.setState({ confirmDialog: undefined });
+    }
+
 
 
     render() {
@@ -47,7 +95,7 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
 
         return (
 
-            < Card className={styles.exchange} >
+            <Card className={styles.exchange} >
 
                 <div className={styles.exchangeHeader}>
                     <ExchangeHeaderBar
@@ -55,8 +103,10 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
                         signedInUser={signedInUser}
                         name={name}
                         hideActions={name === 'Unified'}
-                        signInToExchange={() => this.setState({ openSignInDialog: true })}
-                        logOutFromExchange={() => this.props.logOutFromExchange(this.props.exchange.name)/*  this.setState({ openLogOutDialog: true }) */} />
+                        startExchange={this.start}
+                        stopExchange={this.stop}
+                        signInToExchange={this.logIn}
+                        logOutFromExchange={this.logOut} />
 
                     <ExchangeInfo
                         selectedCurrencyBalance={selectedCurrencyBalance}
@@ -66,9 +116,11 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
                     />
                 </div>
 
-                <ExchangeData orderBook={orderBook} />
+                <ExchangeData orderBook={orderBook} stopped={status === ExchangeStatus.STOPPED} />
 
                 {this.state.openSignInDialog && this.renderSignInDialog()}
+
+                {!!this.state.confirmDialog && this.renderConfirmDialog()}
 
             </Card >
         );
@@ -86,5 +138,9 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
                 loggingIn={exchange.status === ExchangeStatus.LOGGING_IN}
             />
         );
+    }
+
+    renderConfirmDialog() {
+        return <Dialog open={true} {...this.state.confirmDialog} />;
     }
 }

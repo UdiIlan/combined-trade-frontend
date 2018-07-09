@@ -2,7 +2,7 @@ import * as React from 'react';
 const styles = require('./styles.scss');
 import { getLocalizedText } from 'lang';
 import Spinner from 'components/common/core/Spinner';
-import FormDialog from 'components/common/modals/FormDialog';
+import Dialog from 'components/common/modals/Dialog';
 import { AccountCredentials } from 'businessLogic/model';
 import InputText from 'components/common/core/InputText';
 
@@ -43,7 +43,7 @@ export default class SignInExchangeDialog extends React.Component<SignInExchange
         const { username, key, secret } = this.state;
 
         return (
-            <FormDialog
+            <Dialog
                 open={this.props.open}
                 okBtnText='Login'
                 okBtnDisabled={!username || !key || !secret}
@@ -71,7 +71,7 @@ export default class SignInExchangeDialog extends React.Component<SignInExchange
 
                 </div>
 
-            </FormDialog>
+            </Dialog>
         );
     }
 
