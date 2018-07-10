@@ -13,12 +13,13 @@ export const history = createHashHistory();
 const sagaMiddleware = createSagaMiddleware();
 const middleware = applyMiddleware(routerMiddleware(history), sagaMiddleware);
 
-const persitingReducers = createFilter('app', ['language', 'currency']);
+const appReducer = createFilter('app', ['language', 'currency']);
+const orderBookReducer = createFilter('orderBook', ['removedExchanges']);
 const persistConfig = {
     key: 'app',
     storage: storage,
-    whitelist: ['app'],
-    transforms: [persitingReducers]
+    whitelist: ['app', 'orderBook'],
+    transforms: [appReducer, orderBookReducer]
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

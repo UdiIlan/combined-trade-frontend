@@ -16,6 +16,7 @@ export interface ExchangeProps {
     logOutFromExchange(exchange: string);
     stopExchange(exchange: string);
     startExchange(exchange: string);
+    removeExchange(exchange: string);
 }
 
 interface ExchangeState {
@@ -32,6 +33,7 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
         this.logOut = this.logOut.bind(this);
         this.stop = this.stop.bind(this);
         this.start = this.start.bind(this);
+        this.remove = this.remove.bind(this);
     }
 
 
@@ -54,7 +56,7 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
             confirmDialog:
             {
                 title: `Log Out ${name}`,
-                subTitle: <div><span>{`You are about to log out from ${name}.`}</span><br /><span>Are you sure?</span></div>,
+                subTitle: [<span key='row1'>{`You are about to log out from ${name}.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
                 onOkClick: () => this.props.logOutFromExchange(name),
                 onCancelClick: () => this.closeConfirmationDialog(),
                 okBtnText: 'Log Out'
@@ -72,13 +74,31 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
             confirmDialog:
             {
                 title: `Stop ${name}`,
-                subTitle: <div><span>{`You are about to stop ${name}.`}</span><br /><span>Are you sure?</span></div>,
+                subTitle: [<span key='row1'>{`You are about to stop ${name}.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
                 onOkClick: () => this.props.stopExchange(name),
                 onCancelClick: () => this.closeConfirmationDialog(),
                 okBtnText: 'Stop'
             }
         });
     }
+
+    remove() {
+        const name = this.props.exchange.name;
+        this.setState({
+            confirmDialog:
+            {
+                title: `Remove ${name}`,
+                subTitle: [<span key='row1'>{`You are about to remove and stop ${name}.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
+                onOkClick: () => {
+                    this.props.stopExchange(name);
+                    this.props.removeExchange(name);
+                },
+                onCancelClick: () => this.closeConfirmationDialog(),
+                okBtnText: 'Remove'
+            }
+        });
+    }
+
 
     closeConfirmationDialog() {
         this.setState({ confirmDialog: undefined });
@@ -106,7 +126,8 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
                         startExchange={this.start}
                         stopExchange={this.stop}
                         signInToExchange={this.logIn}
-                        logOutFromExchange={this.logOut} />
+                        logOutFromExchange={this.logOut}
+                        removeExchange={this.remove} />
 
                     <ExchangeInfo
                         selectedCurrencyBalance={selectedCurrencyBalance}

@@ -19,7 +19,8 @@ export enum ExchangeStatus {
     RUNNING,
     STOPPED,
     LOGGING_IN,
-    LOGGED_IN
+    LOGGED_IN,
+    REMOVED
 }
 
 export interface Exchange {

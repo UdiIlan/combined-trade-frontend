@@ -14,6 +14,7 @@ export interface ExchangeHeaderBarProps {
     logOutFromExchange();
     stopExchange();
     startExchange();
+    removeExchange();
 }
 
 export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBarProps, any> {
@@ -51,7 +52,7 @@ export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBar
                 actions.push(<IconButton className={styles.logOut} key='logOut' tooltip={`${getLocalizedText('logout', 'Log Out')} - (${this.props.signedInUser})`}
                     onClick={(e) => this.props.logOutFromExchange()} disabled={isUserLoggingIn} aria-label='log-out' iconName='exit_to_app' />);
 
-            actions.push(<IconButton key='remove' tooltip='Remove' aria-label='Remove' iconName='visibility_off' onClick={(e) => alert('Remove')} />);
+            actions.push(<IconButton key='remove' tooltip='Remove' aria-label='Remove' iconName='visibility_off' onClick={(e) => this.props.removeExchange()} />);
         }
 
         return (

@@ -6,11 +6,13 @@ import { Exchange, ExchangeOrderBook, AccountCredentials, ExchangeStatus } from 
 export interface OrderBookState {
     exchanges: Exchange[];
     loading?: boolean;
+    removedExchanges: string[];
 }
 
 const INITIAL_STATE: OrderBookState = {
     exchanges: [],
-    loading: true
+    loading: true,
+    removedExchanges: []
 };
 
 let reducerMap = {};
@@ -34,11 +36,6 @@ reducerMap[OrderBookActions.SET_ACTIVE_ORDER_BOOKS] = (state: OrderBookState, ac
         else
             exchange.orderBook = ob;
     });
-    // _.forEach(orderBooks, ob => {
-    //     const exchange = _.find(exchanges, { name: ob.exchange });
-    //     if (!exchange) return;
-    //     exchange.orderBook = ob;
-    // });
     return { ...state, exchanges: exchanges };
 };
 
@@ -78,6 +75,24 @@ reducerMap[OrderBookActions.LOG_OUT_FROM_EXCHANGE_RESULT] = (state: OrderBookSta
         exchange.status = ExchangeStatus.RUNNING;
     }
     return { ...state, exchanges: exchanges };
+};
+
+
+reducerMap[OrderBookActions.REMOVE_EXCHANGE] = (state: OrderBookState, action: Action<string>): OrderBookState => {
+    const removedExchanges = [...state.removedExchanges];
+    removedExchanges.push(action.payload);
+    return { ...state, removedExchanges: removedExchanges };
+};
+
+
+reducerMap[OrderBookActions.EXCHANGE_WAS_ADDED] = (state: OrderBookState, action: Action<string>): OrderBookState => {
+    const removedExchanges = [...state.removedExchanges];
+    const addExchangeIndex = removedExchanges.indexOf(action.payload);
+
+    if (addExchangeIndex < 0) return state;
+
+    removedExchanges.splice(addExchangeIndex, 1);
+    return { ...state, removedExchanges: removedExchanges };
 };
 
 export default handleActions<OrderBookState, any>(reducerMap, INITIAL_STATE);

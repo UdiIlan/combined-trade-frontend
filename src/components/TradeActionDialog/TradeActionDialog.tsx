@@ -61,7 +61,6 @@ export default class TradeActionDialog extends React.Component<TradeActionDialog
 
                     <Select formControl formLabelText='Exchange' onChange={(e) => this.setState({ exchange: e.target.value })}>
                         {_.map(exchanges, (exchange) => <option key={exchange} value={exchange}>{exchange}</option>)}
-                        {/* {_.map(([...this.props.exchanges].splice(0, 0, '')), (exchange) => <option key={exchange} value={exchange}>{exchange}</option>)} */}
                     </Select>
                 </div>
 

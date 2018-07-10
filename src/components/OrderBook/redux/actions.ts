@@ -12,6 +12,9 @@ export const OrderBookActions = {
     LOG_OUT_FROM_EXCHANGE_RESULT: 'OrderBook/LOG_OUT_FROM_EXCHANGE_RESULT',
     STOP_EXCHANGE: 'OrderBook/STOP_EXCHANGE',
     START_EXCHANGE: 'OrderBook/START_EXCHANGE',
+    REMOVE_EXCHANGE: 'OrderBook/REMOVE_EXCHANGE',
+    ADD_EXCHANGES: 'OrderBook/ADD_EXCHANGES',
+    EXCHANGE_WAS_ADDED: 'OrderBook/EXCHANGE_WAS_ADDED',
 };
 
 export const getExchanges = createAction(OrderBookActions.GET_EXCHANGES);
@@ -33,3 +36,9 @@ export const setLogOutFromExchangeResult = createAction(OrderBookActions.LOG_OUT
 export const startExchange = createAction(OrderBookActions.START_EXCHANGE, (exchange: string) => exchange);
 
 export const stopExchange = createAction(OrderBookActions.STOP_EXCHANGE, (exchange: string) => exchange);
+
+export const removeExchange = createAction(OrderBookActions.REMOVE_EXCHANGE, (exchange: string) => exchange);
+
+export const addExchanges = createAction(OrderBookActions.ADD_EXCHANGES, (newExchanges: string[]) => newExchanges);
+
+export const exchangeWasAdded = createAction(OrderBookActions.EXCHANGE_WAS_ADDED, (exchange: string) => exchange);

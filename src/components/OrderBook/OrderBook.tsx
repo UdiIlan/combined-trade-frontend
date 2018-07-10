@@ -6,14 +6,19 @@ const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import Spinner from 'components/common/core/Spinner';
 import { SupportedCurrencies, Exchange as IExchange, AccountCredentials, ExchangeStatus } from 'businessLogic/model';
-import { getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange, startExchange, stopExchange } from './redux/actions';
+import {
+    getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange,
+    startExchange, stopExchange, removeExchange, addExchanges
+} from './redux/actions';
 import Exchange from 'components/Exchange';
 import Button from 'components/common/core/Button';
 import TradeActionDialog from 'components/TradeActionDialog';
+import AddExchangeDialog from 'components/AddExchangeDialog';
 
 export interface OrderBookProps {
     currentCurrency: SupportedCurrencies;
     exchanges: IExchange[];
+    removedExchanges: string[];
     loading?: boolean;
     getExchanges();
     getActiveOrderBooks();
@@ -21,10 +26,13 @@ export interface OrderBookProps {
     logOutFromExchange(exchange: string);
     stopExchange(exchange: string);
     startExchange(exchange: string);
+    removeExchange(exchange: string);
+    addExchanges(newExchanges: string[]);
 }
 
 export interface OrderBookState {
     openTradingDialog?: boolean;
+    openAddExchangeDialog?: boolean;
 }
 
 class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
@@ -66,13 +74,23 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
                 </div>
 
                 <div className={styles.addContainer}>
-                    <Button type='floating' className={styles.addExhBtn} iconName='add' intent='primary' />
+                    <Button type='floating' className={styles.addExhBtn} iconName='add' intent='primary' onClick={() => this.setState({ openAddExchangeDialog: true })} />
                 </div>
 
                 {this.state.openTradingDialog &&
                     <TradeActionDialog
                         exchanges={_.map(_.filter(exchanges, (exchange: IExchange) => exchange.status === ExchangeStatus.LOGGED_IN), exchange => exchange.name)}
                         onCancel={() => this.setState({ openTradingDialog: false })} />}
+
+                {this.state.openAddExchangeDialog &&
+                    <AddExchangeDialog
+                        addExchanges={(newExchanges) => {
+                            this.setState({ openAddExchangeDialog: false });
+                            this.props.addExchanges(newExchanges);
+                        }
+                        }
+                        removedExchanges={this.props.removedExchanges}
+                        onCancel={() => this.setState({ openAddExchangeDialog: false })} />}
 
             </div>
         );
@@ -82,6 +100,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
 
         if (!exchanges) return;
         exchanges = [...exchanges];
+        exchanges = _.filter(exchanges, exchange => this.props.removedExchanges.indexOf(exchange.name) < 0);
         const unifiedIndex = _.findIndex(exchanges, { name: 'Unified' });
         const unified = exchanges[unifiedIndex];
         exchanges.splice(unifiedIndex, 1);
@@ -108,6 +127,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
                 logOutFromExchange={this.props.logOutFromExchange}
                 startExchange={this.props.startExchange}
                 stopExchange={this.props.stopExchange}
+                removeExchange={this.props.removeExchange}
             />);
 
     }
@@ -122,7 +142,8 @@ const mapStateToProps = (state, ownProps) => {
     return {
         currentCurrency: _.get(state, 'app.currency', 'BTC'),
         exchanges: _.get(state, 'orderBook.exchanges', []),
-        loading: _.get(state, 'orderBook.loading', false)
+        loading: _.get(state, 'orderBook.loading', false),
+        removedExchanges: _.get(state, 'orderBook.removedExchanges', []),
     };
 };
 
@@ -134,6 +155,8 @@ const mapDispatchToProps = (dispatch) => {
         logOutFromExchange: (exchange: string) => dispatch(logOutFromExchange(exchange)),
         stopExchange: (exchange: string) => dispatch(stopExchange(exchange)),
         startExchange: (exchange: string) => dispatch(startExchange(exchange)),
+        removeExchange: (exchange: string) => dispatch(removeExchange(exchange)),
+        addExchanges: (newExchanges: string[]) => dispatch(addExchanges(newExchanges)),
     };
 };
 

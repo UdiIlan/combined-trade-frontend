@@ -10,7 +10,7 @@ const styles = require('./styles.scss');
 
 export interface DialogProps {
     title: string;
-    subTitle?: string | JSX.Element;
+    subTitle?: string | JSX.Element | JSX.Element[];
     open?: boolean;
     okBtnText?: string;
     okBtnDisabled?: boolean;

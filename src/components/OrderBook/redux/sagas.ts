@@ -2,7 +2,7 @@
 import * as _ from 'lodash';
 import {
     OrderBookActions, setExchanges, serActiveOrderBooks, setSignInToExchangeResult,
-    setLogOutFromExchangeResult, getExchanges
+    setLogOutFromExchangeResult, getExchanges, exchangeWasAdded
 } from './actions';
 import { showToast } from 'components/App/redux/actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
@@ -14,7 +14,7 @@ import {
 import { Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook } from 'businessLogic/model';
 
 const getSelectedCurrency = (state) => state.app.currency;
-// const getExchanges = (state) => state.orderBook.exchanges;
+// const getCurrentExchanges = (state) => state.orderBook.exchanges;
 
 function* getExchangesAsync(action) {
     try {
@@ -25,6 +25,7 @@ function* getExchangesAsync(action) {
             const exchange = signedInInfo[key];
             const balance = accountBalance[key];
             const currencyBalances = balance && balance['balances'];
+
             return {
                 name: key,
                 status: exchange['is_user_signed_in'] === 'True' ? ExchangeStatus.LOGGED_IN : ExchangeStatus.RUNNING,
@@ -149,6 +150,34 @@ function* stopExchangeAsync(action) {
     }
 }
 
+function* addExchangesAsync(action) {
+    const newExchanges = action.payload;
+    const errs = [];
+    try {
+        for (let newExchange of newExchanges) {
+            const res = yield startExchange(newExchange);
+            if (res && res.start_result === 'True') {
+                yield (put(exchangeWasAdded(newExchange)));
+            }
+            else {
+                errs.push(`Failed to start ${newExchange}.`);
+            }
+        }
+    }
+    catch (err) {
+        console.error('Failed to add exchanges: ', err);
+    }
+
+    if (!_.isEmpty(errs)) {
+        yield put(showToast({ intent: 'error', message: `Failed to start ${errs.length} exchanges.` }));
+    }
+    else {
+        yield put(getExchanges());
+        yield put(showToast({ intent: 'success', message: `${newExchanges.length} were exchanges successfully addeed.` }));
+    }
+}
+
+
 export function* OrderBookSagas() {
     return yield all([
         takeEvery(OrderBookActions.GET_EXCHANGES, getExchangesAsync),
@@ -156,6 +185,7 @@ export function* OrderBookSagas() {
         takeEvery(OrderBookActions.SIGN_IN_TO_EXCHANGE, signInToExchangeAsync),
         takeEvery(OrderBookActions.LOG_OUT_FROM_EXCHANGE, logOutFromExchangeAsync),
         takeEvery(OrderBookActions.START_EXCHANGE, startExchangeAsync),
-        takeEvery(OrderBookActions.STOP_EXCHANGE, stopExchangeAsync)
+        takeEvery(OrderBookActions.STOP_EXCHANGE, stopExchangeAsync),
+        takeEvery(OrderBookActions.ADD_EXCHANGES, addExchangesAsync)
     ]);
 }
