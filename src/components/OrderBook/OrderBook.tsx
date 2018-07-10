@@ -5,10 +5,10 @@ const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import Spinner from 'components/common/core/Spinner';
-import { SupportedCurrencies, Exchange as IExchange, AccountCredentials, ExchangeStatus } from 'businessLogic/model';
+import { SupportedCurrencies, Exchange as IExchange, AccountCredentials, ExchangeStatus, OrderAction } from 'businessLogic/model';
 import {
     getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange,
-    startExchange, stopExchange, removeExchange, addExchanges
+    startExchange, stopExchange, removeExchange, addExchanges, sendOrderCommand
 } from './redux/actions';
 import Exchange from 'components/Exchange';
 import Button from 'components/common/core/Button';
@@ -28,6 +28,7 @@ export interface OrderBookProps {
     startExchange(exchange: string);
     removeExchange(exchange: string);
     addExchanges(newExchanges: string[]);
+    sendOrderCommand(command: OrderAction);
 }
 
 export interface OrderBookState {
@@ -62,7 +63,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
 
     render() {
 
-        const { loading, exchanges } = this.props;
+        const { loading, exchanges, currentCurrency, sendOrderCommand } = this.props;
 
         return (
             <div className={styles.orderBook}>
@@ -80,15 +81,19 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
                 {this.state.openTradingDialog &&
                     <TradeActionDialog
                         exchanges={_.map(_.filter(exchanges, (exchange: IExchange) => exchange.status === ExchangeStatus.LOGGED_IN), exchange => exchange.name)}
-                        onCancel={() => this.setState({ openTradingDialog: false })} />}
+                        onCancel={() => this.setState({ openTradingDialog: false })}
+                        sendNewOrderCommand={(command) => {
+                            this.setState({ openTradingDialog: false });
+                            sendOrderCommand(command);
+                        }}
+                        selectedCurrency={currentCurrency} />}
 
                 {this.state.openAddExchangeDialog &&
                     <AddExchangeDialog
                         addExchanges={(newExchanges) => {
                             this.setState({ openAddExchangeDialog: false });
                             this.props.addExchanges(newExchanges);
-                        }
-                        }
+                        }}
                         removedExchanges={this.props.removedExchanges}
                         onCancel={() => this.setState({ openAddExchangeDialog: false })} />}
 
@@ -157,6 +162,7 @@ const mapDispatchToProps = (dispatch) => {
         startExchange: (exchange: string) => dispatch(startExchange(exchange)),
         removeExchange: (exchange: string) => dispatch(removeExchange(exchange)),
         addExchanges: (newExchanges: string[]) => dispatch(addExchanges(newExchanges)),
+        sendOrderCommand: (command: OrderAction) => dispatch(sendOrderCommand(command)),
     };
 };
 

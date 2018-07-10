@@ -1,10 +1,12 @@
 /************************** Common ******************************************** */
 export type SupportedCurrencies = 'BTC' | 'BCH';
 
+export type SupportedFiatCurrencies = 'USD';
+
 
 /************************** Exchange ******************************************** */
 export interface ExchangeCoinBalance {
-    coin: SupportedCurrencies | 'USD';
+    coin: SupportedCurrencies | SupportedFiatCurrencies;
     amount: number;
     available: number;
     price?: number;
@@ -59,4 +61,17 @@ export interface ExchangeOrderBook {
     averageSpread?: number;
     currentSpread?: number;
     lastPrice?: { price: number, time: Date, type: 'sell' | 'buy' };
+}
+
+export type OrderActionType = 'buy' | 'sell' | 'timed-buy' | 'timed-sell' | 'buy-limit-making' | 'sell-limit-making';
+
+export interface OrderAction {
+    action_type: OrderActionType;
+    size_coin: number;
+    crypto_type: SupportedCurrencies;
+    price_fiat: number;
+    fiat_type: SupportedFiatCurrencies;
+    duration_sec: number;
+    max_order_size: number;
+    exchanges: string[];
 }

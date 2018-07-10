@@ -8,10 +8,10 @@ import { showToast } from 'components/App/redux/actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import {
     getExchangesSignedInInfo, getExchangesAccountBalance, getActiveOrderBook,
-    signInToExchange, logOutFromExchange, startExchange, stopExchange
+    signInToExchange, logOutFromExchange, startExchange, stopExchange, sendOrderCommand
 }
     from 'businessLogic/serverApi';
-import { Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook } from 'businessLogic/model';
+import { Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook, OrderAction } from 'businessLogic/model';
 
 const getSelectedCurrency = (state) => state.app.currency;
 // const getCurrentExchanges = (state) => state.orderBook.exchanges;
@@ -177,6 +177,21 @@ function* addExchangesAsync(action) {
     }
 }
 
+function* sendOrderCommandAsync(action) {
+    try {
+        const command: OrderAction = action.payload;
+        const res = yield sendOrderCommand(command);
+        yield put(showToast({
+            intent: 'success',
+            message: `Successfully sent new ${command.action_type} command for ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.`
+        }));
+    }
+    catch (err) {
+        console.error('Failed to send new order command: ', err);
+        yield put(showToast({ intent: 'error', message: 'Failed to send new order command.' }));
+    }
+}
+
 
 export function* OrderBookSagas() {
     return yield all([
@@ -186,6 +201,7 @@ export function* OrderBookSagas() {
         takeEvery(OrderBookActions.LOG_OUT_FROM_EXCHANGE, logOutFromExchangeAsync),
         takeEvery(OrderBookActions.START_EXCHANGE, startExchangeAsync),
         takeEvery(OrderBookActions.STOP_EXCHANGE, stopExchangeAsync),
-        takeEvery(OrderBookActions.ADD_EXCHANGES, addExchangesAsync)
+        takeEvery(OrderBookActions.ADD_EXCHANGES, addExchangesAsync),
+        takeEvery(OrderBookActions.SEND_ORDER_COMMAND, sendOrderCommandAsync),
     ]);
 }

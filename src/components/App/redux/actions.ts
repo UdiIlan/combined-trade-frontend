@@ -6,7 +6,8 @@ import { ToastProps } from 'components/common/core/Toast';
 export const AppActions = {
     SET_LANG: 'APP/SET_LANG',
     SET_CURRENCY: 'APP/SET_CURRENCY',
-    SHOW_TOAST: 'APP/SHOW_TOAST'
+    SHOW_TOAST: 'APP/SHOW_TOAST',
+    RESET_TOAST: 'APP/RESET_TOAST'
 };
 
 export const sesLanguage = createAction(AppActions.SET_LANG, (newLang: SupportedLanguages) => newLang);
@@ -14,3 +15,5 @@ export const sesLanguage = createAction(AppActions.SET_LANG, (newLang: Supported
 export const setCurrency = createAction(AppActions.SET_CURRENCY, (newCurrency: SupportedCurrencies) => newCurrency);
 
 export const showToast = createAction(AppActions.SHOW_TOAST, (toast: ToastProps) => toast);
+
+export const resetToast = createAction(AppActions.SHOW_TOAST, () => {});

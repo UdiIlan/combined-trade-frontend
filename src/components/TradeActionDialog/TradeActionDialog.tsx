@@ -5,16 +5,20 @@ import { getLocalizedText } from 'lang';
 import Dialog from 'components/common/modals/Dialog';
 import InputText from 'components/common/core/InputText';
 import Select from 'components/common/core/Select';
+import { OrderAction, OrderActionType, SupportedFiatCurrencies, SupportedCurrencies } from 'businessLogic/model';
 
 export interface TradeActionDialogProps {
     exchanges?: string[];
+    selectedCurrency: SupportedCurrencies;
+    sendNewOrderCommand(command: OrderAction);
     onCancel();
 }
 
 export interface TradeActionDialogState {
     size?: number;
     price?: number;
-    operation?: 'buy' | 'sell' | 'timed-buy' | 'timed-sell' | 'buy-limit-making' | 'sell-limit-making';
+    fiatCurrency?: SupportedFiatCurrencies;
+    operation?: OrderActionType;
     exchange?: string;
 }
 
@@ -27,10 +31,21 @@ export default class TradeActionDialog extends React.Component<TradeActionDialog
 
 
     private execute() {
+        const { size, price, operation, exchange } = this.state;
+        this.props.sendNewOrderCommand({
+            size_coin: size,
+            price_fiat: price,
+            crypto_type: this.props.selectedCurrency,
+            fiat_type: 'USD',
+            action_type: operation,
+            exchanges: [exchange],
+            duration_sec: 0,
+            max_order_size: 0
+        });
     }
 
     render() {
-        const { size, price, operation } = this.state;
+        const { size, price, operation, exchange } = this.state;
         const exchanges = [...this.props.exchanges];
         exchanges.splice(0, 0, '');
 
@@ -38,7 +53,7 @@ export default class TradeActionDialog extends React.Component<TradeActionDialog
             <Dialog
                 open={true}
                 okBtnText='Execute'
-                okBtnDisabled={!size || !price || !operation}
+                okBtnDisabled={!size || !price || !operation || !exchange}
                 title={'New Trading Action'}
                 onOkClick={() => this.execute()}
                 onCancelClick={this.props.onCancel}
@@ -49,7 +64,7 @@ export default class TradeActionDialog extends React.Component<TradeActionDialog
 
                     <InputText onChange={(e) => this.setState({ price: e.target.value })} label={getLocalizedText('price')} name='price' type='number' />
 
-                    <Select formControl formLabelText='Trade Option'>
+                    <Select formControl formLabelText='Trade Option' onChange={e => this.setState({ operation: e.target.value })}>
                         <option value='' />
                         <option value='buy'>{getLocalizedText('buy')}</option>
                         <option value='sell'>{getLocalizedText('sell')}</option>

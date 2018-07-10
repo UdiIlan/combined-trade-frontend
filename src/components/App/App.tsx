@@ -7,7 +7,7 @@ const styles = require('./styles.scss');
 import Header from './Header';
 import { SupportedLanguages, getLocalizedText } from 'lang';
 import { SupportedCurrencies } from 'businessLogic/model';
-import { sesLanguage, setCurrency } from './redux/actions';
+import { sesLanguage, setCurrency, resetToast } from './redux/actions';
 import OrderBook from 'components/OrderBook';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
 
@@ -17,12 +17,18 @@ export interface AppProps {
     toast?: ToastProps;
     sesLanguage(newLang: SupportedLanguages);
     setCurrency(newCurrency: SupportedCurrencies);
+    resetToast();
 }
 
-class App extends React.Component<AppProps, any> {
+export interface AppState {
+    toast?: ToastProps;
+}
+
+class App extends React.Component<AppProps, AppState> {
 
     constructor(props) {
         super(props);
+        this.state = { toast: props.toast };
         this.setNewCurrency = this.setNewCurrency.bind(this);
     }
 
@@ -30,6 +36,12 @@ class App extends React.Component<AppProps, any> {
 
     componentWillMount() {
         this.props.sesLanguage(this.props.currentLang);
+    }
+
+    componentWillReceiveProps(nextProps: AppProps) {
+        if (!!nextProps.toast && !_.isEqual(this.state.toast, nextProps.toast)) {
+            this.setState({ toast: nextProps.toast }, () => nextProps.resetToast());
+        }
     }
 
     setNewCurrency(newCurrency: SupportedCurrencies) {
@@ -59,7 +71,7 @@ class App extends React.Component<AppProps, any> {
                         }} />
                     </div>
 
-                    {!!this.props.toast && <Toast intent={this.props.toast.intent} message={this.props.toast.message} open={true} />}
+                    {!!this.state.toast && <Toast intent={this.state.toast.intent} message={this.state.toast.message} open={true} />}
 
                     <footer>
                         {getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a>
@@ -81,7 +93,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         sesLanguage: (newLang: SupportedLanguages) => dispatch(sesLanguage(newLang)),
-        setCurrency: (newCurrency: SupportedCurrencies) => dispatch(setCurrency(newCurrency))
+        setCurrency: (newCurrency: SupportedCurrencies) => dispatch(setCurrency(newCurrency)),
+        resetToast: () => dispatch(resetToast())
     };
 };
 

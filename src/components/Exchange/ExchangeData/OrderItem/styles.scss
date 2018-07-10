@@ -7,6 +7,8 @@
   display: flex;
   justify-content: space-around;
   animation: swing 0.5s linear;
+  // animation: fadeIn 0.5s linear;
+  // animation-fill-mode: both;
 
   &:hover {
     background: $listItemHoverBackground;
@@ -44,7 +46,7 @@ $total-items: 8;
 // Set delay per List Item
 @for $i from 1 through $total-items {
   .order:nth-child(#{$i}) {
-    animation-delay: .10s * $i;
+    animation-delay: .1s * $i;
   }
 }
 
@@ -64,3 +66,37 @@ $total-items: 8;
     transform: rotateY(0deg);
   }
 }
+
+// Keyframe animation
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+    top: 100px;
+  }
+
+  75% {
+    opacity: 0.5;
+    top: 0px;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+// Keyframe animation
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+      top: 100px;
+    }
+  
+    75% {
+      opacity: 0.5;
+      top: 0px;
+    }
+  
+    100% {
+      opacity: 1;
+    }
+  }

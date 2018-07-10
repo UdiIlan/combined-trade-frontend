@@ -1,6 +1,6 @@
 const config = require('config');
 import { Fetcher } from 'rest-fetcher';
-import { AccountCredentials } from './model';
+import { AccountCredentials, OrderAction } from './model';
 
 const fetcher = new Fetcher(config.baseUrl);
 
@@ -41,5 +41,10 @@ export const stopExchange = async (exchange: string): Promise<any> => {
 
 export const startExchange = async (exchange: string): Promise<any> => {
     const res = await fetcher.get(`/StartOrderbook/${exchange}`);
+    return textToJson(res);
+};
+
+export const sendOrderCommand = async (order: OrderAction): Promise<any> => {
+    const res = await fetcher.post('/SendOrder', order);
     return textToJson(res);
 };

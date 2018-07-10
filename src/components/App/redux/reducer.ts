@@ -29,4 +29,9 @@ reducerMap[AppActions.SHOW_TOAST] = (state: AppState, action: Action<ToastProps>
     return { ...state, toast: { ...action.payload, open: true } };
 };
 
+reducerMap[AppActions.RESET_TOAST] = (state: AppState, action: Action<void>): AppState => {
+    return { ...state, toast: undefined };
+};
+
+
 export default handleActions<AppState, any>(reducerMap, INITIAL_STATE);

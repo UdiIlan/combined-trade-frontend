@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { Exchange, ExchangeOrderBook, AccountCredentials } from 'businessLogic/model';
+import { Exchange, ExchangeOrderBook, AccountCredentials, OrderAction } from 'businessLogic/model';
 
 export const OrderBookActions = {
     GET_EXCHANGES: 'OrderBook/GET_EXCHANGES',
@@ -15,6 +15,7 @@ export const OrderBookActions = {
     REMOVE_EXCHANGE: 'OrderBook/REMOVE_EXCHANGE',
     ADD_EXCHANGES: 'OrderBook/ADD_EXCHANGES',
     EXCHANGE_WAS_ADDED: 'OrderBook/EXCHANGE_WAS_ADDED',
+    SEND_ORDER_COMMAND: 'OrderBook/SEND_ORDER_COMMAND'
 };
 
 export const getExchanges = createAction(OrderBookActions.GET_EXCHANGES);
@@ -42,3 +43,5 @@ export const removeExchange = createAction(OrderBookActions.REMOVE_EXCHANGE, (ex
 export const addExchanges = createAction(OrderBookActions.ADD_EXCHANGES, (newExchanges: string[]) => newExchanges);
 
 export const exchangeWasAdded = createAction(OrderBookActions.EXCHANGE_WAS_ADDED, (exchange: string) => exchange);
+
+export const sendOrderCommand = createAction(OrderBookActions.SEND_ORDER_COMMAND, (command: OrderAction) => command);
