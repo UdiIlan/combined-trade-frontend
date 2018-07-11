@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import Card from 'components/common/containers/Card';
 import { default as Dialog, DialogProps } from 'components/common/modals/Dialog';
 const styles = require('./styles.scss');
-import { Exchange as IExchange, SupportedCurrencies, AccountCredentials, ExchangeStatus } from 'businessLogic/model';
+import { Exchange as IExchange, SupportedCurrencies, AccountCredentials, ExchangeStatus, UNIFIED_EXCHANGE_KEY } from 'businessLogic/model';
 import ExchangeInfo from './ExchangeInfo';
 import ExchangeData from './ExchangeData';
 import ExchangeHeaderBar from './ExchangeHeaderBar';
@@ -82,19 +82,19 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
         });
     }
 
-    remove() {
+    remove(stop?: boolean) {
         const name = this.props.exchange.name;
         this.setState({
             confirmDialog:
             {
-                title: `Remove ${name}`,
-                subTitle: [<span key='row1'>{`You are about to remove and stop ${name}.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
+                title: `${stop ? 'Remove' : 'Hide'} ${name}`,
+                subTitle: [<span key='row1'>{`You are about to ${stop ? 'remove and stop' : 'hide'} ${name}.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
                 onOkClick: () => {
-                    this.props.stopExchange(name);
+                    if (stop) this.props.stopExchange(name);
                     this.props.removeExchange(name);
                 },
                 onCancelClick: () => this.closeConfirmationDialog(),
-                okBtnText: 'Remove'
+                okBtnText: stop ? 'Remove' : 'Hide'
             }
         });
     }
@@ -122,7 +122,7 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
                         status={status}
                         signedInUser={signedInUser}
                         name={name}
-                        hideActions={name === 'Unified'}
+                        hideActions={name === UNIFIED_EXCHANGE_KEY}
                         startExchange={this.start}
                         stopExchange={this.stop}
                         signInToExchange={this.logIn}

@@ -3,6 +3,8 @@ export type SupportedCurrencies = 'BTC' | 'BCH';
 
 export type SupportedFiatCurrencies = 'USD';
 
+export const UNIFIED_EXCHANGE_KEY = 'Unified';
+
 
 /************************** Exchange ******************************************** */
 export interface ExchangeCoinBalance {

@@ -62,7 +62,7 @@ class App extends React.Component<AppProps, AppState> {
                             currentLang={this.props.currentLang}
                             sesLanguage={this.props.sesLanguage}
                             setCurrency={this.setNewCurrency}
-                            trade={this.orderBook ? this.orderBook.trade : undefined}
+                            manageExchanges={this.orderBook ? this.orderBook.manageExchanges : undefined}
                         />
 
                         <div className={styles.content}>

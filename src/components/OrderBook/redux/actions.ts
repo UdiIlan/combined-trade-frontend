@@ -38,10 +38,14 @@ export const startExchange = createAction(OrderBookActions.START_EXCHANGE, (exch
 
 export const stopExchange = createAction(OrderBookActions.STOP_EXCHANGE, (exchange: string) => exchange);
 
+/************************ TO-DO: Change to manage exchanges  ********************** */
+
 export const removeExchange = createAction(OrderBookActions.REMOVE_EXCHANGE, (exchange: string) => exchange);
 
 export const addExchanges = createAction(OrderBookActions.ADD_EXCHANGES, (newExchanges: string[]) => newExchanges);
 
 export const exchangeWasAdded = createAction(OrderBookActions.EXCHANGE_WAS_ADDED, (exchange: string) => exchange);
+
+/************************************************************************************ */
 
 export const sendOrderCommand = createAction(OrderBookActions.SEND_ORDER_COMMAND, (command: OrderAction) => command);

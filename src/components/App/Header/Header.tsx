@@ -14,7 +14,7 @@ export interface HeaderProps {
     currentCurrency: SupportedCurrencies;
     sesLanguage(newLang: SupportedLanguages);
     setCurrency(newCurrency: SupportedCurrencies);
-    trade();
+    manageExchanges();
 }
 
 export interface HeaderState {
@@ -54,7 +54,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
 
                 <div className={styles.actions}>
 
-                    <Button onClick={this.props.trade} type='inline-floating' iconName='compare_arrows' aria-label='Buy or Cell' className={styles.buySellBtn}>Trade</Button>
+                    <Button onClick={this.props.manageExchanges} type='inline-floating' iconName='ballot' aria-label='Choose Exchanges' className={styles.buySellBtn}>Choose Exchanges</Button>
 
                     {this.renderCurrencyMenu()}
 

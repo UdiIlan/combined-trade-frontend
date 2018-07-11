@@ -14,7 +14,7 @@ export interface ExchangeHeaderBarProps {
     logOutFromExchange();
     stopExchange();
     startExchange();
-    removeExchange();
+    removeExchange(stop?: boolean);
 }
 
 export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBarProps, any> {
@@ -38,11 +38,11 @@ export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBar
         const actions = [];
         if (!this.props.hideActions) {
 
-            if (isExchangedStopped)
-                actions.push(<IconButton
-                    key='start' tooltip='Start' aria-label='Play' iconName='play_circle_filled_white' onClick={(e) => this.props.startExchange()} />);
-            else
-                actions.push(<IconButton key='stop' tooltip='Stop' aria-label='Stop' iconName='pause_circle_outline' onClick={(e) => this.props.stopExchange()} />);
+            // if (isExchangedStopped)
+            //     actions.push(<IconButton
+            //         key='start' tooltip='Start' aria-label='Play' iconName='play_circle_filled_white' onClick={(e) => this.props.startExchange()} />);
+            // else
+
 
 
             if (isExchangedStopped || isRunningButLoggedOut)
@@ -52,7 +52,9 @@ export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBar
                 actions.push(<IconButton className={styles.logOut} key='logOut' tooltip={`${getLocalizedText('logout', 'Log Out')} - (${this.props.signedInUser})`}
                     onClick={(e) => this.props.logOutFromExchange()} disabled={isUserLoggingIn} aria-label='log-out' iconName='exit_to_app' />);
 
-            actions.push(<IconButton key='remove' tooltip='Remove' aria-label='Remove' iconName='visibility_off' onClick={(e) => this.props.removeExchange()} />);
+            actions.push(<IconButton key='hide' tooltip='Hide' aria-label='Hide' iconName='visibility_off' onClick={(e) => this.props.removeExchange()} />);
+
+            actions.push(<IconButton key='remove' tooltip='Remove' aria-label='Remove' iconName='cancel' onClick={(e) => this.props.removeExchange(true)} />);
         }
 
         return (

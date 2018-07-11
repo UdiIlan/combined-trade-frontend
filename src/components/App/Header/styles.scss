@@ -36,7 +36,7 @@
 
     .buySellBtn {
       margin-right: 20px;
-      width: 125px;
+      // width: 125px;
       font-weight: 600;
       @include themify($themes) {
         background-color: themed('whiteBackground');

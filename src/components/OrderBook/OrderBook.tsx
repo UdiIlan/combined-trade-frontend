@@ -5,7 +5,10 @@ const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import Spinner from 'components/common/core/Spinner';
-import { SupportedCurrencies, Exchange as IExchange, AccountCredentials, ExchangeStatus, OrderAction } from 'businessLogic/model';
+import {
+    SupportedCurrencies, Exchange as IExchange, AccountCredentials,
+    UNIFIED_EXCHANGE_KEY, ExchangeStatus, OrderAction
+} from 'businessLogic/model';
 import {
     getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange,
     startExchange, stopExchange, removeExchange, addExchanges, sendOrderCommand
@@ -13,12 +16,12 @@ import {
 import Exchange from 'components/Exchange';
 import Button from 'components/common/core/Button';
 import TradeActionDialog from 'components/TradeActionDialog';
-import AddExchangeDialog from 'components/AddExchangeDialog';
+import ManageExchangeDialog from 'components/ManageExchangeDialog';
 
 export interface OrderBookProps {
     currentCurrency: SupportedCurrencies;
     exchanges: IExchange[];
-    removedExchanges: string[];
+    exchangesStatus: {};
     loading?: boolean;
     getExchanges();
     getActiveOrderBooks();
@@ -42,7 +45,8 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
         super(props);
         this.state = {};
         this.renderExchange = this.renderExchange.bind(this);
-        this.trade = this.trade.bind(this);
+        // this.trade = this.trade.bind(this);
+        this.manageExchanges = this.manageExchanges.bind(this);
     }
 
     private timerObj;
@@ -78,9 +82,9 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
                         this.renderExchanges(exchanges)}
                 </div>
 
-                <div className={styles.addContainer}>
+                {/* <div className={styles.addContainer}>
                     <Button type='floating' className={styles.addExhBtn} iconName='add' intent='primary' onClick={() => this.setState({ openAddExchangeDialog: true })} />
-                </div>
+                </div> */}
 
                 {this.state.openTradingDialog &&
                     <TradeActionDialog
@@ -93,12 +97,12 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
                         selectedCurrency={currentCurrency} />}
 
                 {this.state.openAddExchangeDialog &&
-                    <AddExchangeDialog
+                    <ManageExchangeDialog
                         addExchanges={(newExchanges) => {
                             this.setState({ openAddExchangeDialog: false });
                             this.props.addExchanges(newExchanges);
                         }}
-                        removedExchanges={this.props.removedExchanges}
+                        exchangesStatus={this.props.exchangesStatus}
                         onCancel={() => this.setState({ openAddExchangeDialog: false })} />}
 
             </div>
@@ -109,8 +113,8 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
 
         if (!exchanges) return;
         exchanges = [...exchanges];
-        exchanges = _.filter(exchanges, exchange => this.props.removedExchanges.indexOf(exchange.name) < 0);
-        const unifiedIndex = _.findIndex(exchanges, { name: 'Unified' });
+        exchanges = _.filter(exchanges, exchange => this.props.exchangesStatus[exchange.name]);
+        const unifiedIndex = _.findIndex(exchanges, { name: UNIFIED_EXCHANGE_KEY });
         const unified = exchanges[unifiedIndex];
         exchanges.splice(unifiedIndex, 1);
 
@@ -141,8 +145,12 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
 
     }
 
-    trade() {
-        this.setState({ openTradingDialog: true });
+    // trade() {
+    //     this.setState({ openTradingDialog: true });
+    // }
+
+    manageExchanges() {
+        this.setState({ openAddExchangeDialog: true });
     }
 
 }
@@ -152,7 +160,7 @@ const mapStateToProps = (state, ownProps) => {
         currentCurrency: _.get(state, 'app.currency', 'BTC'),
         exchanges: _.get(state, 'orderBook.exchanges', []),
         loading: _.get(state, 'orderBook.loading', false),
-        removedExchanges: _.get(state, 'orderBook.removedExchanges', []),
+        exchangesStatus: _.get(state, 'orderBook.exchangesStatus', {}),
     };
 };
 

@@ -14,7 +14,7 @@ const sagaMiddleware = createSagaMiddleware();
 const middleware = applyMiddleware(routerMiddleware(history), sagaMiddleware);
 
 const appReducer = createFilter('app', ['language', 'currency']);
-const orderBookReducer = createFilter('orderBook', ['removedExchanges']);
+const orderBookReducer = createFilter('orderBook', ['exchangesStatus']);
 const persistConfig = {
     key: 'app',
     storage: storage,

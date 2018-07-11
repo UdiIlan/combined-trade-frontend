@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
-import { ExchangeOrderBook, Order } from 'businessLogic/model';
+import { ExchangeOrderBook, Order, UNIFIED_EXCHANGE_KEY } from 'businessLogic/model';
 import { getLocalizedText } from 'lang';
 import OrderItem from './OrderItem';
 import Spinner from 'components/common/core/Spinner';
@@ -29,7 +29,7 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
         if (!this.props.orderBook) return <div className={styles.loading}><Spinner size={20} /></div>;
 
         const { lastPrice, averageSpread, currentSpread } = this.props.orderBook;
-        const isUnifiedEx = this.props.orderBook.exchange === 'Unified';
+        const isUnifiedEx = this.props.orderBook.exchange === UNIFIED_EXCHANGE_KEY;
 
         return (
             <div className={styles.exchangeDataScrollContainer}>
@@ -82,7 +82,7 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
             <div className={styles[type]}>
                 <h4 className={styles.header}>{`${this.props.orderBook.exchange} ${getLocalizedText(type)}`}</h4>
                 {_.map(orders, (order: Order, index) =>
-                    <OrderItem key={`${index}-${order.source}-${order.size}-${order.price}`} order={order} showSource={this.props.orderBook.exchange === 'Unified'} />
+                    <OrderItem key={`${index}-${order.source}-${order.size}-${order.price}`} order={order} showSource={this.props.orderBook.exchange === UNIFIED_EXCHANGE_KEY} />
                 )}
             </div>
         );
