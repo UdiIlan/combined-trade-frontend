@@ -20,7 +20,7 @@
 
   .mainHeader {
     @include themify($themes) {
-      color: themed('whiteText');
+      color: themed('secondaryTextColor');
     }
     font-size: 2rem;
     margin-top: 0px;

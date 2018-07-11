@@ -6,7 +6,12 @@
   min-width: 240px;
   display: flex;
   flex-direction: column;
+  // border: 1px solid;
   height: 100%;
+  @include themify($themes) {
+    background-color: themed('appBackground') !important;
+    box-shadow: themed('paperBoxShadow') !important;
+  }
 
   .exchangeHeader {
     padding: 5px;

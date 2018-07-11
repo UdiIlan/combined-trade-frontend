@@ -32,18 +32,6 @@
       background-color: themed('appBackground');
     }
 
-    // &.stopped {
-    //   flex: 1;
-    //   @include themify($themes) {
-    //     background-color: themed('lightGrayBackground');
-    //   }
-    //   display: flex;
-    //   justify-content: center;
-    //   align-items: center;
-    //   font-size: 1.2rem;
-    //   padding: auto;
-    // }
-
     .info {
       min-height: 100px;
       flex: 2;

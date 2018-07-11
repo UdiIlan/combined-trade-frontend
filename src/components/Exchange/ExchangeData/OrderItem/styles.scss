@@ -17,6 +17,7 @@
   &:hover {
     @include themify($themes) {
       background-color: themed('listItemHoverBackground');
+      color: themed('secondaryTextColor');
     }
   }
 
