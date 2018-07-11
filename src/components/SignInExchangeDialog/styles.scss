@@ -13,6 +13,8 @@
   height: 20px;
 
   .invalidLogin {
-    color: $redError;
+    @include themify($themes) {
+      color: themed('redError');
+    }
   }
 }

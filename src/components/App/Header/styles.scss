@@ -1,10 +1,13 @@
 @import "~styles/colors.scss";
 
 .header {
-  background-color: $MainBlue;
   display: flex;
   align-items: center;
   min-height: 70px;
+  @include themify($themes) {
+    background-color: themed('sectionBackground');
+    color: themed('textColor');
+  }
 
   .logo {
     background-image: url('assets/images/logo.png');
@@ -16,7 +19,9 @@
   }
 
   .mainHeader {
-    color: $whiteText;
+    @include themify($themes) {
+      color: themed('whiteText');
+    }
     font-size: 2rem;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -32,8 +37,10 @@
     .buySellBtn {
       margin-right: 20px;
       width: 125px;
-      background-color: $whiteBackground;
       font-weight: 600;
+      @include themify($themes) {
+        background-color: themed('whiteBackground');
+      }
     }
 
     .langMenu {

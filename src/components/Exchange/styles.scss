@@ -10,8 +10,11 @@
 
   .exchangeHeader {
     padding: 5px;
-    border-bottom: 1px solid $borderColor;
-    background: $listHeaderBackground;
-    color: $whiteText;
+    border-bottom: 1px solid;
+    @include themify($themes) {
+      color: themed('textColor');
+      background: themed('listHeaderBackground');
+      border-bottom-color: themed('borderColor');
+    }
   }
 }

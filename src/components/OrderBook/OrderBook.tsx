@@ -52,6 +52,10 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
         this.restartTimer();
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.timerObj);
+    }
+
     restartTimer() {
         clearTimeout(this.timerObj);
         this.timerObj = setTimeout(() => {

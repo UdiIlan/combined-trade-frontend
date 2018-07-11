@@ -2,8 +2,6 @@ import * as React from 'react';
 import * as _ from 'lodash';
 
 const styles = require('./styles.scss');
-const classNames = require('classnames/bind');
-const cx = classNames.bind(styles);
 
 import { default as MIMenu } from '@material-ui/core/Menu';
 import { default as MIMenuItem } from '@material-ui/core/MenuItem';
@@ -22,31 +20,19 @@ export interface MenuProps {
     id?: string;
     className?: string;
     options: MenuItem[];
-    // anchorEl: any;
     onClick?(e);
-    // onClose?();
-}
-
-interface MenuState {
-    menuObj: any;
+    onClose();
 }
 
 
-
-export class Menu extends React.Component<MenuProps, MenuState> {
+export class Menu extends React.Component<MenuProps, any> {
 
     constructor(props) {
         super(props);
-        this.state = { menuObj: props.openTarget };
     }
-
-    componentWillReceiveProps(nextProps: MenuProps) {
-        this.setState({ menuObj: nextProps.openTarget });
-    }
-
 
     handleClose = () => {
-        this.setState({ menuObj: null });
+       this.props.onClose();
     }
 
     onItemClick(cb) {
@@ -59,9 +45,9 @@ export class Menu extends React.Component<MenuProps, MenuState> {
         return (
             <MIMenu
                 id={this.props.id}
-                anchorEl={this.state.menuObj}
+                anchorEl={this.props.openTarget}
                 onClose={this.handleClose}
-                open={Boolean(this.state.menuObj)}>
+                open={Boolean(this.props.openTarget)}>
                 {this.renderOptions()}
             </MIMenu>
         );

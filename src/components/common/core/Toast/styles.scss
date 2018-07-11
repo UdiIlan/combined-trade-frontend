@@ -7,7 +7,7 @@
       align-items: center;
 
       icon {
-        font-size: 1.1rem,
+        font-size: 1.1rem, ;
       }
 
       .iconVariant {
@@ -19,25 +19,35 @@
 
   .success {
     @extend .content;
-    background-color: $green;
+    @include themify($themes) {
+      background-color: themed('successGreen');
+    }
   }
 
   .error {
     @extend .content;
-    background-color: $redError;
+    @include themify($themes) {
+      background-color: themed('redError');
+    }
   }
 
   .info {
     @extend .content;
-    background-color: $infoBackground;
+    @include themify($themes) {
+      background-color: themed('infoBackground');
+    }
   }
 
   .warning {
     @extend .content;
-    background-color: $warningBackground;
+    @include themify($themes) {
+      background-color: themed('warningBackground');
+    }
   }
 
   .closeIco {
-    color: $whiteText;
+    @include themify($themes) {
+      color: themed('whiteText');
+    }
   }
 }

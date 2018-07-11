@@ -24,7 +24,7 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
         const naText = getLocalizedText('not_available');
 
 
-        if (this.props.stopped) return <div className={cx(styles.exchangeData, { stopped: true })}>Stopped</div>;
+        if (this.props.stopped) return <div className={cx(styles.exchangeDataScrollContainer, { stopped: true })}>Stopped</div>;
 
         if (!this.props.orderBook) return <div className={styles.loading}><Spinner size={20} /></div>;
 
@@ -32,43 +32,45 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
         const isUnifiedEx = this.props.orderBook.exchange === 'Unified';
 
         return (
-            <div className={styles.exchangeData}>
-                {this.renderOrders('asks')}
+            <div className={styles.exchangeDataScrollContainer}>
+                <div className={styles.exchangeData}>
+                    {this.renderOrders('asks')}
 
-                <div className={styles.info}>
-                    <h4 className={styles.spreadHeader}>{getLocalizedText('spread')}</h4>
-                    <div className={styles.infoItem}>
-                        <span className={cx(
-                            { valuePos: isUnifiedEx && currentSpread && currentSpread >= 0 },
-                            { valueNeg: isUnifiedEx && currentSpread && currentSpread < 0 })} >
-                            {getLocalizedText('current')}
-                        </span>
-                        <span>{currentSpread ? currentSpread.toFixed(2) : naText}</span>
+                    <div className={styles.info}>
+                        <h4 className={styles.spreadHeader}>{getLocalizedText('spread')}</h4>
+                        <div className={styles.infoItem}>
+                            <span >{getLocalizedText('current')}</span>
+                            <span className={cx(
+                                { valuePos: isUnifiedEx && currentSpread && currentSpread >= 0 },
+                                { valueNeg: isUnifiedEx && currentSpread && currentSpread < 0 })} >
+                                {currentSpread ? currentSpread.toFixed(2) : naText}
+                            </span>
+                        </div>
+
+                        {!isUnifiedEx &&
+                            [
+                                <div key='average' className={styles.infoItem}>
+                                    <span>{getLocalizedText('average')}</span>
+                                    <span>
+                                        {averageSpread ? averageSpread : naText}
+                                    </span>
+                                </div>,
+                                <div key='last' className={styles.infoItem}>
+                                    <span>{getLocalizedText('last')}</span>
+                                    <span className={cx({ valuePos: lastPrice && lastPrice.price >= 0 }, { valueNeg: lastPrice && lastPrice.price < 0 })}>
+                                        {lastPrice ?
+                                            `${lastPrice.price.toFixed(2)} ${new Date(Number(lastPrice.time)).toLocaleTimeString()}`
+                                            :
+                                            naText
+                                        }
+                                    </span>
+                                </div>
+                            ]
+                        }
                     </div>
 
-                    {!isUnifiedEx &&
-                        [
-                            <div key='average' className={styles.infoItem}>
-                                <span>{getLocalizedText('average')}</span>
-                                <span>
-                                    {averageSpread ? averageSpread : naText}
-                                </span>
-                            </div>,
-                            <div key='last' className={styles.infoItem}>
-                                <span>{getLocalizedText('last')}</span>
-                                <span className={cx({ valuePos: lastPrice && lastPrice.price >= 0 }, { valueNeg: lastPrice && lastPrice.price < 0 })}>
-                                    {lastPrice ?
-                                        `${lastPrice.price.toFixed(2)} ${new Date(Number(lastPrice.time)).toLocaleTimeString()}`
-                                        :
-                                        naText
-                                    }
-                                </span>
-                            </div>
-                        ]
-                    }
+                    {this.renderOrders('bids')}
                 </div>
-
-                {this.renderOrders('bids')}
             </div>
         );
     }

@@ -1,21 +1,85 @@
-// App pallet
-$MainBlue: #50A6C2;
 
-// borders
-$borderColor: lightgray;
+$themes: (
+    light: (
+    // App pallet
+    MainBlue: #50a6c2,
+    appBackground: white,
+    sectionBackground: #50a6c2,
+    textColor: black,
+    secondaryTextColor: white,
 
-// colors
-$green: #43a047;// forestgreen;
-$red: crimson;
-$redError: #d32f2f; //darkred;
-$whiteText: white;
-$orangeText: #C76114;
-$whiteBackground: white;
-$warningBackground: #ffa000;
-$infoBackground: #1976d2;
-$blackText: black;
-$lightGrayBackground: lightgray;
+    // borders
+    borderColor: lightgray,
 
-// List
-$listHeaderBackground: lightslategray;
-$listItemHoverBackground: aliceblue;
+    // colors
+    successGreen: #43a047,
+    redWarn: crimson,
+    redError: #d32f2f,
+    whiteText: white,
+    orangeText: #c76114,
+    whiteBackground: white,
+    warningBackground: #ffa000,
+    infoBackground: #1976d2,
+    blackText: black,
+    lightGrayBackground: lightgray,
+
+    // List
+    listHeaderBackground: lightslategray,
+    listItemHoverBackground: aliceblue,
+    ),
+
+    dark: (
+    // App pallet
+    MainBlue: #50a6c2,
+    appBackground: rgb(21, 35, 44),
+    sectionBackground: whitesmoke,
+    textColor: wheat,
+    secondaryTextColor: black,
+
+    // borders
+    borderColor: lightgray,
+
+    // colors
+    successGreen: #43a047,
+    redWarn: crimson,
+    redError: #d32f2f,
+    whiteText: white,
+    orangeText: #c76114,
+    whiteBackground: white,
+    warningBackground: #ffa000,
+    infoBackground: #1976d2,
+    blackText: black,
+    lightGrayBackground: lightgray,
+
+    // List
+    listHeaderBackground: white,
+    listItemHoverBackground: aliceblue,
+    ),
+);
+
+/*
+ * Implementation of themes
+ */
+@mixin themify($themes) {
+  @each $theme,
+
+  $map in $themes {
+    :global(.theme_#{$theme}) & {
+      $theme-map: () !global;
+
+      @each $key,
+
+      $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}') !global;
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function themed($key) {
+  @return map-get($theme-map, $key);
+}
+  

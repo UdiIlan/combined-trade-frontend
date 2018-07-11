@@ -1,10 +1,12 @@
 @import '~styles/colors.scss';
 
 .spinner {
-    color: $MainBlue;
+  @include themify($themes) {
+    color: themed('MainBlue');
+  }
 
-    .text {
-        font-size: inherit;
-        margin-top: 10px;
-    }
+  .text {
+    font-size: inherit;
+    margin-top: 10px;
+  }
 }

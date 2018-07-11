@@ -40,7 +40,10 @@ class App extends React.Component<AppProps, AppState> {
 
     componentWillReceiveProps(nextProps: AppProps) {
         if (!!nextProps.toast && !_.isEqual(this.state.toast, nextProps.toast)) {
-            this.setState({ toast: nextProps.toast }, () => nextProps.resetToast());
+            this.setState({ toast: nextProps.toast }, nextProps.resetToast);
+        }
+        else if (!this.props.toast && !nextProps.toast) {
+            this.setState({ toast: undefined });
         }
     }
 
@@ -51,31 +54,33 @@ class App extends React.Component<AppProps, AppState> {
     render() {
         return (
             <MuiThemeProvider theme={bmTheme}>
-                <div className={styles.app}>
+                <div className={'theme_light'}>
+                    <div className={styles.app}>
 
-                    <Header
-                        currentCurrency={this.props.currentCurrency}
-                        currentLang={this.props.currentLang}
-                        sesLanguage={this.props.sesLanguage}
-                        setCurrency={this.setNewCurrency}
-                        trade={this.orderBook ? this.orderBook.trade : undefined}
-                    />
+                        <Header
+                            currentCurrency={this.props.currentCurrency}
+                            currentLang={this.props.currentLang}
+                            sesLanguage={this.props.sesLanguage}
+                            setCurrency={this.setNewCurrency}
+                            trade={this.orderBook ? this.orderBook.trade : undefined}
+                        />
 
-                    <div className={styles.content}>
-                        {this.props.children}
-                        <OrderBook ref={(orderBook: any) => {
-                            if (!this.orderBook) {
-                                this.orderBook = orderBook.getWrappedInstance();
-                                this.forceUpdate();
-                            }
-                        }} />
+                        <div className={styles.content}>
+                            {this.props.children}
+                            <OrderBook ref={(orderBook: any) => {
+                                if (!this.orderBook) {
+                                    this.orderBook = orderBook.getWrappedInstance();
+                                    this.forceUpdate();
+                                }
+                            }} />
+                        </div>
+
+                        {!!this.state.toast && <Toast intent={this.state.toast.intent} message={this.state.toast.message} open={true} />}
+
+                        <footer>
+                            {getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a>
+                        </footer>
                     </div>
-
-                    {!!this.state.toast && <Toast intent={this.state.toast.intent} message={this.state.toast.message} open={true} />}
-
-                    <footer>
-                        {getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a>
-                    </footer>
                 </div>
             </MuiThemeProvider >
         );

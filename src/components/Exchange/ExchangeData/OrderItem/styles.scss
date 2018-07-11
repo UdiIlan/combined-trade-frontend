@@ -1,17 +1,23 @@
 @import '~styles/colors.scss';
 
 .order {
-  border-bottom: 1px solid $borderColor;
+  @include themify($themes) {
+    border-color: themed('borderColor');
+  }
+  border-bottom: 1px solid;
   padding: 5px;
-  height: 20px;
+  min-height: 15px;
+  flex: 1;
   display: flex;
   justify-content: space-around;
-  animation: swing 0.5s linear;
+  // animation: swing 0.5s linear;
   // animation: fadeIn 0.5s linear;
   // animation-fill-mode: both;
 
   &:hover {
-    background: $listItemHoverBackground;
+    @include themify($themes) {
+      background-color: themed('listItemHoverBackground');
+    }
   }
 
   .orderItem {

@@ -4,23 +4,32 @@
 }
 
 .whiteSelect {
-    color: $whiteText !important;
+  @include themify($themes) {
+    color: themed('secondaryTextColor') !important;
+  }
 
-    option {
-      color: $blackText;
+  option {
+    @include themify($themes) {
+      color: themed('blackText') !important;
+    }
+  }
+}
+
+.whiteInput {
+  &::before {
+    @include themify($themes) {
+      border-bottom-color: themed('secondaryTextColor') !important;
     }
   }
 
-  .whiteInput {
+  &:hover {
+    @include themify($themes) {
+      border-bottom-color: themed('secondaryTextColor') !important;
+    }
+    border-bottom: 2px solid !important;
+
     &::before {
-      border-bottom-color: $whiteText !important;
-    }
-
-    &:hover {
-      border-bottom: 2px solid $whiteText !important;
-
-      &::before {
-        border-bottom: none !important;
-      }
+      border-bottom: none !important;
     }
   }
+}

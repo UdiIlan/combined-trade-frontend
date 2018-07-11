@@ -23,7 +23,11 @@
         .divider {
           height: 100%;
           margin: 0px 10px;
-          border-right: 3px solid $borderColor;
+          border-right: 3px solid;
+          @include themify($themes) {
+            border-right-color: themed('borderColor');
+          }
+        
         }
       }
 

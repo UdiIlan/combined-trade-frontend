@@ -16,4 +16,4 @@ export const setCurrency = createAction(AppActions.SET_CURRENCY, (newCurrency: S
 
 export const showToast = createAction(AppActions.SHOW_TOAST, (toast: ToastProps) => toast);
 
-export const resetToast = createAction(AppActions.SHOW_TOAST, () => {});
+export const resetToast = createAction(AppActions.RESET_TOAST, () => {});

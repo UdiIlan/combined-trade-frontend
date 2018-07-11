@@ -1,4 +1,9 @@
+@import '~styles/colors.scss';
+
 .exchangeInfo {
+  @include themify($themes) {
+    color: themed('secondaryTextColor');
+  }
 
   .balanceContainer {
     margin-top: 7px;

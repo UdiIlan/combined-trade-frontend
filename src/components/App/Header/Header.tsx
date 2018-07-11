@@ -17,7 +17,11 @@ export interface HeaderProps {
     trade();
 }
 
-export default class Header extends React.Component<HeaderProps, any> {
+export interface HeaderState {
+    langMenu: any;
+}
+
+export default class Header extends React.Component<HeaderProps, HeaderState> {
 
     constructor(props) {
         super(props);
@@ -26,6 +30,10 @@ export default class Header extends React.Component<HeaderProps, any> {
 
     handleClick = event => {
         this.setState({ langMenu: event.currentTarget });
+    }
+
+    closeMenu = () => {
+        this.setState({ langMenu: undefined});
     }
 
     selectLang(lang: SupportedLanguages) {
@@ -86,6 +94,7 @@ export default class Header extends React.Component<HeaderProps, any> {
                 <Menu
                     id='lang-menu'
                     openTarget={langMenu}
+                    onClose={this.closeMenu}
                     options={this.getLanguageOptions()} />
             </div>
         );
