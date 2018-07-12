@@ -1,9 +1,12 @@
 @import '~styles/colors.scss';
 
-.tradeActionDialogContent {
+.tradingBox {
   display: flex;
   flex-direction: column;
-  width: 25vw;
   justify-content: space-around;
-  height: 25vh;
+  padding: 15px;
+
+  .colorInput {
+    color: white;
+  }
 }

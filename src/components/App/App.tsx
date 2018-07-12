@@ -11,6 +11,7 @@ import { sesLanguage, setCurrency, resetToast, setTheme } from './redux/actions'
 import OrderBook from 'components/OrderBook';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
 import Switch from 'components/common/core/Switch';
+// import TradingPen from 'components/TradingPen';
 
 export interface AppProps {
     currentLang: SupportedLanguages;
@@ -60,39 +61,44 @@ class App extends React.Component<AppProps, AppState> {
                 <div className={`theme_${this.props.theme}`}>
                     <div className={styles.app}>
 
-                        <Header
-                            currentCurrency={this.props.currentCurrency}
-                            currentLang={this.props.currentLang}
-                            sesLanguage={this.props.sesLanguage}
-                            setCurrency={this.setNewCurrency}
-                            manageExchanges={this.orderBook ? this.orderBook.manageExchanges : undefined}
-                        />
+                        {/* <TradingPen /> */}
 
-                        <div className={styles.content}>
-                            {this.props.children}
-                            <OrderBook ref={(orderBook: any) => {
-                                if (!this.orderBook) {
-                                    this.orderBook = orderBook.getWrappedInstance();
-                                    this.forceUpdate();
-                                }
-                            }} />
+                        {/* <div> */}
+
+                            <Header
+                                currentCurrency={this.props.currentCurrency}
+                                currentLang={this.props.currentLang}
+                                sesLanguage={this.props.sesLanguage}
+                                setCurrency={this.setNewCurrency}
+                                manageExchanges={this.orderBook ? this.orderBook.manageExchanges : undefined}
+                            />
+
+                            <div className={styles.content}>
+                                {this.props.children}
+                                <OrderBook ref={(orderBook: any) => {
+                                    if (!this.orderBook) {
+                                        this.orderBook = orderBook.getWrappedInstance();
+                                        this.forceUpdate();
+                                    }
+                                }} />
+                            </div>
+
+                            {!!this.state.toast && <Toast intent={this.state.toast.intent} message={this.state.toast.message} open={true} />}
+
+                            <footer>
+                                <div>{getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a></div>
+                                <Switch
+                                    checked={this.props.theme === 'dark'}
+                                    onChange={(e) => this.props.setTheme(e.target.checked ? 'dark' : 'light')}
+                                    value='checkedTheme'
+                                    label='Dark theme'
+                                    labelClass={styles.themeSelector}
+                                />
+                            </footer>
                         </div>
 
-                        {!!this.state.toast && <Toast intent={this.state.toast.intent} message={this.state.toast.message} open={true} />}
-
-                        <footer>
-                            <div>{getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a></div>
-                            <Switch
-                                checked={this.props.theme === 'dark'}
-                                onChange={(e) => this.props.setTheme(e.target.checked ? 'dark' : 'light')}
-                                value='checkedTheme'
-                                label='Dark theme'
-                                labelClass={styles.themeSelector}
-                            />
-                        </footer>
-
                     </div>
-                </div>
+                {/* </div> */}
             </MuiThemeProvider >
         );
     }

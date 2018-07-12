@@ -13,6 +13,12 @@
     box-shadow: themed('paperBoxShadow') !important;
   }
 
+  &.unified {
+    @include themify($themes) {
+      box-shadow: themed('highlightedPaperBoxShadow') !important;
+    }
+  }
+
   .exchangeHeader {
     padding: 5px;
     border-bottom: 1px solid;

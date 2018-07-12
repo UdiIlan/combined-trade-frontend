@@ -5,34 +5,43 @@
 
   .content {
     display: flex;
-    height: 95%;
+    height: 100%;
+
+    .tradingPen {
+      flex: 1;
+      height: 100%;
+      border-right: 1px solid;
+      @include themify($themes) {
+        border-right-color: themed('borderColor');
+      }
+    }
 
     .exchangesMain {
-      flex: 1;
+      flex: 5;
       display: flex;
-      height: 100%;
+      padding: 10px 0px;
+      height: calc(100% - 20px);
       flex-flow: row wrap;
 
       .unified {
         display: flex;
-        height: 100%;
-        flex: 1.2;
+        height: calc(100% - 15px);
+        flex: 1;
         padding: 5px;
         justify-content: space-evenly;
 
-        .divider {
-          height: 100%;
-          margin: 0px 10px;
-          border-right: 3px solid;
-          @include themify($themes) {
-            border-right-color: themed('borderColor');
-          }
-        
-        }
+        // .divider {
+        //   height: 100%;
+        //   margin: 0px 10px;
+        //   border-right: 3px solid;
+        //   @include themify($themes) {
+        //     border-right-color: themed('borderColor');
+        //   }
+        // }
       }
 
       .exchanges {
-        height: 100%;
+        height: calc(100% - 15px);
         flex: 4;
         display: flex;
         flex-flow: column wrap;

@@ -3,6 +3,8 @@ import * as _ from 'lodash';
 import Card from 'components/common/containers/Card';
 import { default as Dialog, DialogProps } from 'components/common/modals/Dialog';
 const styles = require('./styles.scss');
+const classNames = require('classnames/bind');
+const cx = classNames.bind(styles);
 import { Exchange as IExchange, SupportedCurrencies, AccountCredentials, ExchangeStatus, UNIFIED_EXCHANGE_KEY } from 'businessLogic/model';
 import ExchangeInfo from './ExchangeInfo';
 import ExchangeData from './ExchangeData';
@@ -115,7 +117,7 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
 
         return (
 
-            <Card className={styles.exchange} >
+            <Card className={cx(styles.exchange, { unified: name === UNIFIED_EXCHANGE_KEY })} >
 
                 <div className={styles.exchangeHeader}>
                     <ExchangeHeaderBar

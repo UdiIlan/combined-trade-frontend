@@ -7,6 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 export interface IconButtonProps {
     disabled?: boolean;
+    id?: string;
     className?: string;
     iconName?: string;
     children?: any;

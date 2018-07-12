@@ -8,7 +8,7 @@ $themes: (
     textColor: black,
     secondaryTextColor: white,
     paperBoxShadow: (0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12)),
-
+    highlightedPaperBoxShadow: (0px 1px 15px 0px rgba(0, 0, 0, 0.2), 7px 8px 1px 0px rgba(0, 0, 0, 0.14), 5px 5px 1px -1px rgba(0, 0, 0, 0.12)),
     // borders
     borderColor: lightgray,
 
@@ -33,10 +33,11 @@ $themes: (
     // App pallet
     MainBlue: #50a6c2,
     appBackground: rgb(21, 35, 44),
-    sectionBackground: whitesmoke,
+    sectionBackground: bisque,
     textColor: wheat,
     secondaryTextColor: black,
     paperBoxShadow:( 0px 1px 3px 0px rgba(240, 240, 240, 0.12), 0px 1px 1px 0px rgba(240, 240, 240, 0.14), 0px 2px 1px -1px rgba(240, 240, 240, 0.12)),
+    highlightedPaperBoxShadow: (0px 1px 15px 0px rgba(240, 240, 240, 0.2), 7px 8px 1px 0px rgba(240, 240, 240, 0.14), 5px 5px 1px -1px rgba(240, 240, 240, 0.12)),
 
     // borders
     borderColor: lightgray,

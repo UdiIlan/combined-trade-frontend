@@ -68,12 +68,13 @@ body {
   }
 
   .content {
-    padding: 10px 25px;
+    // padding: 10px 25px;
     flex: 1;
     display: flex;
   }
 
   footer {
+    padding-left: 10px;
     @include themify($themes) {
       background-color: themed('sectionBackground');
       color: themed('secondaryTextColor');
@@ -81,7 +82,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
 
     .supportLink {
       margin-left: 5px;
