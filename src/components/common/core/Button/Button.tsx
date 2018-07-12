@@ -6,7 +6,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Icon from '@material-ui/core/Icon';
 import { default as MIButton } from '@material-ui/core/Button';
 
-export type ButtonType = 'regular' | 'floating' | 'inline-floating';
+export type ButtonType = 'regular' | 'floating' | 'inline-floating' | 'contained';
 
 export interface ButtonProps {
     disabled?: boolean;
@@ -27,6 +27,8 @@ const getMIButtonVariant = (type: ButtonType) => {
             return 'fab';
         case 'inline-floating':
             return 'extendedFab';
+        case 'contained':
+            return 'contained';
         default:
             return 'flat';
     }

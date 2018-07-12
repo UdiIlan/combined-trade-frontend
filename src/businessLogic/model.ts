@@ -1,4 +1,7 @@
 /************************** Common ******************************************** */
+
+export type AppTheme = 'light' | 'dark';
+
 export type SupportedCurrencies = 'BTC' | 'BCH';
 
 export type SupportedFiatCurrencies = 'USD';

@@ -1,18 +1,20 @@
 import { AppActions } from './actions';
 import { handleActions, Action } from 'redux-actions';
 import { SupportedLanguages } from 'lang';
-import { SupportedCurrencies } from 'businessLogic/model';
+import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
 import { ToastProps } from 'components/common/core/Toast';
 
 export interface AppState {
     language: SupportedLanguages;
     currency: SupportedCurrencies;
+    theme: AppTheme;
     toast?: ToastProps;
 }
 
 const INITIAL_STATE: AppState = {
     language: 'en_us',
-    currency: 'BTC'
+    currency: 'BTC',
+    theme: 'light'
 };
 
 let reducerMap = {};
@@ -31,6 +33,10 @@ reducerMap[AppActions.SHOW_TOAST] = (state: AppState, action: Action<ToastProps>
 
 reducerMap[AppActions.RESET_TOAST] = (state: AppState, action: Action<void>): AppState => {
     return { ...state, toast: undefined };
+};
+
+reducerMap[AppActions.SET_THEME] = (state: AppState, action: Action<AppTheme>): AppState => {
+    return { ...state, theme: action.payload };
 };
 
 

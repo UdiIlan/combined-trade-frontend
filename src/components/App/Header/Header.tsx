@@ -54,7 +54,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
 
                 <div className={styles.actions}>
 
-                    <Button onClick={this.props.manageExchanges} type='inline-floating' iconName='ballot' aria-label='Choose Exchanges' className={styles.buySellBtn}>Choose Exchanges</Button>
+                    <Button onClick={this.props.manageExchanges} type='contained' iconName='ballot' aria-label='Choose Exchanges' className={styles.buySellBtn}>Choose Exchanges</Button>
 
                     {this.renderCurrencyMenu()}
 

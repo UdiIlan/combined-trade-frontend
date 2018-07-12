@@ -82,10 +82,6 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
                         this.renderExchanges(exchanges)}
                 </div>
 
-                {/* <div className={styles.addContainer}>
-                    <Button type='floating' className={styles.addExhBtn} iconName='add' intent='primary' onClick={() => this.setState({ openAddExchangeDialog: true })} />
-                </div> */}
-
                 {this.state.openTradingDialog &&
                     <TradeActionDialog
                         exchanges={_.map(_.filter(exchanges, (exchange: IExchange) => exchange.status === ExchangeStatus.LOGGED_IN), exchange => exchange.name)}

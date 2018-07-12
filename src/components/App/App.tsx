@@ -6,18 +6,21 @@ import bmTheme from 'themes';
 const styles = require('./styles.scss');
 import Header from './Header';
 import { SupportedLanguages, getLocalizedText } from 'lang';
-import { SupportedCurrencies } from 'businessLogic/model';
-import { sesLanguage, setCurrency, resetToast } from './redux/actions';
+import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
+import { sesLanguage, setCurrency, resetToast, setTheme } from './redux/actions';
 import OrderBook from 'components/OrderBook';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
+import Switch from 'components/common/core/Switch';
 
 export interface AppProps {
     currentLang: SupportedLanguages;
     currentCurrency: SupportedCurrencies;
     toast?: ToastProps;
+    theme: AppTheme;
     sesLanguage(newLang: SupportedLanguages);
     setCurrency(newCurrency: SupportedCurrencies);
     resetToast();
+    setTheme(theme: AppTheme);
 }
 
 export interface AppState {
@@ -54,7 +57,7 @@ class App extends React.Component<AppProps, AppState> {
     render() {
         return (
             <MuiThemeProvider theme={bmTheme}>
-                <div className={'theme_light'}>
+                <div className={`theme_${this.props.theme}`}>
                     <div className={styles.app}>
 
                         <Header
@@ -78,8 +81,16 @@ class App extends React.Component<AppProps, AppState> {
                         {!!this.state.toast && <Toast intent={this.state.toast.intent} message={this.state.toast.message} open={true} />}
 
                         <footer>
-                            {getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a>
+                            <div>{getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a></div>
+                            <Switch
+                                checked={this.props.theme === 'dark'}
+                                onChange={(e) => this.props.setTheme(e.target.checked ? 'dark' : 'light')}
+                                value='checkedTheme'
+                                label='Dark theme'
+                                labelClass={styles.themeSelector}
+                            />
                         </footer>
+
                     </div>
                 </div>
             </MuiThemeProvider >
@@ -91,7 +102,8 @@ const mapStateToProps = (state, ownProps) => {
     return {
         currentLang: _.get(state, 'app.language', 'en_us'),
         currentCurrency: _.get(state, 'app.currency', 'BTC'),
-        toast: _.get(state, 'app.toast', undefined)
+        toast: _.get(state, 'app.toast', undefined),
+        theme: _.get(state, 'app.theme', 'light'),
     };
 };
 
@@ -99,7 +111,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         sesLanguage: (newLang: SupportedLanguages) => dispatch(sesLanguage(newLang)),
         setCurrency: (newCurrency: SupportedCurrencies) => dispatch(setCurrency(newCurrency)),
-        resetToast: () => dispatch(resetToast())
+        resetToast: () => dispatch(resetToast()),
+        setTheme: (theme: AppTheme) => dispatch(setTheme(theme))
     };
 };
 

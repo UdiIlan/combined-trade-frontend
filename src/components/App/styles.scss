@@ -78,10 +78,19 @@ body {
       background-color: themed('sectionBackground');
       color: themed('secondaryTextColor');
     }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 10px;
 
     .supportLink {
       margin-left: 5px;
+      @include themify($themes) {
+        color: themed('secondaryTextColor');
+      }
+    }
+
+    .themeSelector {
       @include themify($themes) {
         color: themed('secondaryTextColor');
       }
