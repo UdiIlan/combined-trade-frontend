@@ -11,7 +11,7 @@ import {
 } from 'businessLogic/model';
 import {
     getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange,
-    startExchange, stopExchange, removeExchange, addExchanges, sendOrderCommand
+    startExchange, stopExchange, removeExchange, selectExchanges, sendOrderCommand
 } from './redux/actions';
 import Exchange from 'components/Exchange';
 import Button from 'components/common/core/Button';
@@ -30,7 +30,7 @@ export interface OrderBookProps {
     stopExchange(exchange: string);
     startExchange(exchange: string);
     removeExchange(exchange: string);
-    addExchanges(newExchanges: string[]);
+    selectExchanges(exchangesToAdd: string[], exchangesToRemove: string[]);
     sendOrderCommand(command: OrderAction);
 }
 
@@ -98,9 +98,9 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
 
                 {this.state.openAddExchangeDialog &&
                     <ManageExchangeDialog
-                        addExchanges={(newExchanges) => {
+                        selectExchanges={(exchangesToAdd: string[], exchangesToRemove: string[]) => {
                             this.setState({ openAddExchangeDialog: false });
-                            this.props.addExchanges(newExchanges);
+                            this.props.selectExchanges(exchangesToAdd, exchangesToRemove);
                         }}
                         exchangesStatus={this.props.exchangesStatus}
                         onCancel={() => this.setState({ openAddExchangeDialog: false })} />}
@@ -173,7 +173,7 @@ const mapDispatchToProps = (dispatch) => {
         stopExchange: (exchange: string) => dispatch(stopExchange(exchange)),
         startExchange: (exchange: string) => dispatch(startExchange(exchange)),
         removeExchange: (exchange: string) => dispatch(removeExchange(exchange)),
-        addExchanges: (newExchanges: string[]) => dispatch(addExchanges(newExchanges)),
+        selectExchanges: (exchangesToAdd: string[], exchangesToRemove: string[]) => dispatch(selectExchanges(exchangesToAdd, exchangesToRemove)),
         sendOrderCommand: (command: OrderAction) => dispatch(sendOrderCommand(command)),
     };
 };

@@ -89,11 +89,8 @@ reducerMap[OrderBookActions.REMOVE_EXCHANGE] = (state: OrderBookState, action: A
     return { ...state, exchangesStatus: newExchangesStatus };
 };
 
-
-reducerMap[OrderBookActions.EXCHANGE_WAS_ADDED] = (state: OrderBookState, action: Action<string>): OrderBookState => {
-    const newExchangesStatus = { ...state.exchangesStatus };
-    newExchangesStatus[action.payload] = true;
-    return { ...state, exchangesStatus: newExchangesStatus };
+reducerMap[OrderBookActions.SET_EXCHANGES_STATUS] = (state: OrderBookState, action: Action<{}>): OrderBookState => {
+    return { ...state, exchangesStatus: action.payload };
 };
 
 export default handleActions<OrderBookState, any>(reducerMap, INITIAL_STATE);

@@ -8,7 +8,7 @@ import { UNIFIED_EXCHANGE_KEY } from 'businessLogic/model';
 
 export interface ManageExchangeDialogProps {
     exchangesStatus: {};
-    addExchanges(newExchanges: string[]);
+    selectExchanges(exchangesToAdd: string[], exchangesToRemove: string[]);
     onCancel();
 }
 
@@ -21,7 +21,7 @@ export default class ManageExchangeDialog extends React.Component<ManageExchange
     constructor(props) {
         super(props);
         this.state = { newExchangesStatus: { ...props.exchangesStatus } };
-        this.addNewExchanges = this.addNewExchanges.bind(this);
+        this.updateExchanges = this.updateExchanges.bind(this);
     }
 
     private handleExchangeSelection = name => event => {
@@ -30,10 +30,12 @@ export default class ManageExchangeDialog extends React.Component<ManageExchange
         this.setState({ newExchangesStatus: newExchangesStatus });
     }
 
-    private addNewExchanges() {
+    private updateExchanges() {
         const { newExchangesStatus } = this.state;
-        const newExchanges = _.filter(Object.keys(newExchangesStatus), key => newExchangesStatus[key]);
-        this.props.addExchanges(newExchanges);
+        const curExchangesStatus = this.props.exchangesStatus;
+        const exchangesToAdd = _.filter(Object.keys(newExchangesStatus), key => newExchangesStatus[key] && !curExchangesStatus[key]);
+        const exchangesToRemove = _.filter(Object.keys(newExchangesStatus), key => !newExchangesStatus[key] && curExchangesStatus[key]);
+        this.props.selectExchanges(exchangesToAdd, exchangesToRemove);
 
     }
 
@@ -46,7 +48,7 @@ export default class ManageExchangeDialog extends React.Component<ManageExchange
             <Dialog
                 open={true}
                 okBtnText='Choose'
-                onOkClick={this.addNewExchanges}
+                onOkClick={this.updateExchanges}
                 okBtnDisabled={!hadChanges}
                 title={'Choose Exchanges'}
                 subTitle={'Select one (or more) exchanges from the bellow list:'}
@@ -57,6 +59,7 @@ export default class ManageExchangeDialog extends React.Component<ManageExchange
 
                     {exchanges.map(exchange => (
                         <Checkbox
+                            key={`ckb_${exchange}`}
                             checked={newExchangesStatus[exchange]}
                             onChange={this.handleExchangeSelection(exchange)}
                             label={exchange}

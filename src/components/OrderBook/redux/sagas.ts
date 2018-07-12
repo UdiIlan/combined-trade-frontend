@@ -2,7 +2,7 @@
 import * as _ from 'lodash';
 import {
     OrderBookActions, setExchanges, serActiveOrderBooks, setSignInToExchangeResult,
-    setLogOutFromExchangeResult, getExchanges, exchangeWasAdded
+    setLogOutFromExchangeResult, getExchanges, setExchangesStatus, removeExchange
 } from './actions';
 import { showToast } from 'components/App/redux/actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
@@ -14,7 +14,8 @@ import {
 import { Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook, OrderAction } from 'businessLogic/model';
 
 const getSelectedCurrency = (state) => state.app.currency;
-// const getCurrentExchanges = (state) => state.orderBook.exchanges;
+const getCurrentExchanges = (state) => state.orderBook.exchanges;
+const getExchangesStatus = (state) => state.orderBook.exchangesStatus;
 
 function* getExchangesAsync(action) {
     try {
@@ -150,31 +151,67 @@ function* stopExchangeAsync(action) {
     }
 }
 
-function* addExchangesAsync(action) {
-    const newExchanges = action.payload;
+function* selectExchangesAsync(action) {
+    const { exchangesToAdd, exchangesToRemove } = action.payload;
+    const currentExchanges: Exchange[] = yield select(getCurrentExchanges);
+    const newExchangesStatus = { ...yield select(getExchangesStatus) };
     const errs = [];
+
+
     try {
-        for (let newExchange of newExchanges) {
-            const res = yield startExchange(newExchange);
-            if (res && res.start_result === 'True') {
-                yield (put(exchangeWasAdded(newExchange)));
+
+        // Add exchanges
+        for (let newExchange of exchangesToAdd) {
+            const curExchange: Exchange = _.find(currentExchanges, { name: newExchange });
+            if (!curExchange) continue;
+
+            if (curExchange.status === ExchangeStatus.STOPPED) {
+                const res = yield startExchange(newExchange);
+                if (res && res.start_result === 'True') {
+                    newExchangesStatus[newExchange] = true;
+                }
+                else {
+                    errs.push(`Failed to start ${newExchange}.`);
+                }
             }
             else {
-                errs.push(`Failed to start ${newExchange}.`);
+                newExchangesStatus[newExchange] = true;
+            }
+        }
+
+        // Remove exchanges
+        for (let exchangeToRemove of exchangesToRemove) {
+            const curExchange: Exchange = _.find(currentExchanges, { name: exchangeToRemove });
+            if (!curExchange) continue;
+
+            if (curExchange.status !== ExchangeStatus.STOPPED) {
+                const res = yield stopExchange(exchangeToRemove);
+                if (res && res.stop_result === 'True') {
+                    newExchangesStatus[exchangeToRemove] = false;
+                }
+                else {
+                    errs.push(`Failed to remove ${exchangeToRemove}.`);
+                }
+            }
+            else {
+                newExchangesStatus[exchangeToRemove] = false;
             }
         }
     }
     catch (err) {
-        console.error('Failed to add exchanges: ', err);
+        console.error('Failed to select exchanges: ', err);
     }
 
+    yield put(getExchanges());
+    yield put(setExchangesStatus(newExchangesStatus));
+
     if (!_.isEmpty(errs)) {
-        yield put(showToast({ intent: 'error', message: `Failed to start ${errs.length} exchanges.` }));
+        yield put(showToast({ intent: 'error', message: `Failed to select ${errs.length} exchanges.` }));
     }
     else {
-        yield put(getExchanges());
-        yield put(showToast({ intent: 'success', message: `${newExchanges.length} were exchanges successfully addeed.` }));
+        if (!_.isEmpty(exchangesToAdd)) yield put(showToast({ intent: 'success', message: `${exchangesToAdd.length} were exchanges successfully addeed.` }));
     }
+
 }
 
 function* sendOrderCommandAsync(action) {
@@ -201,7 +238,7 @@ export function* OrderBookSagas() {
         takeEvery(OrderBookActions.LOG_OUT_FROM_EXCHANGE, logOutFromExchangeAsync),
         takeEvery(OrderBookActions.START_EXCHANGE, startExchangeAsync),
         takeEvery(OrderBookActions.STOP_EXCHANGE, stopExchangeAsync),
-        takeEvery(OrderBookActions.ADD_EXCHANGES, addExchangesAsync),
+        takeEvery(OrderBookActions.SELECT_EXCHANGES, selectExchangesAsync),
         takeEvery(OrderBookActions.SEND_ORDER_COMMAND, sendOrderCommandAsync),
     ]);
 }

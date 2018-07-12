@@ -13,9 +13,9 @@ export const OrderBookActions = {
     STOP_EXCHANGE: 'OrderBook/STOP_EXCHANGE',
     START_EXCHANGE: 'OrderBook/START_EXCHANGE',
     REMOVE_EXCHANGE: 'OrderBook/REMOVE_EXCHANGE',
-    ADD_EXCHANGES: 'OrderBook/ADD_EXCHANGES',
-    EXCHANGE_WAS_ADDED: 'OrderBook/EXCHANGE_WAS_ADDED',
-    SEND_ORDER_COMMAND: 'OrderBook/SEND_ORDER_COMMAND'
+    SEND_ORDER_COMMAND: 'OrderBook/SEND_ORDER_COMMAND',
+    SELECT_EXCHANGES: 'OrderBook/SELECT_EXCHANGES',
+    SET_EXCHANGES_STATUS: 'OrderBook/SET_EXCHANGES_STATUS',
 };
 
 export const getExchanges = createAction(OrderBookActions.GET_EXCHANGES);
@@ -38,14 +38,10 @@ export const startExchange = createAction(OrderBookActions.START_EXCHANGE, (exch
 
 export const stopExchange = createAction(OrderBookActions.STOP_EXCHANGE, (exchange: string) => exchange);
 
-/************************ TO-DO: Change to manage exchanges  ********************** */
-
 export const removeExchange = createAction(OrderBookActions.REMOVE_EXCHANGE, (exchange: string) => exchange);
 
-export const addExchanges = createAction(OrderBookActions.ADD_EXCHANGES, (newExchanges: string[]) => newExchanges);
+export const selectExchanges = createAction(OrderBookActions.SELECT_EXCHANGES, (exchangesToAdd: string[], exchangesToRemove: string[]) => { return { exchangesToAdd, exchangesToRemove }; });
 
-export const exchangeWasAdded = createAction(OrderBookActions.EXCHANGE_WAS_ADDED, (exchange: string) => exchange);
-
-/************************************************************************************ */
+export const setExchangesStatus = createAction(OrderBookActions.SET_EXCHANGES_STATUS, (exchangesStatus: {}) => exchangesStatus);
 
 export const sendOrderCommand = createAction(OrderBookActions.SEND_ORDER_COMMAND, (command: OrderAction) => command);
