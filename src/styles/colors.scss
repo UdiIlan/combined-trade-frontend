@@ -1,10 +1,12 @@
 
+$MainBlue: #50a6c2;
+
 $themes: (
     light: (
     // App pallet
-    MainBlue: #50a6c2,
     appBackground: white,
-    sectionBackground: #50a6c2,
+    sectionBackground:#5c7ef3,// #4a64bd, //#50a6c2,
+    sidebarBackground: #465967,
     textColor: black,
     secondaryTextColor: white,
     paperBoxShadow: (0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12)),
@@ -31,9 +33,9 @@ $themes: (
 
     dark: (
     // App pallet
-    MainBlue: #50a6c2,
-    appBackground: rgb(21, 35, 44),
-    sectionBackground: bisque,
+    appBackground: #383838,
+    sectionBackground: #b9b9b9,
+    sidebarBackground: #29566b,
     textColor: wheat,
     secondaryTextColor: black,
     paperBoxShadow:( 0px 1px 3px 0px rgba(240, 240, 240, 0.12), 0px 1px 1px 0px rgba(240, 240, 240, 0.14), 0px 2px 1px -1px rgba(240, 240, 240, 0.12)),
@@ -64,15 +66,11 @@ $themes: (
  * Implementation of themes
  */
 @mixin themify($themes) {
-  @each $theme,
-
-  $map in $themes {
+  @each $theme, $map in $themes {
     :global(.theme_#{$theme}) & {
       $theme-map: () !global;
 
-      @each $key,
-
-      $submap in $map {
+      @each $key, $submap in $map {
         $value: map-get(map-get($themes, $theme), '#{$key}') !global;
         $theme-map: map-merge($theme-map, ($key: $value)) !global;
       }

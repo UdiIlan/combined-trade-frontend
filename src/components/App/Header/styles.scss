@@ -57,7 +57,7 @@
   .userIco {
     font-size: 2.5rem;
     @include themify($themes) {
-      color: themed('secondaryTextColor');
+      color: themed('whiteText');
     }
   }
 }

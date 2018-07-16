@@ -1,0 +1,61 @@
+@import "~styles/colors.scss";
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 15px;
+  transition: all .3s ease-out;
+
+  @include themify($themes) {
+    background-color: themed('sidebarBackground');
+  }
+
+  &.collapsed {
+    transition: all .3s ease-in;
+    width: 50px !important;
+  }
+
+  .toggle {
+    display: flex;
+    justify-content: flex-end;
+
+    .icon {
+      color: white;
+    }
+  }
+
+  .container {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+    .header {
+      display: flex;
+      color: white;
+      width: 150px;
+      font-size: 1.2rem;
+      position: relative;
+      left: 15px;
+      bottom: 35px;
+      cursor: pointer;
+      transition: all .3s ease-out;
+
+      &.static {
+        bottom: auto;
+        top: 10px;
+      }
+
+      &.collapsed {
+        transform: rotateZ(90deg);
+        right: 50px;
+        top: 45%;
+        left: auto;
+      }
+    }
+  }
+
+  .content {
+    transition: all .3s ease-out;
+  }
+}

@@ -1,9 +1,7 @@
 @import '~styles/colors.scss';
 
 .spinner {
-  @include themify($themes) {
-    color: themed('MainBlue');
-  }
+  color: $MainBlue;
 
   .text {
     font-size: inherit;

@@ -2,13 +2,13 @@
 
 .whiteSelect {
   @include themify($themes) {
-    color: themed('secondaryTextColor') !important;
+    color: themed('whiteText') !important;
   }
 }
 
 .whiteInput {
   @include themify($themes) {
-    color: themed('secondaryTextColor') !important;
+    color: themed('whiteText') !important;
   }
 
   option {
@@ -19,13 +19,13 @@
 
   &::before {
     @include themify($themes) {
-      border-bottom-color: themed('secondaryTextColor') !important;
+      border-bottom-color: themed('whiteText') !important;
     }
   }
 
   &:hover {
     @include themify($themes) {
-      border-bottom-color: themed('secondaryTextColor') !important;
+      border-bottom-color: themed('whiteText') !important;
     }
     border-bottom: 2px solid !important;
 
