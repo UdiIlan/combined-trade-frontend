@@ -12,6 +12,7 @@ import {
 }
     from 'businessLogic/serverApi';
 import { Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook, OrderAction } from 'businessLogic/model';
+import { getLocalizedText } from 'lang';
 
 const getSelectedCurrency = (state) => state.app.currency;
 const getCurrentExchanges = (state) => state.orderBook.exchanges;
@@ -220,7 +221,7 @@ function* sendOrderCommandAsync(action) {
         const res = yield sendOrderCommand(command);
         yield put(showToast({
             intent: 'success',
-            message: `Successfully sent new ${command.action_type} command for ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.`
+            message: `Successfully sent new ${getLocalizedText(command.action_type)} command for ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.`
         }));
     }
     catch (err) {

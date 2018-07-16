@@ -3,10 +3,19 @@
 .tradingBox {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  // justify-content: space-around;
   padding: 15px;
+  // min-height: 35vh;
+
+  .tradingOption {
+    margin-bottom: 20px;
+  }
 
   .colorInput {
     color: white;
+
+    &:disabled {
+      color: gray;
+    }
   }
 }

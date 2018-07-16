@@ -68,7 +68,7 @@ export interface ExchangeOrderBook {
     lastPrice?: { price: number, time: Date, type: 'sell' | 'buy' };
 }
 
-export type OrderActionType = 'buy' | 'sell' | 'timed-buy' | 'timed-sell' | 'buy-limit-making' | 'sell-limit-making';
+export type OrderActionType = 'buy' | 'sell' | 'timed_buy' | 'timed_sell' | 'buy_limit' | 'sell_limit';
 
 export interface OrderAction {
     action_type: OrderActionType;

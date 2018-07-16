@@ -65,9 +65,7 @@ export default class SignInExchangeDialog extends React.Component<SignInExchange
                         </div>
                     }
 
-                    {this.props.loggingIn &&
-                        <Spinner size={20} />}
-
+                    {this.props.loggingIn && <Spinner size={20} />}
                 </div>
 
             </Dialog>

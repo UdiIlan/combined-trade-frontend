@@ -16,10 +16,10 @@ export interface IconButtonProps {
 }
 
 export default function IconButton(props: IconButtonProps) {
-    const { iconName, tooltip, ...btnProps } = props;
+    const { iconName, className, tooltip, ...btnProps } = props;
     const button =
-        <MUIconButton type='btn' {...btnProps}>
-            {!!iconName && <Icon>
+        <MUIconButton className={className} type='btn' {...btnProps}>
+            {!!iconName && <Icon classes={{ root: className }}>
                 {props.iconName}
             </Icon>}
             {props.children}

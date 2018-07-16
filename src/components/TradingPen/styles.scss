@@ -36,6 +36,7 @@
       left: 20px;
       bottom: 35px;
       cursor: pointer;
+      transition: all .3s ease-out;
 
       &.collapsed {
         transform: rotateZ(90deg);
@@ -43,6 +44,10 @@
         top: 45%;
         left: auto;
       }
+    }
+
+    .tradingBx {
+      transition: all .3s ease-out;
     }
 
     .list {

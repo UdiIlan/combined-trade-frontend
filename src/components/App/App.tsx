@@ -10,8 +10,6 @@ import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
 import { sesLanguage, setCurrency, resetToast, setTheme } from './redux/actions';
 import OrderBook from 'components/OrderBook';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
-import Switch from 'components/common/core/Switch';
-// import TradingPen from 'components/TradingPen';
 
 export interface AppProps {
     currentLang: SupportedLanguages;
@@ -39,6 +37,7 @@ class App extends React.Component<AppProps, AppState> {
     private orderBook;
 
     componentWillMount() {
+        this.props.setTheme(this.props.theme);
         this.props.sesLanguage(this.props.currentLang);
     }
 
@@ -58,34 +57,36 @@ class App extends React.Component<AppProps, AppState> {
     render() {
         return (
             <MuiThemeProvider theme={bmTheme}>
-                <div className={`theme_${this.props.theme}`}>
-                    <div className={styles.app}>
+                {/*  <div className={`theme_${this.props.theme}`}> */}
+                <div className={styles.app}>
 
-                        {/* <TradingPen /> */}
+                    {/* <TradingPen /> */}
 
-                        {/* <div> */}
+                    {/* <div> */}
 
-                            <Header
-                                currentCurrency={this.props.currentCurrency}
-                                currentLang={this.props.currentLang}
-                                sesLanguage={this.props.sesLanguage}
-                                setCurrency={this.setNewCurrency}
-                                manageExchanges={this.orderBook ? this.orderBook.manageExchanges : undefined}
-                            />
+                    <Header
+                        currentCurrency={this.props.currentCurrency}
+                        currentLang={this.props.currentLang}
+                        sesLanguage={this.props.sesLanguage}
+                        setCurrency={this.setNewCurrency}
+                        theme={this.props.theme}
+                        setTheme={this.props.setTheme}
+                        manageExchanges={this.orderBook ? this.orderBook.manageExchanges : undefined}
+                    />
 
-                            <div className={styles.content}>
-                                {this.props.children}
-                                <OrderBook ref={(orderBook: any) => {
-                                    if (!this.orderBook) {
-                                        this.orderBook = orderBook.getWrappedInstance();
-                                        this.forceUpdate();
-                                    }
-                                }} />
-                            </div>
+                    <div className={styles.content}>
+                        {this.props.children}
+                        <OrderBook ref={(orderBook: any) => {
+                            if (!this.orderBook) {
+                                this.orderBook = orderBook.getWrappedInstance();
+                                this.forceUpdate();
+                            }
+                        }} />
+                    </div>
 
-                            {!!this.state.toast && <Toast intent={this.state.toast.intent} message={this.state.toast.message} open={true} />}
+                    {!!this.state.toast && <Toast intent={this.state.toast.intent} message={this.state.toast.message} open={true} />}
 
-                            <footer>
+                    {/* <footer>
                                 <div>{getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a></div>
                                 <Switch
                                     checked={this.props.theme === 'dark'}
@@ -94,10 +95,10 @@ class App extends React.Component<AppProps, AppState> {
                                     label='Dark theme'
                                     labelClass={styles.themeSelector}
                                 />
-                            </footer>
-                        </div>
+                            </footer> */}
+                </div>
 
-                    </div>
+                {/*  </div> */}
                 {/* </div> */}
             </MuiThemeProvider >
         );
@@ -118,7 +119,13 @@ const mapDispatchToProps = (dispatch) => {
         sesLanguage: (newLang: SupportedLanguages) => dispatch(sesLanguage(newLang)),
         setCurrency: (newCurrency: SupportedCurrencies) => dispatch(setCurrency(newCurrency)),
         resetToast: () => dispatch(resetToast()),
-        setTheme: (theme: AppTheme) => dispatch(setTheme(theme))
+        setTheme: (theme: AppTheme) => {
+            const prevTheme = `theme_${theme === 'dark' ? 'light' : 'dark'}`;
+            const newTheme = `theme_${theme}`;
+            document.body.classList.remove(prevTheme);
+            document.body.classList.add(newTheme);
+            dispatch(setTheme(theme));
+        }
     };
 };
 

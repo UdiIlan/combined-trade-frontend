@@ -21,20 +21,22 @@ export interface SelectProps {
 export default class Select extends React.Component<SelectProps, any> {
 
     render() {
+        const selectClassName = this.props.theme === 'white' ? styles.whiteSelect : undefined;
+        const inputClassName = this.props.theme === 'white' ? styles.whiteInput : undefined;
+
         const select = (
             <MISelect
                 native
                 className={cx(styles.select, this.props.className)}
                 value={this.props.selectedValue}
                 onChange={this.props.onChange}
-                classes={this.props.theme === 'white' ?
+                classes={
                     {
-                        root: styles.whiteSelect,
-                        select: styles.whiteSelect,
-                        icon: styles.whiteSelect,
-                    } :
-                    undefined}
-                input={<Input classes={this.props.theme === 'white' ? { root: styles.whiteInput, underline: styles.whiteInput } : undefined} />}
+                        root: selectClassName,
+                        select: selectClassName,
+                        icon: selectClassName,
+                    }}
+                input={<Input classes={{ root: inputClassName, underline: inputClassName }} />}
             >
                 {this.props.children}
             </MISelect>
@@ -44,7 +46,7 @@ export default class Select extends React.Component<SelectProps, any> {
 
         return (
             <FormControl>
-                {!!this.props.formLabelText && <InputLabel>{this.props.formLabelText}</InputLabel>}
+                {!!this.props.formLabelText && <InputLabel className={inputClassName} classes={{ root: styles.className }} >{this.props.formLabelText}</InputLabel>}
                 {select}
                 {!!this.props.formHelperText && <FormHelperText>{this.props.formHelperText}</FormHelperText>}
             </FormControl>

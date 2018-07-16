@@ -1,9 +1,6 @@
 import * as React from 'react';
 import TextField from '@material-ui/core/TextField';
-import Input from '@material-ui/core/Input';
 const styles = require('./styles.scss');
-const classNames = require('classnames/bind');
-const cx = classNames.bind(styles);
 
 interface InputTextState {
     currentValue;
@@ -13,8 +10,6 @@ export interface InputTextProps {
     selectedValue?: any;
     className?: string;
     theme?: 'default' | 'white' | 'dark';
-    // formControl?: boolean;
-    // formHelperText?: string;
     label?: string;
     name?: string;
     value?: any;
@@ -40,7 +35,7 @@ export default class InputText extends React.Component<InputTextProps, InputText
 
         const { className, onChange, value, ...otherProps } = this.props;
 
-        return <TextField value={this.state.currentValue} onChange={this.onChange} {...otherProps}
+        return <TextField className={className} value={this.state.currentValue} onChange={this.onChange} {...otherProps}
             classes={this.props.theme === 'white' ?
                 {
                     root: styles.whiteText

@@ -1,9 +1,12 @@
 @import "~styles/colors.scss";
 
-.select {
+.whiteSelect {
+  @include themify($themes) {
+    color: themed('secondaryTextColor') !important;
+  }
 }
 
-.whiteSelect {
+.whiteInput {
   @include themify($themes) {
     color: themed('secondaryTextColor') !important;
   }
@@ -13,9 +16,7 @@
       color: themed('blackText') !important;
     }
   }
-}
 
-.whiteInput {
   &::before {
     @include themify($themes) {
       border-bottom-color: themed('secondaryTextColor') !important;

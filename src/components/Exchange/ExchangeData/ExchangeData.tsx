@@ -4,7 +4,7 @@ const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import { ExchangeOrderBook, Order, UNIFIED_EXCHANGE_KEY } from 'businessLogic/model';
-import { getLocalizedText } from 'lang';
+import { getLocalizedText, getCurrentLanguage } from 'lang';
 import OrderItem from './OrderItem';
 import Spinner from 'components/common/core/Spinner';
 
@@ -82,7 +82,7 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
             <div className={styles[type]}>
                 <h4 className={styles.header}>{`${this.props.orderBook.exchange} ${getLocalizedText(type)}`}</h4>
                 {_.map(orders, (order: Order, index) =>
-                    <OrderItem key={`${index}-${order.source}-${order.size}-${order.price}`} order={order} showSource={this.props.orderBook.exchange === UNIFIED_EXCHANGE_KEY} />
+                    <OrderItem lang={getCurrentLanguage()} key={`${index}-${order.source}-${order.size}-${order.price}`} order={order} showSource={this.props.orderBook.exchange === UNIFIED_EXCHANGE_KEY} />
                 )}
             </div>
         );

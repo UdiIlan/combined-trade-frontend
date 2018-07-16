@@ -2,9 +2,14 @@ export type SupportedLanguages = 'en_us' | 'he_il' | 'zh_cn';
 const DEFAULT_LANG = 'en_us';
 
 let cur_lang = {};
+let cur_lang_key: SupportedLanguages = DEFAULT_LANG;
+
+export function getCurrentLanguage() {
+    return cur_lang_key;
+}
 
 export function updateCurLang(langOption: SupportedLanguages) {
-    // cur_lang = JSON.parse(require(`lang/${langOption}.json`));
+    cur_lang_key = langOption;
     cur_lang = require(`json-loader!lang/${langOption}.json`);
 }
 
@@ -83,5 +88,7 @@ export type localizedKeys =
     'timed order' |
     'supportLink' |
     'cancel' |
-    'ok'
+    'ok' |
+    'buy_limit' |
+    'sell_limit'
     ;

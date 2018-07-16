@@ -6,13 +6,17 @@ const styles = require('./styles.scss');
 import { default as MIMenu } from '@material-ui/core/Menu';
 import { default as MIMenuItem } from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Icon from '@material-ui/core/Icon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 export interface MenuItem {
-    displayText: string;
+    displayText?: string;
+    iconName?: string;
     icoSrc?: any;
+    children?: any;
     icoStyle?: string;
     selected?: boolean;
+    onClick?(e);
 }
 
 export interface MenuProps {
@@ -32,7 +36,7 @@ export class Menu extends React.Component<MenuProps, any> {
     }
 
     handleClose = () => {
-       this.props.onClose();
+        this.props.onClose();
     }
 
     onItemClick(cb) {
@@ -53,16 +57,30 @@ export class Menu extends React.Component<MenuProps, any> {
         );
     }
 
+
     renderOptions() {
+        return _.map(this.props.options, (opt, index) => this.renderOption(opt, index));
+    }
+
+    renderOption(opt: MenuItem, index: string) {
+        if (!!opt.children)
+            return <MIMenuItem key={index} selected={opt.selected} onClick={() => this.onItemClick(opt.onClick)}>{opt.children}</MIMenuItem>;
+
+        let ico;
+        if (!!opt.icoSrc) {
+            ico = <ListItemIcon>
+                <img className={opt.icoStyle} src={opt.icoSrc} />
+            </ListItemIcon >;
+        }
+        else if (!!opt.iconName) {
+            ico = <ListItemIcon><Icon>{opt.iconName}</Icon></ListItemIcon>;
+        }
+
         return (
-            _.map(this.props.options, (opt, index) =>
-                <MIMenuItem key={index} selected={opt.selected} onClick={() => this.onItemClick(opt.onClick)}>
-                    {!!opt.icoSrc && <ListItemIcon>
-                        <img className={opt.icoStyle} src={opt.icoSrc} />
-                    </ListItemIcon >}
-                    <ListItemText inset primary={opt.displayText} />
-                </MIMenuItem>
-            )
+            <MIMenuItem key={index} selected={opt.selected} onClick={() => this.onItemClick(opt.onClick)}>
+                {ico}
+                < ListItemText inset primary={opt.displayText} />
+            </MIMenuItem>
         );
     }
 }

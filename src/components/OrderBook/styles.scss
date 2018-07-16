@@ -44,10 +44,10 @@
         height: calc(100% - 15px);
         flex: 4;
         display: flex;
-        flex-flow: column wrap;
+        // flex-flow: column wrap;
         overflow: auto;
         padding: 5px;
-        justify-content: space-around;
+        justify-content: space-between;
       }
     }
   }

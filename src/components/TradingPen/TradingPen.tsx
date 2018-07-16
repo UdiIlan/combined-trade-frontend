@@ -45,9 +45,11 @@ export default class TradingPen extends React.Component<TradingPenProps, Trading
 
                     <span onClick={this.togglePen} className={cx(styles.header, { collapsed: isCollapsed })}>Trading Pen</span>
 
-                    <div>
-                        <TradingBox {...this.props} />
-                    </div>
+                    {!isCollapsed &&
+                        <div className={styles.tradingBx}>
+                            <TradingBox {...this.props} />
+                        </div>
+                    }
 
                 </div>
 

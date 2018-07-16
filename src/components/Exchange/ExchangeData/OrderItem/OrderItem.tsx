@@ -2,12 +2,15 @@ import * as React from 'react';
 import * as _ from 'lodash';
 const styles = require('./styles.scss');
 import { Order } from 'businessLogic/model';
-import { getLocalizedText } from 'lang';
+import { getLocalizedText, SupportedLanguages } from 'lang';
 
 export interface OrderItemProps {
     order: Order;
     showSource?: boolean;
+    lang: SupportedLanguages;
 }
+
+
 
 export default class OrderItem extends React.Component<OrderItemProps, any> {
 

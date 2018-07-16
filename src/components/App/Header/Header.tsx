@@ -7,33 +7,41 @@ import Button from 'components/common/core/Button';
 import Select from 'components/common/core//Select';
 import IconButton from 'components/common/core/IconButton';
 import { getLocalizedText, SupportedLanguages } from 'lang';
-import { SupportedCurrencies } from 'businessLogic/model';
+import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
+import Switch from 'components/common/core/Switch';
 
 export interface HeaderProps {
     currentLang: SupportedLanguages;
     currentCurrency: SupportedCurrencies;
+    theme: AppTheme;
     sesLanguage(newLang: SupportedLanguages);
     setCurrency(newCurrency: SupportedCurrencies);
     manageExchanges();
+    setTheme(theme: AppTheme);
 }
 
 export interface HeaderState {
     langMenu: any;
+    userMenu: any;
 }
 
 export default class Header extends React.Component<HeaderProps, HeaderState> {
 
     constructor(props) {
         super(props);
-        this.state = { langMenu: null };
+        this.state = { langMenu: null, userMenu: null };
     }
 
-    handleClick = event => {
+    handleLangMenuClick = event => {
         this.setState({ langMenu: event.currentTarget });
     }
 
+    handleUserMenuClick = event => {
+        this.setState({ userMenu: event.currentTarget });
+    }
+
     closeMenu = () => {
-        this.setState({ langMenu: undefined});
+        this.setState({ langMenu: undefined, userMenu: undefined });
     }
 
     selectLang(lang: SupportedLanguages) {
@@ -54,9 +62,11 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
 
                 <div className={styles.actions}>
 
-                    <Button onClick={this.props.manageExchanges} type='contained' iconName='ballot' aria-label='Choose Exchanges' className={styles.buySellBtn}>Choose Exchanges</Button>
-
                     {this.renderCurrencyMenu()}
+
+                    <Button onClick={this.props.manageExchanges} type='contained' iconName='ballot' aria-label='Choose Exchanges' className={styles.exchangesBtn}>Choose Exchanges</Button>
+
+                    {this.renderUserMenu()}
 
                     {this.renderLanguageMenu()}
 
@@ -82,13 +92,13 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
         const { langMenu } = this.state;
 
         return (
-            <div className={styles.langMenu}>
+            <div className={styles.menu}>
                 <IconButton
                     aria-label='More'
                     aria-owns={langMenu ? 'simple-menu' : null}
                     aria-haspopup='true'
                     tooltip='Change Language'
-                    onClick={this.handleClick}>
+                    onClick={this.handleLangMenuClick}>
                     <img className={styles.langIco} src={require(`assets/icons/${this.props.currentLang}.ico`)} />
                 </IconButton>
                 <Menu
@@ -97,6 +107,40 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                     onClose={this.closeMenu}
                     options={this.getLanguageOptions()} />
             </div>
+        );
+    }
+
+    private renderUserMenu() {
+        const { userMenu } = this.state;
+
+        return (
+            <div className={styles.userMenu}>
+                <IconButton
+                    aria-label='More'
+                    aria-owns={userMenu ? 'simple-menu' : null}
+                    aria-haspopup='true'
+                    tooltip='User Settings'
+                    iconName='person'
+                    className={styles.userIco}
+                    onClick={this.handleUserMenuClick}>
+                </IconButton>
+                <Menu
+                    id='lang-menu'
+                    openTarget={userMenu}
+                    onClose={this.closeMenu}
+                    options={[
+                        { displayText: 'Contact Support', iconName: 'help', onClick: (e) => window.location.href = 'mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' },
+                        {
+                            children: <Switch
+                                checked={this.props.theme === 'dark'}
+                                onChange={(e) => this.props.setTheme(e.target.checked ? 'dark' : 'light')}
+                                value='checkedTheme'
+                                label='Dark theme'
+                                labelClass={styles.themeSelector}
+                            />
+                        }
+                    ]} />
+            </div >
         );
     }
 

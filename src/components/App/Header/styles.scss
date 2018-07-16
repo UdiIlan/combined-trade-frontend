@@ -34,16 +34,15 @@
     justify-content: flex-end;
     display: flex;
 
-    .buySellBtn {
-      margin-right: 20px;
-      // width: 125px;
+    .exchangesBtn {
+      margin-left: 25px;
       font-weight: 600;
       @include themify($themes) {
         background-color: themed('whiteBackground');
       }
     }
 
-    .langMenu {
+    .menu {
       margin-left: 10px;
     }
   }
@@ -51,4 +50,14 @@
 
 .langIco {
   height: 35px;
+}
+
+.userMenu {
+  @extend .menu;
+  .userIco {
+    font-size: 2.5rem;
+    @include themify($themes) {
+      color: themed('secondaryTextColor');
+    }
+  }
 }

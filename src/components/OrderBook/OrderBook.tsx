@@ -15,6 +15,8 @@ import Exchange from 'components/Exchange';
 import ManageExchangeDialog from 'components/ManageExchangeDialog';
 import TradingPen from 'components/TradingPen';
 
+const EXCHANGE_PULLING_RATE = 3000;
+
 export interface OrderBookProps {
     currentCurrency: SupportedCurrencies;
     exchanges: IExchange[];
@@ -60,7 +62,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
         this.timerObj = setTimeout(() => {
             if (!this.props.loading) this.props.getActiveOrderBooks();
             this.restartTimer();
-        }, 3000);
+        }, EXCHANGE_PULLING_RATE);
     }
 
 
@@ -76,6 +78,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
                         :
                         [
                             <TradingPen
+                                key='trading_pen'
                                 selectedCurrency={currentCurrency}
                                 exchanges={_.map(_.filter(exchanges, (exchange: IExchange) => exchange.status === ExchangeStatus.LOGGED_IN), exchange => exchange.name)}
                                 sendNewOrderCommand={sendOrderCommand}
@@ -108,7 +111,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
         exchanges.splice(unifiedIndex, 1);
 
         return (
-            <div className={styles.exchangesMain}>
+            <div key='exchangesMain' className={styles.exchangesMain}>
                 <div className={styles.unified}>
                     {this.renderExchange(unified)}
                 </div>
