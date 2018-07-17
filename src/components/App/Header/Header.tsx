@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
+import { Route, Switch as RSwitch } from 'react-router-dom';
 
 const styles = require('./styles.scss');
 import { Menu, MenuItem } from 'components/common/core/Menu';
@@ -59,25 +60,51 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                     {getLocalizedText('orderbook_header')}
                 </h1>
 
-
                 <div className={styles.actions}>
-
-                    {this.renderCurrencyMenu()}
-
-                    <Button onClick={this.props.manageExchanges} type='contained' iconName='ballot' aria-label='Choose Exchanges' className={styles.exchangesBtn}>Choose Exchanges</Button>
-
-                    {this.renderUserMenu()}
-
-                    {this.renderLanguageMenu()}
-
+                    {this.renderCurrentRouteActions()}
+                    {this.renderCommonActions()}
                 </div>
+
             </header>
         );
+    }
+
+    /**
+     * Render route-specific actions.
+     */
+    private renderCurrentRouteActions() {
+        return (
+            <RSwitch>
+                <Route exact path='/' render={(props) => {
+                    return (
+                        [
+                            this.renderCurrencyMenu(),
+                            <Button key='chooseEx' onClick={this.props.manageExchanges} type='contained' iconName='ballot' aria-label='Choose Exchanges' className={styles.exchangesBtn}>Choose Exchanges</Button>
+                        ]
+                    );
+                }}
+                />
+
+                <Route path='/reports' render={(props) => <span>Action</span>} />
+
+            </RSwitch>
+        );
+    }
+
+    /**
+     * Render common actions
+     */
+    private renderCommonActions() {
+        return [
+            this.renderUserMenu(),
+            this.renderLanguageMenu()
+        ];
     }
 
     private renderCurrencyMenu() {
         return (
             <Select
+                key='selectCurrency'
                 selectedValue={this.props.currentCurrency}
                 onChange={(e) => this.props.setCurrency(e.target.value as SupportedCurrencies)}
                 theme='white'>
@@ -92,7 +119,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
         const { langMenu } = this.state;
 
         return (
-            <div className={styles.menu}>
+            <div key='langMenu' className={styles.menu}>
                 <IconButton
                     aria-label='More'
                     aria-owns={langMenu ? 'simple-menu' : null}
@@ -114,7 +141,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
         const { userMenu } = this.state;
 
         return (
-            <div className={styles.userMenu}>
+            <div key='userMenu' className={styles.userMenu}>
                 <IconButton
                     aria-label='More'
                     aria-owns={userMenu ? 'simple-menu' : null}

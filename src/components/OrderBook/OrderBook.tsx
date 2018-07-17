@@ -11,9 +11,10 @@ import {
     getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange,
     startExchange, stopExchange, removeExchange, selectExchanges, sendOrderCommand
 } from './redux/actions';
-import Exchange from 'components/Exchange';
-import ManageExchangeDialog from 'components/ManageExchangeDialog';
-import TradingPen from 'components/TradingPen';
+import Exchange from './Exchange';
+import ManageExchangeDialog from './ManageExchangeDialog';
+import TradingPen from './TradingPen';
+import OrdersPen from './OrdersPen';
 
 const EXCHANGE_PULLING_RATE = 3000;
 
@@ -84,8 +85,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
                                 sendNewOrderCommand={sendOrderCommand}
                                 className={styles.tradingPen} />,
                             this.renderExchanges(exchanges),
-                            <div key='orderStatus' className={styles.orderStatus}>
-                            </div>
+                            <OrdersPen key='orders_pen' className={styles.orderStatus} />
                         ]
                     }
                 </div>

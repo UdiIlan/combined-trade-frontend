@@ -51,7 +51,7 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
     private execute() {
         const { size, price, operation, exchange, duration_sec, max_order_size } = this.state;
-        this.setState({ confirmDialog: undefined });
+        this.setState({ confirmDialog: undefined, size: undefined, price: undefined, operation: undefined, exchange: undefined, duration_sec: undefined, max_order_size: undefined });
         this.props.sendNewOrderCommand({
             size_coin: size,
             price_fiat: price,
@@ -59,13 +59,13 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
             fiat_type: 'USD',
             action_type: operation,
             exchanges: [exchange],
-            duration_sec: duration_sec,
-            max_order_size: max_order_size
+            duration_sec: duration_sec || 0,
+            max_order_size: max_order_size || 0
         });
     }
 
     render() {
-        const { size, price, operation, exchange, confirmDialog } = this.state;
+        const { size, price, operation, exchange, confirmDialog, duration_sec, max_order_size } = this.state;
         const exchanges = [...this.props.exchanges];
         if (exchanges.length > 1) exchanges.splice(0, 0, getLocalizedText('best_exchange'));
         exchanges.splice(0, 0, '');
@@ -75,15 +75,15 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
             <div className={styles.tradingBox}>
 
-                <Select className={styles.tradingOption} theme='white' formControl formLabelText='Exchange' onChange={(e) => this.setState({ exchange: e.target.value })}>
+                <Select selectedValue={exchange} className={styles.tradingOption} theme='white' formControl formLabelText='Exchange' onChange={(e) => this.setState({ exchange: e.target.value })}>
                     {_.map(exchanges, (exchange) => <option key={exchange} value={exchange}>{exchange}</option>)}
                 </Select>
 
-                <InputText className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ size: e.target.value })} label={getLocalizedText('size')} name='size' type='number' />
+                <InputText value={size} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ size: e.target.value })} label={getLocalizedText('size')} name='size' type='number' />
 
-                <InputText className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ price: e.target.value })} label={getLocalizedText('price')} name='price' type='number' />
+                <InputText value={price} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ price: e.target.value })} label={getLocalizedText('price')} name='price' type='number' />
 
-                <Select className={styles.tradingOption} theme='white' formControl formLabelText='Trade Option' onChange={e => this.setState({ operation: e.target.value })}>
+                <Select selectedValue={operation} className={styles.tradingOption} theme='white' formControl formLabelText='Trade Option' onChange={e => this.setState({ operation: e.target.value })}>
                     <option value='' />
                     <option value='buy'>{getLocalizedText('buy')}</option>
                     <option value='sell'>{getLocalizedText('sell')}</option>
@@ -96,8 +96,8 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
                 {
                     (!!operation && operation !== 'buy' && operation !== 'sell') &&
                     [
-                        <InputText className={styles.tradingOption} key='duration' theme='white' onChange={(e) => this.setState({ duration_sec: e.target.value })} label={getLocalizedText('duration')} name='duration' type='number' />,
-                        <InputText key='max_order_size' theme='white' onChange={(e) => this.setState({ max_order_size: e.target.value })} label={getLocalizedText('max_order_size')} name='max_order_size' type='number' />
+                        <InputText value={duration_sec} className={styles.tradingOption} key='duration' theme='white' onChange={(e) => this.setState({ duration_sec: e.target.value })} label={getLocalizedText('duration')} name='duration' type='number' />,
+                        <InputText value={max_order_size} key='max_order_size' theme='white' onChange={(e) => this.setState({ max_order_size: e.target.value })} label={getLocalizedText('max_order_size')} name='max_order_size' type='number' />
                     ]
                 }
 

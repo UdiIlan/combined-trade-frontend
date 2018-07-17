@@ -219,10 +219,25 @@ function* sendOrderCommandAsync(action) {
     try {
         const command: OrderAction = action.payload;
         const res = yield sendOrderCommand(command);
-        yield put(showToast({
-            intent: 'success',
-            message: `Successfully sent new ${getLocalizedText(command.action_type)} command for ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.`
-        }));
+        if (res.order_status === 'True') {
+            const message = (command.action_type === 'buy' || command.action_type === 'sell') ?
+                `Successfully ${command.action_type === 'buy' ? 'bought' : 'sold'} ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.` :
+                `Successfully sent new ${getLocalizedText(command.action_type)} command for ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.`;
+
+            yield put(showToast({
+                intent: 'success',
+                message: message
+            }));
+        }
+        else {
+            const message = (command.action_type === 'buy' || command.action_type === 'sell') ?
+                `Unable to ${getLocalizedText(command.action_type)} ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.` :
+                `Failed to sent new ${getLocalizedText(command.action_type)} command for ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.`;
+            yield put(showToast({
+                intent: 'error',
+                message: message
+            }));
+        }
     }
     catch (err) {
         console.error('Failed to send new order command: ', err);

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import bmTheme from 'themes';
 const styles = require('./styles.scss');
@@ -9,6 +10,7 @@ import { SupportedLanguages, getLocalizedText } from 'lang';
 import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
 import { sesLanguage, setCurrency, resetToast, setTheme } from './redux/actions';
 import OrderBook from 'components/OrderBook';
+import ReportManager from 'components/ReportManager';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
 
 export interface AppProps {
@@ -57,12 +59,8 @@ class App extends React.Component<AppProps, AppState> {
     render() {
         return (
             <MuiThemeProvider theme={bmTheme}>
-                {/*  <div className={`theme_${this.props.theme}`}> */}
+
                 <div className={styles.app}>
-
-                    {/* <TradingPen /> */}
-
-                    {/* <div> */}
 
                     <Header
                         currentCurrency={this.props.currentCurrency}
@@ -75,13 +73,24 @@ class App extends React.Component<AppProps, AppState> {
                     />
 
                     <div className={styles.content}>
-                        {this.props.children}
-                        <OrderBook ref={(orderBook: any) => {
-                            if (!this.orderBook) {
-                                this.orderBook = orderBook.getWrappedInstance();
-                                this.forceUpdate();
-                            }
-                        }} />
+                        <Switch>
+                            <Route exact path='/' render={(props) => {
+                                return (
+                                    <OrderBook ref={(orderBook: any) => {
+                                        if (!this.orderBook) {
+                                            this.orderBook = orderBook.getWrappedInstance();
+                                            this.forceUpdate();
+                                        }
+                                    }} />
+                                );
+                            }}
+                            />
+
+                            <Route path='/reports' component={ReportManager} />
+
+                            <Route path='*' render={(props) => <div>NOT FOUND!</div>} />
+                        </Switch>
+
                     </div>
 
                     {!!this.state.toast && <Toast intent={this.state.toast.intent} message={this.state.toast.message} open={true} />}
@@ -98,8 +107,6 @@ class App extends React.Component<AppProps, AppState> {
                             </footer> */}
                 </div>
 
-                {/*  </div> */}
-                {/* </div> */}
             </MuiThemeProvider >
         );
     }

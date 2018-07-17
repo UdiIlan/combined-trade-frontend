@@ -9,7 +9,7 @@ import { Exchange as IExchange, SupportedCurrencies, AccountCredentials, Exchang
 import ExchangeInfo from './ExchangeInfo';
 import ExchangeData from './ExchangeData';
 import ExchangeHeaderBar from './ExchangeHeaderBar';
-import SignInExchangeDialog from 'components/SignInExchangeDialog';
+import SignInExchangeDialog from './SignInExchangeDialog';
 
 export interface ExchangeProps {
     exchange: IExchange;

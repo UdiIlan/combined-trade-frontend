@@ -26,6 +26,10 @@ export default class InputText extends React.Component<InputTextProps, InputText
         this.onChange = this.onChange.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (!!this.props.value && this.state.currentValue !== nextProps.value) this.setState({ currentValue: nextProps.value || '' });
+    }
+
     onChange(e) {
         const ne = { ...e };
         this.setState({ currentValue: e.target.value }, () => this.props.onChange(ne));
