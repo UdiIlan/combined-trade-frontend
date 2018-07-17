@@ -1,16 +1,18 @@
 import * as _ from 'lodash';
 import { OrderBookActions } from './actions';
 import { handleActions, Action } from 'redux-actions';
-import { Exchange, ExchangeOrderBook, AccountCredentials, ExchangeStatus } from 'businessLogic/model';
+import { Exchange, ExchangeOrderBook, AccountCredentials, ExchangeStatus, OrderAction } from 'businessLogic/model';
 
 export interface OrderBookState {
     exchanges: Exchange[];
     loading?: boolean;
     exchangesStatus?: {};
+    userOrders: OrderAction[];
 }
 
 const INITIAL_STATE: OrderBookState = {
     exchanges: [],
+    userOrders: [],
     loading: true
 };
 
@@ -91,6 +93,12 @@ reducerMap[OrderBookActions.REMOVE_EXCHANGE] = (state: OrderBookState, action: A
 
 reducerMap[OrderBookActions.SET_EXCHANGES_STATUS] = (state: OrderBookState, action: Action<{}>): OrderBookState => {
     return { ...state, exchangesStatus: action.payload };
+};
+
+reducerMap[OrderBookActions.SEND_ORDER_COMMAND] = (state: OrderBookState, action: Action<OrderAction>): OrderBookState => {
+    const newUserOrders = state.userOrders ? [...state.userOrders] : [];
+    newUserOrders.push({ ...action.payload, status: 'pending' });
+    return { ...state, userOrders: newUserOrders };
 };
 
 export default handleActions<OrderBookState, any>(reducerMap, INITIAL_STATE);

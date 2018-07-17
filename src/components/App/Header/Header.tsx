@@ -119,7 +119,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
         const { langMenu } = this.state;
 
         return (
-            <div key='langMenu' className={styles.menu}>
+            <div key='langMenu'>
                 <IconButton
                     aria-label='More'
                     aria-owns={langMenu ? 'simple-menu' : null}

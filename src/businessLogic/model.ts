@@ -79,4 +79,5 @@ export interface OrderAction {
     duration_sec: number;
     max_order_size: number;
     exchanges: string[];
+    status?: 'success' | 'failed' | 'pending' | 'in-progress';
 }

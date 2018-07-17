@@ -23,6 +23,7 @@ export interface OrderBookProps {
     exchanges: IExchange[];
     exchangesStatus: {};
     loading?: boolean;
+    userOrders: OrderAction[];
     getExchanges();
     getActiveOrderBooks();
     signInToExchange(creds: AccountCredentials);
@@ -69,7 +70,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
 
     render() {
 
-        const { loading, exchanges, currentCurrency, sendOrderCommand } = this.props;
+        const { loading, exchanges, currentCurrency, sendOrderCommand, userOrders } = this.props;
 
         return (
             <div className={styles.orderBook}>
@@ -85,7 +86,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
                                 sendNewOrderCommand={sendOrderCommand}
                                 className={styles.tradingPen} />,
                             this.renderExchanges(exchanges),
-                            <OrdersPen key='orders_pen' className={styles.orderStatus} />
+                            <OrdersPen key='orders_pen' className={styles.orderStatus} orders={userOrders} />
                         ]
                     }
                 </div>
@@ -150,6 +151,7 @@ const mapStateToProps = (state) => {
         exchanges: _.get(state, 'orderBook.exchanges', []),
         loading: _.get(state, 'orderBook.loading', false),
         exchangesStatus: _.get(state, 'orderBook.exchangesStatus', {}),
+        userOrders: _.get(state, 'orderBook.userOrders', []),
     };
 };
 

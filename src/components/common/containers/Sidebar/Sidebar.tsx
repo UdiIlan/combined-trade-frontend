@@ -24,8 +24,12 @@ export default class Sidebar extends React.Component<SidebarProps, SidebarState>
         this.toggle = this.toggle.bind(this);
     }
 
-    toggle() {
+    private toggle() {
         this.setState({ collapsed: !this.state.collapsed });
+    }
+
+    open() {
+        this.setState({ collapsed: false });
     }
 
     render() {
