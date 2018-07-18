@@ -10,6 +10,8 @@ export interface SidebarProps {
     className?: string;
     children?: any;
     collapsible?: boolean;
+    open?: boolean;
+    collapsedItems?: any;
 }
 
 export interface SidebarState {
@@ -20,7 +22,7 @@ export default class Sidebar extends React.Component<SidebarProps, SidebarState>
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { collapsed: props.collapsible && !props.open };
         this.toggle = this.toggle.bind(this);
     }
 
@@ -34,7 +36,7 @@ export default class Sidebar extends React.Component<SidebarProps, SidebarState>
 
     render() {
         const isCollapsed = this.state.collapsed;
-        const { align, collapsible, className, children, header } = this.props;
+        const { align, collapsible, className, children, header, collapsedItems } = this.props;
 
         if (!collapsible)
             return (
@@ -59,7 +61,11 @@ export default class Sidebar extends React.Component<SidebarProps, SidebarState>
             <div className={cx(styles.sidebar, { collapsed: isCollapsed }, className)} >
 
                 <div className={cx(styles.toggle, { collapsed: isCollapsed })}>
-                    <IconButton id='toggle_sidebar_btn' onClick={this.toggle} iconName={iconName} className={styles.icon} />
+                    {isCollapsed && !!collapsedItems ?
+                        collapsedItems
+                        :
+                        <IconButton id='toggle_sidebar_btn' onClick={this.toggle} iconName={iconName} className={styles.icon} />
+                    }
                 </div>
 
                 <div className={cx(styles.container, { collapsed: isCollapsed })}>
@@ -67,6 +73,7 @@ export default class Sidebar extends React.Component<SidebarProps, SidebarState>
                     <span onClick={this.toggle} className={cx(styles.header, { collapsed: isCollapsed })}>{header}</span>
 
                     {!isCollapsed && <div className={styles.content}>{children}</div>}
+
 
                 </div>
 

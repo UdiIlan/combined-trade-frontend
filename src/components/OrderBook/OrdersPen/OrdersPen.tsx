@@ -4,11 +4,15 @@ const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import { getLocalizedText } from 'lang';
-import { OrderAction, SupportedCurrencies } from 'businessLogic/model';
+import { OrderActionStatus } from 'businessLogic/model';
 import Sidebar from 'components/common/containers/Sidebar';
+import IconButton from 'components/common/core/IconButton';
+import OrderStatusItem from './OrderStatusItem';
+
+import Badge from '@material-ui/core/Badge';
 
 export interface OrdersPenProps {
-    orders: OrderAction[];
+    orders?: OrderActionStatus[];
     className?: string;
 }
 
@@ -17,15 +21,21 @@ export default class OrdersPen extends React.Component<OrdersPenProps, any> {
     private sidebar: Sidebar;
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.orders.length < nextProps.orders.length) {
+        if (!!this.props.orders && this.props.orders.length < nextProps.orders.length) {
             this.sidebar.open();
         }
     }
 
     render() {
-        const { className, ...otherProps } = this.props;
+        const { className, orders, ...otherProps } = this.props;
         return (
-            <Sidebar ref={(sidebar) => this.sidebar = sidebar} className={cx(styles.tradingPen, className)} header='Orders Pen' align='right' collapsible>
+            <Sidebar
+                ref={(sidebar) => this.sidebar = sidebar}
+                className={cx(styles.ordersPen, className)}
+                header='Orders Pen'
+                collapsedItems={<Badge className={styles.badge} color='primary' badgeContent={orders ? orders.length : 0}><IconButton className={styles.badgeIco} iconName='receipt' onClick={() => this.sidebar.open()} /> </Badge>}
+                align='right'
+                collapsible>
                 {this.renderOrders()}
             </Sidebar>
         );
@@ -34,7 +44,7 @@ export default class OrdersPen extends React.Component<OrdersPenProps, any> {
     renderOrders() {
         return (
             <ul className={styles.orderList}>
-                {_.map(this.props.orders, (item: OrderAction, index) => <li key={index}>{item.size_coin}@{item.price_fiat} ({item.status})</li>)}
+                {_.map(this.props.orders, (item: OrderActionStatus) => <OrderStatusItem order={item} key={`${item.exchange}_${item.exchange_id}`} />)}
             </ul>
         );
     }

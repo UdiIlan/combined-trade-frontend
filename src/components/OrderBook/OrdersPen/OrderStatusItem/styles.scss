@@ -1,0 +1,57 @@
+@import "~styles/colors.scss";
+
+.orderStatusItem {
+  height: 20px;
+  color: white;
+  border: 1px solid;
+  margin: auto;
+  padding: 5px;
+  padding-bottom: 2px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  text-align: center;
+  width: 13vw;
+  display: flex;
+  justify-content: space-evenly;
+  border-radius: 5px;
+
+  &.failed {
+    @include themify($themes) {
+      background-color: themed('redError');
+    }
+  }
+
+  &.success {
+    @include themify($themes) {
+      background-color: themed('successGreen');
+    }
+  }
+
+  &.progress {
+    @include themify($themes) {
+      background-color: themed('warningBackground');
+    }
+  }
+
+  &:hover {
+    @include themify($themes) {
+      background-color: themed('listItemHoverBackground');
+      color: themed('blackText');
+    }
+   
+  }
+
+  .text {
+    word-wrap: break-word;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    // width: 100%;
+    display: inline-block;
+    font-size: 0.7vw;
+
+    &.type {
+      text-transform: capitalize;
+    }
+  }
+}

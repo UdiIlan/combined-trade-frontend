@@ -2,17 +2,22 @@
 import * as _ from 'lodash';
 import {
     OrderBookActions, setExchanges, serActiveOrderBooks, setSignInToExchangeResult,
-    setLogOutFromExchangeResult, getExchanges, setExchangesStatus, removeExchange
+    setLogOutFromExchangeResult, getExchanges, setExchangesStatus, setUserSentOrders
 } from './actions';
 import { showToast } from 'components/App/redux/actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import {
     getExchangesSignedInInfo, getExchangesAccountBalance, getActiveOrderBook,
-    signInToExchange, logOutFromExchange, startExchange, stopExchange, sendOrderCommand
+    signInToExchange, logOutFromExchange, startExchange, stopExchange, sendOrderCommand,
+    getUserOrdersStatus
 }
     from 'businessLogic/serverApi';
-import { Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook, OrderAction } from 'businessLogic/model';
+import {
+    Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook,
+    OrderAction, OrderActionStatus
+} from 'businessLogic/model';
 import { getLocalizedText } from 'lang';
+import InputText from '../../common/core/InputText';
 
 const getSelectedCurrency = (state) => state.app.currency;
 const getCurrentExchanges = (state) => state.orderBook.exchanges;
@@ -245,6 +250,33 @@ function* sendOrderCommandAsync(action) {
     }
 }
 
+function* getUserOrdersStatusAsync(action) {
+    try {
+        const res = yield getUserOrdersStatus(100);
+        const normalizedData: OrderActionStatus[] = _.map(res, item => {
+            const dateParts = item.order_time.split('.');
+            dateParts.pop();
+            const utcDateStr = `${dateParts.join('.')}.000Z`;
+            return {
+                ...item,
+                order_time: new Date(utcDateStr),
+                status: item.status.toLowerCase()
+            };
+        });
+
+        // calculate yesterday date
+        const date = new Date();
+        date.setDate(date.getDate() - 7);
+
+        const lastOrders = _.filter(normalizedData, (order: OrderActionStatus) => order.order_time > date);
+        yield put(setUserSentOrders(lastOrders));
+
+    }
+    catch (err) {
+        console.error('Failed to fetch user send orders: ', err);
+    }
+}
+
 
 export function* OrderBookSagas() {
     return yield all([
@@ -256,5 +288,6 @@ export function* OrderBookSagas() {
         takeEvery(OrderBookActions.STOP_EXCHANGE, stopExchangeAsync),
         takeEvery(OrderBookActions.SELECT_EXCHANGES, selectExchangesAsync),
         takeEvery(OrderBookActions.SEND_ORDER_COMMAND, sendOrderCommandAsync),
+        takeEvery(OrderBookActions.GET_USER_SENT_ORDERS, getUserOrdersStatusAsync),
     ]);
 }

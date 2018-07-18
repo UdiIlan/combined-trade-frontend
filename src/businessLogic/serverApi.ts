@@ -48,3 +48,8 @@ export const sendOrderCommand = async (order: OrderAction): Promise<any> => {
     const res = await fetcher.post('/SendOrder', order);
     return textToJson(res);
 };
+
+export const getUserOrdersStatus = async (limit: number = 100): Promise<any> => {
+    const res = await fetcher.get('/GetSentOrders', { limit });
+    return textToJson(res);
+};

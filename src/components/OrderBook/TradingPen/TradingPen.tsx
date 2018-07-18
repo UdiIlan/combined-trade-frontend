@@ -20,7 +20,7 @@ export default class TradingPen extends React.Component<TradingPenProps, any> {
     render() {
         const { className, ...otherProps } = this.props;
         return (
-            <Sidebar className={cx(styles.tradingPen, className)} header='Trading Pen' align='left' collapsible>
+            <Sidebar className={cx(styles.tradingPen, className)} header='Trading Pen' align='left' collapsible open>
                 <TradingBox {...otherProps} />
             </Sidebar>
         );

@@ -5,15 +5,16 @@
   flex-direction: column;
   justify-content: space-between;
   padding-bottom: 15px;
+  padding: 0px;
   transition: all .3s ease-out;
-
   @include themify($themes) {
     background-color: themed('sidebarBackground');
   }
 
   &.collapsed {
+    padding: 0px 10px;
     transition: all .3s ease-in;
-    width: 50px !important;
+    width: 35px !important;
   }
 
   .toggle {
@@ -48,7 +49,7 @@
 
       &.collapsed {
         transform: rotateZ(90deg);
-        right: 50px;
+        right: 57px;
         top: 45%;
         left: auto;
       }
@@ -57,5 +58,6 @@
 
   .content {
     transition: all .3s ease-out;
+    height: calc(100% - 70px);
   }
 }

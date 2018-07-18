@@ -1,18 +1,17 @@
 import * as _ from 'lodash';
 import { OrderBookActions } from './actions';
 import { handleActions, Action } from 'redux-actions';
-import { Exchange, ExchangeOrderBook, AccountCredentials, ExchangeStatus, OrderAction } from 'businessLogic/model';
+import { Exchange, ExchangeOrderBook, AccountCredentials, ExchangeStatus, OrderAction, OrderActionStatus } from 'businessLogic/model';
 
 export interface OrderBookState {
     exchanges: Exchange[];
     loading?: boolean;
     exchangesStatus?: {};
-    userOrders: OrderAction[];
+    userOrders?: OrderActionStatus[];
 }
 
 const INITIAL_STATE: OrderBookState = {
     exchanges: [],
-    userOrders: [],
     loading: true
 };
 
@@ -97,8 +96,32 @@ reducerMap[OrderBookActions.SET_EXCHANGES_STATUS] = (state: OrderBookState, acti
 
 reducerMap[OrderBookActions.SEND_ORDER_COMMAND] = (state: OrderBookState, action: Action<OrderAction>): OrderBookState => {
     const newUserOrders = state.userOrders ? [...state.userOrders] : [];
-    newUserOrders.push({ ...action.payload, status: 'pending' });
+    const { exchanges, size_coin, fiat_type, duration_sec, max_order_size, ...other } = action.payload;
+    newUserOrders.splice(0, 0, {
+        ...other,
+        crypto_size: size_coin,
+        status: 'pending',
+        exchange: exchanges[0],
+        order_time: new Date()
+    });
     return { ...state, userOrders: newUserOrders };
 };
+
+reducerMap[OrderBookActions.SET_USER_SENT_ORDERS] = (state: OrderBookState, action: Action<OrderActionStatus[]>): OrderBookState => {
+    let newUserOrders = [...action.payload];
+
+    if (!_.isEmpty(state.userOrders) && !_.isEmpty(newUserOrders)) {
+        // check if the last item is pushed by SEND_ORDER_COMMAND action, nut not yet returned from the server
+        newUserOrders = _.orderBy(newUserOrders, ['order_time'], 'desc');
+        const lastObj = newUserOrders[0];
+        const curLastObj = _.orderBy([...state.userOrders], ['order_time'], 'desc')[0];
+
+        if (lastObj.order_time < curLastObj.order_time)
+            newUserOrders.splice(0, 0, curLastObj);
+    }
+
+    return { ...state, userOrders: newUserOrders };
+};
+
 
 export default handleActions<OrderBookState, any>(reducerMap, INITIAL_STATE);

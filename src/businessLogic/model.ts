@@ -79,5 +79,20 @@ export interface OrderAction {
     duration_sec: number;
     max_order_size: number;
     exchanges: string[];
-    status?: 'success' | 'failed' | 'pending' | 'in-progress';
+}
+
+export interface OrderActionStatus {
+    action_type: OrderActionType;
+    ask?: number;
+    bid?: number;
+    crypto_available?: number;
+    crypto_size: number;
+    crypto_type: SupportedCurrencies;
+    exchange: string;
+    exchange_id?: string;
+    order_time: Date;
+    price_fiat: number;
+    status?: 'success' | 'failed' | 'pending' | 'in-progress' | 'cancelled';
+    timed_order?: number;
+    usd_balance?: number;
 }
