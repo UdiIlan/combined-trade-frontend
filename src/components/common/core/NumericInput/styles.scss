@@ -1,0 +1,30 @@
+@import "~styles/colors.scss";
+
+.whiteText {
+  @include themify($themes) {
+    color: themed('whiteText') !important;
+  }
+}
+
+.whiteInput {
+  @include themify($themes) {
+    color: themed('whiteText') !important;
+  }
+
+  &::before {
+    @include themify($themes) {
+      border-bottom-color: themed('whiteText') !important;
+    }
+  }
+
+  &:hover {
+    @include themify($themes) {
+      border-bottom-color: themed('whiteText') !important;
+    }
+    border-bottom: 2px solid !important;
+
+    &::before {
+      border-bottom: none !important;
+    }
+  }
+}

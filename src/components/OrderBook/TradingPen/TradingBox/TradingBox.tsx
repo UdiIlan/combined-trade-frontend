@@ -6,12 +6,16 @@ const cx = classNames.bind(styles);
 import { getLocalizedText } from 'lang';
 import Button from 'components/common/core/Button';
 import InputText from 'components/common/core/InputText';
+import NumericInput from 'components/common/core/NumericInput';
 import Select from 'components/common/core/Select';
 import { default as Dialog, DialogProps } from 'components/common/modals/Dialog';
-import { OrderAction, OrderActionType, SupportedFiatCurrencies, SupportedCurrencies } from 'businessLogic/model';
+import {
+    OrderAction, OrderActionType, SupportedFiatCurrencies,
+    SupportedCurrencies, Exchange, UNIFIED_EXCHANGE_KEY, ExchangeCoinBalance
+} from 'businessLogic/model';
 
 export interface TradingBoxProps {
-    exchanges?: string[];
+    exchanges?: Exchange[];
     selectedCurrency: SupportedCurrencies;
     sendNewOrderCommand(command: OrderAction);
 }
@@ -35,18 +39,68 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
         this.execute = this.execute.bind(this);
     }
 
-    confirmOrder() {
-        const { size, price, operation } = this.state;
-        this.setState({
-            confirmDialog:
-            {
-                title: 'Send New Order',
-                subTitle: [<span key='row1'>{`You are about to ${operation} ${size} ${this.props.selectedCurrency} for ${price} USD.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
-                onOkClick: this.execute,
-                onCancelClick: () => this.setState({ confirmDialog: undefined }),
-                okBtnText: 'Send'
+    private confirmOrder() {
+        const { size, price, operation, exchange } = this.state;
+        if (this.validateOrder(size, price, operation, exchange))
+            this.setState({
+                confirmDialog:
+                {
+                    title: 'Send New Order',
+                    subTitle: [<span key='row1'>{`You are about to ${operation} ${size} ${this.props.selectedCurrency} for ${price} USD.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
+                    onOkClick: this.execute,
+                    onCancelClick: () => this.setState({ confirmDialog: undefined }),
+                    okBtnText: 'Send'
+                }
+            });
+    }
+
+    private validateOrder(size: number, price: number, operation: OrderActionType, exchangeName: string): boolean {
+
+        exchangeName = exchangeName === getLocalizedText('best_exchange') ? UNIFIED_EXCHANGE_KEY : exchangeName;
+        const exchange: Exchange = _.find(this.props.exchanges, { name: exchangeName });
+        let msg = '';
+
+        if (!exchange)
+            msg = 'Invalid Exchange';
+        else {
+            switch (operation) {
+                case 'timed_buy':
+                case 'buy_limit':
+                case 'buy': {
+                    if (price < 5)
+                        msg = 'Minimum buying price must be grater than 5 USD.';
+
+                    if (Number(exchange.totalUSD) < Number(price))
+                        msg = `USD balance (${exchange.totalUSD}) is lower than the suggested price (${price}).`;
+                    break;
+
+                }
+                case 'timed_sell':
+                case 'sell_limit':
+                case 'sell': {
+                    const balance: ExchangeCoinBalance = _.find(exchange.balance, { coin: this.props.selectedCurrency });
+                    if (Number(balance.amount) < Number(size))
+                        msg = `${this.props.selectedCurrency} balance (${balance.amount}) is lower than the suggested size (${size}).`;
+                }
             }
-        });
+        }
+
+        if (msg) {
+            this.setState({
+                confirmDialog:
+                {
+                    title: 'Invalid Order',
+                    subTitle: msg,
+                    onCancelClick: () => this.setState({ confirmDialog: undefined }),
+                    okBtnHidden: true,
+                    intent: 'danger',
+                    cancelBtnText: 'OK'
+                }
+            });
+        }
+
+
+        return !msg;
     }
 
     private execute() {
@@ -66,8 +120,8 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
     render() {
         const { size, price, operation, exchange, confirmDialog, duration_sec, max_order_size } = this.state;
-        const exchanges = [...this.props.exchanges];
-        if (exchanges.length > 1) exchanges.splice(0, 0, getLocalizedText('best_exchange'));
+        const exchanges = _.map([...this.props.exchanges], item => item.name === UNIFIED_EXCHANGE_KEY ? getLocalizedText('best_exchange') : item.name);
+        if (exchanges.length === 2) exchanges.splice(1, 1);
         exchanges.splice(0, 0, '');
 
         return (
@@ -79,9 +133,9 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
                     {_.map(exchanges, (exchange) => <option key={exchange} value={exchange}>{exchange}</option>)}
                 </Select>
 
-                <InputText value={size} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ size: e.target.value })} label={getLocalizedText('size')} name='size' type='number' />
+                <NumericInput value={size} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ size: e.target.value })} label={getLocalizedText('size')} name='size' />
 
-                <InputText value={price} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ price: e.target.value })} label={getLocalizedText('price')} name='price' type='number' />
+                <NumericInput value={price} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ price: e.target.value })} label={getLocalizedText('price')} name='price' />
 
                 <Select selectedValue={operation} className={styles.tradingOption} theme='white' formControl formLabelText='Trade Option' onChange={e => this.setState({ operation: e.target.value })}>
                     <option value='' />
@@ -89,15 +143,15 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
                     <option value='sell'>{getLocalizedText('sell')}</option>
                     <option value='timed_buy'>{getLocalizedText('timed_buy')}</option>
                     <option value='timed_sell'>{getLocalizedText('timed_sell')}</option>
-                    <option value='buy_limit'>Buy Limit Making</option>
-                    <option value='sell_limit'>Sell Limit Making</option>
+                    <option value='buy_limit'>Timed Sell Making</option>
+                    <option value='sell_limit'>Timed Buy Making</option>
                 </Select>
 
                 {
                     (!!operation && operation !== 'buy' && operation !== 'sell') &&
                     [
-                        <InputText value={duration_sec} className={styles.tradingOption} key='duration' theme='white' onChange={(e) => this.setState({ duration_sec: e.target.value })} label={getLocalizedText('duration')} name='duration' type='number' />,
-                        <InputText value={max_order_size} key='max_order_size' theme='white' onChange={(e) => this.setState({ max_order_size: e.target.value })} label={getLocalizedText('max_order_size')} name='max_order_size' type='number' />
+                        <NumericInput min={0} value={duration_sec} className={styles.tradingOption} key='duration' theme='white' onChange={(e) => this.setState({ duration_sec: e.target.value })} label={getLocalizedText('duration')} name='duration' />,
+                        <NumericInput min={0} value={max_order_size} key='max_order_size' theme='white' onChange={(e) => this.setState({ max_order_size: e.target.value })} label={getLocalizedText('max_order_size')} name='max_order_size' />
                     ]
                 }
 

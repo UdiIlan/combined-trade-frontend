@@ -3,14 +3,14 @@ const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import { getLocalizedText } from 'lang';
-import { OrderAction, SupportedCurrencies } from 'businessLogic/model';
+import { OrderAction, SupportedCurrencies, Exchange } from 'businessLogic/model';
 import Sidebar from 'components/common/containers/Sidebar';
 import TradingBox from './TradingBox';
 
 
 export interface TradingPenProps {
     className?: string;
-    exchanges?: string[];
+    exchanges?: Exchange[];
     selectedCurrency: SupportedCurrencies;
     sendNewOrderCommand(command: OrderAction);
 }

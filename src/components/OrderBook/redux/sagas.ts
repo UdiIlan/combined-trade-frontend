@@ -254,9 +254,12 @@ function* getUserOrdersStatusAsync(action) {
     try {
         const res = yield getUserOrdersStatus(100);
         const normalizedData: OrderActionStatus[] = _.map(res, item => {
+
+            // convert UTC to local time
             const dateParts = item.order_time.split('.');
             dateParts.pop();
             const utcDateStr = `${dateParts.join('.')}.000Z`;
+
             return {
                 ...item,
                 order_time: new Date(utcDateStr),
@@ -264,7 +267,7 @@ function* getUserOrdersStatusAsync(action) {
             };
         });
 
-        // calculate yesterday date
+        // calculate last week date
         const date = new Date();
         date.setDate(date.getDate() - 7);
 

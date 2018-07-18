@@ -87,7 +87,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
                             <TradingPen
                                 key='trading_pen'
                                 selectedCurrency={currentCurrency}
-                                exchanges={_.map(_.filter(exchanges, (exchange: IExchange) => exchange.status === ExchangeStatus.LOGGED_IN), exchange => exchange.name)}
+                                exchanges={_.filter(exchanges, (exchange: IExchange) => exchange.name === UNIFIED_EXCHANGE_KEY || exchange.status === ExchangeStatus.LOGGED_IN)}
                                 sendNewOrderCommand={sendOrderCommand}
                                 className={styles.tradingPen} />,
                             this.renderExchanges(exchanges),

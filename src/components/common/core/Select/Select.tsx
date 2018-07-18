@@ -28,7 +28,7 @@ export default class Select extends React.Component<SelectProps, any> {
             <MISelect
                 native
                 className={cx(styles.select, this.props.className)}
-                value={this.props.selectedValue}
+                value={this.props.selectedValue || ''}
                 onChange={this.props.onChange}
                 classes={
                     {

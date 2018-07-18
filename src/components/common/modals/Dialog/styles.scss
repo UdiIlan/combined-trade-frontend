@@ -1,6 +1,14 @@
 .dialog {
-    min-width: 25vw;;
-    .content {
-       
+  min-width: 25vw;
+
+  .header {
+    font-size: 1.5rem;
+
+    &.danger {
+      color: red;
     }
+  }
+
+  .content {
+  }
 }

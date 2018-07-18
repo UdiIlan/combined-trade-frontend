@@ -7,6 +7,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { getLocalizedText } from 'lang';
 const styles = require('./styles.scss');
+const classNames = require('classnames/bind');
+const cx = classNames.bind(styles);
 
 export interface DialogProps {
     title: string;
@@ -14,7 +16,9 @@ export interface DialogProps {
     open?: boolean;
     okBtnText?: string;
     okBtnDisabled?: boolean;
+    okBtnHidden?: boolean;
     cancelBtnText?: string;
+    intent?: 'default' | 'danger' | 'info';
     onOkClick?();
     onCancelClick?();
 }
@@ -35,31 +39,33 @@ export default class Dialog extends React.Component<DialogProps, any> {
 
     render() {
         return (
-                <MUDialog
-                    open={this.props.open}
-                    onClose={this.handleClose}
-                    classes={{ paper: styles.dialog }}
-                    aria-labelledby='form-dialog-title'>
+            <MUDialog
+                open={this.props.open}
+                onClose={this.handleClose}
+                classes={{ paper: styles.dialog }}
+                aria-labelledby='form-dialog-title'>
 
-                    <DialogTitle id='form-dialog-title'>{this.props.title}</DialogTitle>
+                <DialogTitle disableTypography className={cx(styles.header, { danger: this.props.intent === 'danger' })} id='form-dialog-title'>{this.props.title}</DialogTitle>
 
-                    <DialogContent className={styles.content}>
-                        {this.props.subTitle && <DialogContentText>
-                            {this.props.subTitle}
-                        </DialogContentText>}
+                <DialogContent className={styles.content}>
+                    {this.props.subTitle && <DialogContentText>
+                        {this.props.subTitle}
+                    </DialogContentText>}
 
-                        {this.props.children}
+                    {this.props.children}
 
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => this.handleClose(false)} color='primary'>
-                            {this.props.cancelBtnText || getLocalizedText('cancel')}
-                        </Button>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => this.handleClose(false)} color='primary'>
+                        {this.props.cancelBtnText || getLocalizedText('cancel')}
+                    </Button>
+                    {!this.props.okBtnHidden &&
                         <Button disabled={this.props.okBtnDisabled} onClick={() => this.handleClose(true)} color='primary'>
                             {this.props.okBtnText || getLocalizedText('ok')}
                         </Button>
-                    </DialogActions>
-                </MUDialog>
+                    }
+                </DialogActions>
+            </MUDialog>
         );
     }
 }
