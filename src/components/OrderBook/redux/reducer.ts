@@ -1,13 +1,18 @@
 import * as _ from 'lodash';
 import { OrderBookActions } from './actions';
 import { handleActions, Action } from 'redux-actions';
-import { Exchange, ExchangeOrderBook, AccountCredentials, ExchangeStatus, OrderAction, OrderActionStatus } from 'businessLogic/model';
+import {
+    Exchange, ExchangeOrderBook, AccountCredentials,
+    ExchangeStatus, OrderAction, OrderActionStatus,
+    TimedOrderActionStatus
+} from 'businessLogic/model';
 
 export interface OrderBookState {
     exchanges: Exchange[];
     loading?: boolean;
     exchangesStatus?: {};
     userOrders?: OrderActionStatus[];
+    runningTimedOrder?: TimedOrderActionStatus;
 }
 
 const INITIAL_STATE: OrderBookState = {
@@ -95,6 +100,7 @@ reducerMap[OrderBookActions.SET_EXCHANGES_STATUS] = (state: OrderBookState, acti
 };
 
 reducerMap[OrderBookActions.SEND_ORDER_COMMAND] = (state: OrderBookState, action: Action<OrderAction>): OrderBookState => {
+
     const newUserOrders = state.userOrders ? [...state.userOrders] : [];
     const { exchanges, size_coin, fiat_type, duration_sec, max_order_size, ...other } = action.payload;
     newUserOrders.splice(0, 0, {
@@ -123,5 +129,12 @@ reducerMap[OrderBookActions.SET_USER_SENT_ORDERS] = (state: OrderBookState, acti
     return { ...state, userOrders: newUserOrders };
 };
 
+reducerMap[OrderBookActions.SET_TIMED_ORDER_STATUS] = (state: OrderBookState, action: Action<TimedOrderActionStatus>): OrderBookState => {
+    return { ...state, runningTimedOrder: action.payload };
+};
+
+reducerMap[OrderBookActions.CANCEL_TIMED_ORDER] = (state: OrderBookState, action: Action<TimedOrderActionStatus>): OrderBookState => {
+    return { ...state, runningTimedOrder: undefined };
+};
 
 export default handleActions<OrderBookState, any>(reducerMap, INITIAL_STATE);

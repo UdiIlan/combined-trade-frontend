@@ -13,6 +13,7 @@ export interface InputTextProps {
     name?: string;
     value?: any;
     type?: any;
+    disabled?: boolean;
     onChange?(e);
 }
 

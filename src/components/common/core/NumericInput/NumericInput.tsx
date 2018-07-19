@@ -14,6 +14,7 @@ export interface NumericInputProps {
     value?: any;
     min?: number;
     max?: number;
+    disabled?: boolean;
     onChange?(e);
 }
 

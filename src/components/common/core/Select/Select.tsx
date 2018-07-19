@@ -15,6 +15,7 @@ export interface SelectProps {
     formControl?: boolean;
     formHelperText?: string;
     formLabelText?: string;
+    disabled?: boolean;
     onChange?(e);
 }
 
@@ -30,6 +31,7 @@ export default class Select extends React.Component<SelectProps, any> {
                 className={cx(styles.select, this.props.className)}
                 value={this.props.selectedValue || ''}
                 onChange={this.props.onChange}
+                disabled={this.props.disabled}
                 classes={
                     {
                         root: selectClassName,

@@ -51,13 +51,13 @@
     text-overflow: ellipsis;
     overflow: hidden;
     display: inline-block;
-    // font-size: 0.7vw;
   }
 
   .opt {
     @extend .text;
     text-transform: capitalize;
     flex: 0.7;
+    text-overflow: initial;
   }
 
   .splitter {

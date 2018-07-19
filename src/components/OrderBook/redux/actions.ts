@@ -1,5 +1,8 @@
 import { createAction } from 'redux-actions';
-import { Exchange, ExchangeOrderBook, AccountCredentials, OrderAction, OrderActionStatus } from 'businessLogic/model';
+import {
+    Exchange, ExchangeOrderBook, AccountCredentials, OrderAction,
+    OrderActionStatus, TimedOrderActionStatus
+} from 'businessLogic/model';
 
 export const OrderBookActions = {
     GET_EXCHANGES: 'OrderBook/GET_EXCHANGES',
@@ -18,6 +21,9 @@ export const OrderBookActions = {
     SET_EXCHANGES_STATUS: 'OrderBook/SET_EXCHANGES_STATUS',
     GET_USER_SENT_ORDERS: 'OrderBook/GET_USER_SENT_ORDERS',
     SET_USER_SENT_ORDERS: 'OrderBook/SET_USER_SENT_ORDERS',
+    GET_TIMED_ORDER_STATUS: 'OrderBook/GET_TIMED_ORDER_STATUS',
+    SET_TIMED_ORDER_STATUS: 'OrderBook/SET_TIMED_ORDER_STATUS',
+    CANCEL_TIMED_ORDER: 'OrderBook/CANCEL_TIMED_ORDER',
 };
 
 export const getExchanges = createAction(OrderBookActions.GET_EXCHANGES);
@@ -51,3 +57,9 @@ export const sendOrderCommand = createAction(OrderBookActions.SEND_ORDER_COMMAND
 export const getUserOrdersStatus = createAction(OrderBookActions.GET_USER_SENT_ORDERS, () => { });
 
 export const setUserSentOrders = createAction(OrderBookActions.SET_USER_SENT_ORDERS, (lastOrders: OrderActionStatus[]) => lastOrders);
+
+export const getTimedOrderStatus = createAction(OrderBookActions.GET_TIMED_ORDER_STATUS, () => { });
+
+export const setTimedOrderStatus = createAction(OrderBookActions.SET_TIMED_ORDER_STATUS, (timedOrder: TimedOrderActionStatus) => timedOrder);
+
+export const cancelTimedOrder = createAction(OrderBookActions.CANCEL_TIMED_ORDER, () => { });

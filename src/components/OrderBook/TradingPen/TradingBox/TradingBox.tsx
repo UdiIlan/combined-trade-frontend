@@ -5,7 +5,6 @@ const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import { getLocalizedText } from 'lang';
 import Button from 'components/common/core/Button';
-import InputText from 'components/common/core/InputText';
 import NumericInput from 'components/common/core/NumericInput';
 import Select from 'components/common/core/Select';
 import { default as Dialog, DialogProps } from 'components/common/modals/Dialog';
@@ -17,6 +16,7 @@ import {
 export interface TradingBoxProps {
     exchanges?: Exchange[];
     selectedCurrency: SupportedCurrencies;
+    disabledTimedTrade?: boolean;
     sendNewOrderCommand(command: OrderAction);
 }
 
@@ -41,17 +41,33 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
     private confirmOrder() {
         const { size, price, operation, exchange } = this.state;
-        if (this.validateOrder(size, price, operation, exchange))
+        if (this.validateOrder(size, price, operation, exchange)) {
             this.setState({
                 confirmDialog:
                 {
                     title: 'Send New Order',
-                    subTitle: [<span key='row1'>{`You are about to ${operation} ${size} ${this.props.selectedCurrency} for ${price} USD.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
+                    subTitle: [<span key='row1'>{`You are about to ${this.getOperationText(operation)} ${size} ${this.props.selectedCurrency} for ${price} USD.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
                     onOkClick: this.execute,
                     onCancelClick: () => this.setState({ confirmDialog: undefined }),
                     okBtnText: 'Send'
                 }
             });
+        }
+    }
+
+    private getOperationText(operation: OrderActionType) {
+        if (operation === 'buy' || operation === 'sell') return operation;
+
+        switch (operation) {
+            case 'buy_limit':
+                return 'timed buy making';
+            case 'sell_limit':
+                return 'timed sell making';
+            case 'timed_buy':
+                return getLocalizedText('timed_buy');
+            case 'timed_sell':
+                return getLocalizedText('timed_sell');
+        }
     }
 
     private validateOrder(size: number, price: number, operation: OrderActionType, exchangeName: string): boolean {
@@ -120,6 +136,7 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
     render() {
         const { size, price, operation, exchange, confirmDialog, duration_sec, max_order_size } = this.state;
+        const { disabledTimedTrade } = this.props;
         const exchanges = _.map([...this.props.exchanges], item => item.name === UNIFIED_EXCHANGE_KEY ? getLocalizedText('best_exchange') : item.name);
         if (exchanges.length === 2) exchanges.splice(1, 1);
         exchanges.splice(0, 0, '');
@@ -141,10 +158,12 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
                     <option value='' />
                     <option value='buy'>{getLocalizedText('buy')}</option>
                     <option value='sell'>{getLocalizedText('sell')}</option>
-                    <option value='timed_buy'>{getLocalizedText('timed_buy')}</option>
-                    <option value='timed_sell'>{getLocalizedText('timed_sell')}</option>
-                    <option value='buy_limit'>Timed Sell Making</option>
-                    <option value='sell_limit'>Timed Buy Making</option>
+                    {!disabledTimedTrade && [
+                        <option key='timed_buy' value='timed_buy'>{getLocalizedText('timed_buy')}</option>,
+                        <option key='timed_sell' value='timed_sell'>{getLocalizedText('timed_sell')}</option>,
+                        <option key='buy_limit' value='buy_limit'>Timed Buy Making</option>,
+                        <option key='sell_limit' value='sell_limit'>Timed Sell Making</option>,
+                    ]}
                 </Select>
 
                 {

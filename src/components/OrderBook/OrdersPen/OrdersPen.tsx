@@ -44,7 +44,7 @@ export default class OrdersPen extends React.Component<OrdersPenProps, any> {
     renderOrders() {
         return (
             <ul className={styles.orderList}>
-                {_.map(this.props.orders, (item: OrderActionStatus) => <OrderStatusItem order={item} key={`${item.exchange}_${item.exchange_id}`} />)}
+                {_.map(this.props.orders, (item: OrderActionStatus, index) => <OrderStatusItem order={item} key={`${item.exchange}_${item.exchange_id}_${index}`} />)}
             </ul>
         );
     }

@@ -96,3 +96,16 @@ export interface OrderActionStatus {
     timed_order?: number;
     usd_balance?: number;
 }
+
+export interface TimedOrderActionStatus {
+    action_type: OrderActionType;
+    server_time: Date;
+    timed_order_done_size: number;
+    timed_order_duration_sec: number;
+    timed_order_elapsed_time: number;
+    timed_order_execution_start_time: Date;
+    timed_order_price_fiat: number;
+    timed_order_required_size: number;
+    timed_order_running: boolean;
+    timed_order_sent_time: Date;
+}

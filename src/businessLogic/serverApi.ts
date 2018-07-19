@@ -53,3 +53,13 @@ export const getUserOrdersStatus = async (limit: number = 100): Promise<any> => 
     const res = await fetcher.get('/GetSentOrders', { limit });
     return textToJson(res);
 };
+
+export const getTimedOrderStatus = async (): Promise<any> => {
+    const res = await fetcher.get('/GetTimedOrderStatus');
+    return textToJson(res);
+};
+
+export const cancelTimedOrder = async (): Promise<any> => {
+    const res = await fetcher.get('/CancelTimedOrder');
+    return textToJson(res);
+};

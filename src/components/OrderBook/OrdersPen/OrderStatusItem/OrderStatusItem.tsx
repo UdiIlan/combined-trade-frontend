@@ -37,10 +37,10 @@ export default class OrderStatusItem extends React.Component<OrderStatusItemProp
                     cx(styles.orderStatusItem,
                         { highlighted: Boolean(this.state.popover) },
                         { failed: order.status === 'failed' || order.status === 'cancelled' },
-                        { success: order.status === 'success' },
-                        { progress: order.status === 'pending' || order.status === 'in-progress' })}>
+                        { success: order.status === 'success' || order.status.endsWith('executed') },
+                        { progress: order.status === 'pending' || order.status === 'in-progress' || order.status.endsWith('sent') })}>
                 <span className={styles.opt}>
-                    {` ${order.action_type}`}
+                    {`${order.action_type.split('_')[0]}`}
                 </span>
                 <span className={styles.splitter}>|</span>
                 <span className={styles.info}>
@@ -73,6 +73,14 @@ export default class OrderStatusItem extends React.Component<OrderStatusItemProp
                         <span className={styles.value}>{DateUtils.format(order.order_time)}</span>
                     </div>
                     <div className={styles.orderDetail}>
+                        <span className={styles.key}>Size:</span>
+                        <span className={styles.value}>{`${order.crypto_size} ${order.crypto_type}`}</span>
+                    </div>
+                    <div className={styles.orderDetail}>
+                        <span className={styles.key}>Price:</span>
+                        <span className={styles.value}>{`${order.price_fiat} USD`}</span>
+                    </div>
+                    <div className={styles.orderDetail}>
                         <span className={styles.key}>Status:</span>
                         <span className={cx(styles.value, styles.capital)}>{order.status}</span>
                     </div>
@@ -80,10 +88,10 @@ export default class OrderStatusItem extends React.Component<OrderStatusItemProp
                         <span className={styles.key}>Exchange:</span>
                         <span className={styles.value}>{order.exchange}</span>
                     </div>
-                    <div className={styles.orderDetail}>
+                    {order.exchange_id !== '0' && <div className={styles.orderDetail}>
                         <span className={styles.key}>Order ID:</span>
                         <span className={styles.value}>{order.exchange_id}</span>
-                    </div>
+                    </div>}
                 </div>
             </Popover>
         );

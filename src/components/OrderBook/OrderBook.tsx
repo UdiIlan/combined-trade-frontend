@@ -5,12 +5,13 @@ const styles = require('./styles.scss');
 import Spinner from 'components/common/core/Spinner';
 import {
     SupportedCurrencies, Exchange as IExchange, AccountCredentials,
-    UNIFIED_EXCHANGE_KEY, OrderAction, OrderActionStatus, ExchangeStatus
+    UNIFIED_EXCHANGE_KEY, OrderAction, OrderActionStatus, ExchangeStatus,
+    TimedOrderActionStatus
 } from 'businessLogic/model';
 import {
     getExchanges, getActiveOrderBooks, signInToExchange, logOutFromExchange,
     startExchange, stopExchange, removeExchange, selectExchanges, sendOrderCommand,
-    getUserOrdersStatus
+    getUserOrdersStatus, getTimedOrderStatus, cancelTimedOrder
 } from './redux/actions';
 import Exchange from './Exchange';
 import ManageExchangeDialog from './ManageExchangeDialog';
@@ -25,6 +26,7 @@ export interface OrderBookProps {
     exchangesStatus: {};
     loading?: boolean;
     userOrders: OrderActionStatus[];
+    runningTimedOrder?: TimedOrderActionStatus;
     getExchanges();
     getActiveOrderBooks();
     signInToExchange(creds: AccountCredentials);
@@ -35,6 +37,8 @@ export interface OrderBookProps {
     selectExchanges(exchangesToAdd: string[], exchangesToRemove: string[]);
     sendOrderCommand(command: OrderAction);
     getUserOrdersStatus();
+    getTimedOrderStatus();
+    cancelTimedOrder();
 }
 
 export interface OrderBookState {
@@ -54,6 +58,8 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
 
     componentWillMount() {
         this.props.getExchanges();
+        this.props.getUserOrdersStatus();
+        this.props.getTimedOrderStatus();
         this.restartTimer();
     }
 
@@ -66,7 +72,18 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
         this.timerObj = setTimeout(() => {
             if (!this.props.loading) {
                 this.props.getActiveOrderBooks();
-                this.props.getUserOrdersStatus();
+
+                if (!!this.props.runningTimedOrder) {
+                    this.props.getTimedOrderStatus();
+                    this.props.getUserOrdersStatus();
+                }
+                else if (!_.isEmpty(this.props.userOrders)) {
+                    // Fetch user orders status, only if there are currently in-progress orders.
+                    const inProgressOrders = _.filter(this.props.userOrders,
+                        (order: OrderActionStatus) => order.status === 'in-progress' || order.status === 'pending');
+                    if (!_.isEmpty(inProgressOrders))
+                        this.props.getUserOrdersStatus();
+                }
             }
             this.restartTimer();
         }, EXCHANGE_PULLING_RATE);
@@ -75,7 +92,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
 
     render() {
 
-        const { loading, exchanges, currentCurrency, sendOrderCommand, userOrders } = this.props;
+        const { loading, exchanges, currentCurrency, sendOrderCommand, userOrders, runningTimedOrder, cancelTimedOrder } = this.props;
 
         return (
             <div className={styles.orderBook}>
@@ -89,6 +106,8 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
                                 selectedCurrency={currentCurrency}
                                 exchanges={_.filter(exchanges, (exchange: IExchange) => exchange.name === UNIFIED_EXCHANGE_KEY || exchange.status === ExchangeStatus.LOGGED_IN)}
                                 sendNewOrderCommand={sendOrderCommand}
+                                runningTimedOrder={runningTimedOrder}
+                                cancelTimedOrder={cancelTimedOrder}
                                 className={styles.tradingPen} />,
                             this.renderExchanges(exchanges),
                             <OrdersPen key='orders_pen' className={styles.orderStatus} orders={userOrders} />
@@ -156,7 +175,8 @@ const mapStateToProps = (state) => {
         exchanges: _.get(state, 'orderBook.exchanges', []),
         loading: _.get(state, 'orderBook.loading', false),
         exchangesStatus: _.get(state, 'orderBook.exchangesStatus', {}),
-        userOrders: _.get(state, 'orderBook.userOrders', undefined),
+        userOrders: _.get(state, 'orderBook.userOrders'),
+        runningTimedOrder: _.get(state, 'orderBook.runningTimedOrder'),
     };
 };
 
@@ -171,7 +191,9 @@ const mapDispatchToProps = (dispatch) => {
         removeExchange: (exchange: string) => dispatch(removeExchange(exchange)),
         selectExchanges: (exchangesToAdd: string[], exchangesToRemove: string[]) => dispatch(selectExchanges(exchangesToAdd, exchangesToRemove)),
         sendOrderCommand: (command: OrderAction) => dispatch(sendOrderCommand(command)),
-        getUserOrdersStatus: () => dispatch(getUserOrdersStatus())
+        getUserOrdersStatus: () => dispatch(getUserOrdersStatus()),
+        getTimedOrderStatus: () => dispatch(getTimedOrderStatus()),
+        cancelTimedOrder: () => dispatch(cancelTimedOrder())
     };
 };
 

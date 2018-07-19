@@ -2,14 +2,15 @@
 import * as _ from 'lodash';
 import {
     OrderBookActions, setExchanges, serActiveOrderBooks, setSignInToExchangeResult,
-    setLogOutFromExchangeResult, getExchanges, setExchangesStatus, setUserSentOrders
+    setLogOutFromExchangeResult, getExchanges, setExchangesStatus, setUserSentOrders,
+    setTimedOrderStatus, getTimedOrderStatus as getTimedOrderStatusAction
 } from './actions';
 import { showToast } from 'components/App/redux/actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import {
     getExchangesSignedInInfo, getExchangesAccountBalance, getActiveOrderBook,
     signInToExchange, logOutFromExchange, startExchange, stopExchange, sendOrderCommand,
-    getUserOrdersStatus
+    getUserOrdersStatus, getTimedOrderStatus, cancelTimedOrder
 }
     from 'businessLogic/serverApi';
 import {
@@ -17,7 +18,6 @@ import {
     OrderAction, OrderActionStatus
 } from 'businessLogic/model';
 import { getLocalizedText } from 'lang';
-import InputText from '../../common/core/InputText';
 
 const getSelectedCurrency = (state) => state.app.currency;
 const getCurrentExchanges = (state) => state.orderBook.exchanges;
@@ -225,9 +225,13 @@ function* sendOrderCommandAsync(action) {
         const command: OrderAction = action.payload;
         const res = yield sendOrderCommand(command);
         if (res.order_status === 'True') {
-            const message = (command.action_type === 'buy' || command.action_type === 'sell') ?
-                `Successfully ${command.action_type === 'buy' ? 'bought' : 'sold'} ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.` :
-                `Successfully sent new ${getLocalizedText(command.action_type)} command for ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.`;
+            let message;
+            if (command.action_type === 'buy' || command.action_type === 'sell')
+                message = `Successfully ${command.action_type === 'buy' ? 'bought' : 'sold'} ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.`;
+            else {
+                message = `Successfully sent new ${getLocalizedText(command.action_type)} command for ${command.size_coin} ${command.crypto_type} for ${command.price_fiat} ${command.fiat_type}.`;
+                yield put(getTimedOrderStatusAction());
+            }
 
             yield put(showToast({
                 intent: 'success',
@@ -252,7 +256,11 @@ function* sendOrderCommandAsync(action) {
 
 function* getUserOrdersStatusAsync(action) {
     try {
-        const res = yield getUserOrdersStatus(100);
+        let res = yield getUserOrdersStatus(100);
+
+        // remove duplications (same order id with different status)
+        res = _.uniqBy(res, 'exchange_id');
+
         const normalizedData: OrderActionStatus[] = _.map(res, item => {
 
             // convert UTC to local time
@@ -280,6 +288,26 @@ function* getUserOrdersStatusAsync(action) {
     }
 }
 
+function* getTimedOrderStatusAsync(action) {
+    try {
+        const res = yield getTimedOrderStatus();
+        const timedOrderStatus = res.timed_order_running === 'False' ? undefined : res;
+        yield put(setTimedOrderStatus(timedOrderStatus));
+    }
+    catch (err) {
+        console.error('Failed to fetch timed order status: ', err);
+    }
+}
+
+function* cancelTimedOrderAsync(action) {
+    try {
+        const res = yield cancelTimedOrder();
+    }
+    catch (err) {
+        console.error('Failed to fetch timed order status: ', err);
+    }
+}
+
 
 export function* OrderBookSagas() {
     return yield all([
@@ -292,5 +320,7 @@ export function* OrderBookSagas() {
         takeEvery(OrderBookActions.SELECT_EXCHANGES, selectExchangesAsync),
         takeEvery(OrderBookActions.SEND_ORDER_COMMAND, sendOrderCommandAsync),
         takeEvery(OrderBookActions.GET_USER_SENT_ORDERS, getUserOrdersStatusAsync),
+        takeEvery(OrderBookActions.GET_TIMED_ORDER_STATUS, getTimedOrderStatusAsync),
+        takeEvery(OrderBookActions.CANCEL_TIMED_ORDER, cancelTimedOrderAsync),
     ]);
 }

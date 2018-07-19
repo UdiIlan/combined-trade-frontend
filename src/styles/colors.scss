@@ -11,6 +11,7 @@ $themes: (
     secondaryTextColor: white,
     paperBoxShadow: (0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12)),
     highlightedPaperBoxShadow: (0px 1px 15px 0px rgba(0, 0, 0, 0.2), 7px 8px 1px 0px rgba(0, 0, 0, 0.14), 5px 5px 1px -1px rgba(0, 0, 0, 0.12)),
+
     // borders
     borderColor: lightgray,
 
@@ -26,6 +27,7 @@ $themes: (
     infoBackground: #1976d2,
     blackText: black,
     lightGrayBackground: lightgray,
+    disabled: gray,
 
     // List
     listHeaderBackground: lightslategray,
@@ -56,6 +58,7 @@ $themes: (
     infoBackground: #1976d2,
     blackText: black,
     lightGrayBackground: lightgray,
+    disabled: gray,
 
     // List
     listHeaderBackground: white,

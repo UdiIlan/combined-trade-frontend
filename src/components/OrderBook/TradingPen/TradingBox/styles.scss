@@ -3,19 +3,21 @@
 .tradingBox {
   display: flex;
   flex-direction: column;
-  // justify-content: space-around;
   padding: 15px;
-  // min-height: 35vh;
 
   .tradingOption {
     margin-bottom: 20px;
   }
 
   .colorInput {
-    color: white;
+    @include themify($themes) {
+      color: themed('whiteText');
+    }
 
     &:disabled {
-      color: gray;
+      @include themify($themes) {
+        color: themed('disabled');
+      }
     }
   }
 }

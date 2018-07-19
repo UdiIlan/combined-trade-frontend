@@ -1,3 +1,25 @@
+@import "~styles/colors.scss";
+
 .tradingPen {
-  // background-color: #465967;// #394b59;
+  .timedOrder {
+    padding: 0px 10px;
+    display: flex;
+    flex-direction: column;
+
+    .text {
+      @include themify($themes) {
+        color: themed('whiteText');
+      }
+    }
+
+    .progress {
+      margin-top: 5px;
+    }
+
+    .cancelBtn {
+      @include themify($themes) {
+        color: themed('whiteText');
+      }
+    }
+  }
 }
