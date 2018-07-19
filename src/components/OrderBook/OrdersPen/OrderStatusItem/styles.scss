@@ -34,11 +34,15 @@
     }
   }
 
-  &:hover {
+  &.highlighted {
     @include themify($themes) {
       background-color: themed('listItemHoverBackground');
       color: themed('blackText');
     }
+  }
+
+  &:hover {
+    @extend .highlighted;
   }
 
   .text {

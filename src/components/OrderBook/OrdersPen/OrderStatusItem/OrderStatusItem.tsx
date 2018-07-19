@@ -31,10 +31,11 @@ export default class OrderStatusItem extends React.Component<OrderStatusItemProp
     render() {
         const { order } = this.props;
         return [
-            < li key='ite'
+            < li key='item'
                 onClick={(e) => { this.setState({ popover: e.target }); console.debug(e.target); }}
                 className={
                     cx(styles.orderStatusItem,
+                        { highlighted: Boolean(this.state.popover) },
                         { failed: order.status === 'failed' || order.status === 'cancelled' },
                         { success: order.status === 'success' },
                         { progress: order.status === 'pending' || order.status === 'in-progress' })}>
