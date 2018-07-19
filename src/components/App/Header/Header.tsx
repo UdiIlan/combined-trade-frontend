@@ -137,6 +137,18 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
         );
     }
 
+    private getLanguageOptions() {
+        return _.map([{ lang: 'en_us', displayName: 'English' }, { lang: 'zh_cn', displayName: '中文' }/* , { lang: 'he_il', displayName: 'עברית' } */], (item) => {
+            return {
+                displayText: item.displayName,
+                icoSrc: require(`assets/icons/${item.lang}.ico`),
+                icoStyle: styles.langIco,
+                onClick: () => this.selectLang(item.lang),
+                selected: this.props.currentLang === item.lang
+            } as MenuItem;
+        });
+    }
+
     private renderUserMenu() {
         const { userMenu } = this.state;
 
@@ -169,18 +181,6 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                     ]} />
             </div >
         );
-    }
-
-    getLanguageOptions() {
-        return _.map([{ lang: 'en_us', displayName: 'English' }, { lang: 'zh_cn', displayName: '中文' }, { lang: 'he_il', displayName: 'עברית' }], (item) => {
-            return {
-                displayText: item.displayName,
-                icoSrc: require(`assets/icons/${item.lang}.ico`),
-                icoStyle: styles.langIco,
-                onClick: () => this.selectLang(item.lang),
-                selected: this.props.currentLang === item.lang
-            } as MenuItem;
-        });
     }
 
 
