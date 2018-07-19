@@ -46,7 +46,7 @@ export default function Button(props: ButtonProps) {
         </MIButton>;
     if (!tooltip || btnProps.disabled) return button;
     return (
-        <Tooltip title={tooltip} placement='left' classes={{ popper: styles.tooltip }}>
+        <Tooltip title={tooltip} placement='left'>
             {button}
         </Tooltip>
     );

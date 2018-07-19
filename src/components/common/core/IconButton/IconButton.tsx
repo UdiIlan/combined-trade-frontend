@@ -26,7 +26,7 @@ export default function IconButton(props: IconButtonProps) {
         </MUIconButton>;
     if (!tooltip || btnProps.disabled) return button;
     return (
-        <Tooltip title={tooltip} placement='left' classes={{ popper: styles.tooltip }}>
+        <Tooltip title={tooltip} placement='left'>
             {button}
         </Tooltip>
     );

@@ -9,10 +9,11 @@
   padding-bottom: 2px;
   margin-bottom: 10px;
   cursor: pointer;
-  text-align: center;
+  // text-align: center;
   width: 13vw;
   display: flex;
-  justify-content: space-evenly;
+  // justify-content: space-evenly;
+  align-items: center;
   border-radius: 5px;
 
   &.failed {
@@ -38,7 +39,6 @@
       background-color: themed('listItemHoverBackground');
       color: themed('blackText');
     }
-   
   }
 
   .text {
@@ -47,10 +47,49 @@
     text-overflow: ellipsis;
     overflow: hidden;
     display: inline-block;
-    font-size: 0.7vw;
+    // font-size: 0.7vw;
+  }
 
-    &.type {
-      text-transform: capitalize;
+  .opt {
+    @extend .text;
+    text-transform: capitalize;
+    flex: 0.7;
+  }
+
+  .splitter {
+    @extend .text;
+    flex: 0.2;
+    margin: 0px 5px;
+  }
+
+  .info {
+    @extend .text;
+    flex: 4;
+  }
+}
+
+.popover {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  .orderDetail {
+    margin-bottom: 5px;
+
+    &:last-of-type {
+      margin-bottom: 0px;
+    }
+
+    .key {
+      width: 90px;
+      display: inline-flex;
+      text-decoration: underline;
+    }
+
+    .value {
+      &.capital {
+        text-transform: capitalize;
+      }
     }
   }
 }
