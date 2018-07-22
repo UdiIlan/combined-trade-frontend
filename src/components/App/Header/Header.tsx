@@ -79,14 +79,14 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                     return (
                         [
                             this.renderCurrencyMenu(),
-                            <Button key='chooseEx' onClick={this.props.manageExchanges} type='contained' iconName='ballot' aria-label='Choose Exchanges' className={styles.exchangesBtn}>Choose Exchanges</Button>
+                            <Button key='reports' iconName='assessment' type='contained' aria-label='Reports' linkTo='/reports' tooltip='Reports' className={styles.actionsBtn} />,
+                            <Button key='chooseEx' onClick={this.props.manageExchanges} type='contained' iconName='ballot' aria-label='Choose Exchanges' tooltip='Choose Exchanges' className={styles.actionsBtn} />
                         ]
                     );
                 }}
                 />
 
-                <Route path='/reports' render={(props) => <span>Action</span>} />
-
+                <Button key='orderBook' aria-label='Reports' linkTo='/' className={styles.actionsBtn}>Back to Order Book</Button>
             </RSwitch>
         );
     }
@@ -103,14 +103,16 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
 
     private renderCurrencyMenu() {
         return (
-            <Select
-                key='selectCurrency'
-                selectedValue={this.props.currentCurrency}
-                onChange={(e) => this.props.setCurrency(e.target.value as SupportedCurrencies)}
-                theme='white'>
-                <option value='BTC'>{getLocalizedText('btc_usd_option')}</option>
-                <option value='BCH'>{getLocalizedText('bch_usd_option')}</option>
-            </Select>
+            <div key='selectCurrency' className={styles.selectCurrency}>
+                <span className={styles.label}>Selected Currency:</span>
+                <Select
+                    selectedValue={this.props.currentCurrency}
+                    onChange={(e) => this.props.setCurrency(e.target.value as SupportedCurrencies)}
+                    theme='white'>
+                    <option value='BTC'>{getLocalizedText('btc_usd_option')}</option>
+                    <option value='BCH'>{getLocalizedText('bch_usd_option')}</option>
+                </Select>
+            </div>
         );
     }
 

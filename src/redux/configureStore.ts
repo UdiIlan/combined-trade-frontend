@@ -3,15 +3,12 @@ import createSagaMiddleware from 'redux-saga';
 import createFilter from 'redux-persist-transform-filter';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { createHashHistory } from 'history';
-import { connectRouter, routerMiddleware } from 'connected-react-router';
 
 import rootSaga from './sagas';
 import rootReducer from './reducers';
-export const history = createHashHistory();
 
 const sagaMiddleware = createSagaMiddleware();
-const middleware = applyMiddleware(routerMiddleware(history), sagaMiddleware);
+const middleware = applyMiddleware(sagaMiddleware);
 
 const appReducer = createFilter('app', ['language', 'currency', 'theme']);
 const orderBookReducer = createFilter('orderBook', ['exchangesStatus']);
@@ -29,13 +26,13 @@ export default function configureStore(cb) {
 
     if (process.env.NODE_ENV === 'production') {
         console.log('Running on production environments');
-        store = createStore(connectRouter(history)(persistedReducer), {}, compose(middleware, f => f));
+        store = createStore(persistedReducer, {}, compose(middleware, f => f));
     }
     else {
         console.log('Running on dev environments');
         const devtools: any = window['devToolsExtension'] ? window['devToolsExtension']() : (f: any) => f; // add support for Redux dev tools
 
-        store = createStore(connectRouter(history)(persistedReducer), {}, compose(middleware, devtools));
+        store = createStore(persistedReducer, {}, compose(middleware, devtools));
     }
 
     sagaMiddleware.run(rootSaga);

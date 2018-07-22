@@ -1,6 +1,7 @@
 import * as React from 'react';
 const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
+import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 import Tooltip from '@material-ui/core/Tooltip';
 import Icon from '@material-ui/core/Icon';
@@ -16,6 +17,7 @@ export interface ButtonProps {
     tooltip?: string;
     type?: ButtonType;
     intent?: 'primary' | 'secondary' | 'default';
+    linkTo?: string;
     onClick?(e);
 }
 
@@ -35,10 +37,11 @@ const getMIButtonVariant = (type: ButtonType) => {
 };
 
 export default function Button(props: ButtonProps) {
-    const { className, iconName, type, intent, tooltip, ...btnProps } = props;
+    const { className, linkTo, iconName, type, intent, tooltip, ...btnProps } = props;
+    const link = !!linkTo ?  prop => <Link to={linkTo} {...prop} /> : undefined;
 
     const button =
-        <MIButton className={cx(styles.btn, className)} color={intent} variant={getMIButtonVariant(type)} {...btnProps}>
+        <MIButton className={cx(styles.btn, className)} color={intent} component={link} variant={getMIButtonVariant(type)} {...btnProps}>
             {!!iconName && <Icon className={styles.btnIco}>
                 {props.iconName}
             </Icon>}
@@ -46,7 +49,7 @@ export default function Button(props: ButtonProps) {
         </MIButton>;
     if (!tooltip || btnProps.disabled) return button;
     return (
-        <Tooltip title={tooltip} placement='left'>
+        <Tooltip title={tooltip} placement='bottom'>
             {button}
         </Tooltip>
     );

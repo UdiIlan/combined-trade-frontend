@@ -4,7 +4,6 @@ import orderBookReducer from 'components/OrderBook/redux/reducer';
 
 
 const rootReducer = combineReducers({
-    // routing: routerReducer
     app: appReducer,
     orderBook: orderBookReducer
 });
