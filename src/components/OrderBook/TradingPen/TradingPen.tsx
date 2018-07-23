@@ -30,11 +30,19 @@ export default class TradingPen extends React.Component<TradingPenProps, Trading
         this.state = {};
     }
 
+    private tb: TradingBox;
+
+    private cancelRunningOrder() {
+        this.props.cancelTimedOrder();
+        this.setState({ openDialog: false });
+        if (this.tb) this.tb.reset();
+    }
+
     render() {
         const { className, runningTimedOrder, ...otherProps } = this.props;
         return (
             <Sidebar className={cx(styles.tradingPen, className)} header='Trading Area' align='left' collapsible open>
-                <TradingBox disabledTimedTrade={!!runningTimedOrder} {...otherProps} />
+                <TradingBox ref={tb => this.tb = tb} disabledTimedTrade={!!runningTimedOrder} {...otherProps} />
 
                 {!!runningTimedOrder &&
                     <div className={styles.timedOrder}>
@@ -48,7 +56,7 @@ export default class TradingPen extends React.Component<TradingPenProps, Trading
                     open={this.state.openDialog || false}
                     title='Cancel Timed Order'
                     subTitle={[<span key='row1'>{'You are about to cancel running timed order.'}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>]}
-                    onOkClick={() => { this.props.cancelTimedOrder(); this.setState({ openDialog: false }); }}
+                    onOkClick={() => this.cancelRunningOrder()}
                     onCancelClick={() => this.setState({ openDialog: false })}
                 />
 

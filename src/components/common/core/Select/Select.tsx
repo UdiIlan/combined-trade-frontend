@@ -48,6 +48,17 @@ export default class Select extends React.Component<SelectProps, SelectState> {
         if (this.props.multiple && this.props.selectedValue) this.updateSelection(this.props.selectedValue);
     }
 
+    componentWillReceiveProps(nextProps: SelectProps) {
+        if (this.props.multiple) {
+            const curSelection = _.filter(this.state.selectedValue, item => item !== SELECT_ALL_OPTION);
+            if (_.intersection(curSelection, nextProps.selectedValue).length !== curSelection.length) {
+                this.updateSelection(nextProps.selectedValue, false);
+            }
+        }
+        else if (this.state.selectedValue !== nextProps.selectedValue)
+            this.setState({ selectedValue: nextProps.selectedValue || '' });
+    }
+
     private getMultipleOptions(props?) {
         props = props || this.props;
         let options = [...props.options];
@@ -55,13 +66,13 @@ export default class Select extends React.Component<SelectProps, SelectState> {
         return options;
     }
 
-    private updateSelection(selection) {
+    private updateSelection(selection, notifyProps = true) {
 
         let newSelection = selection;
 
         if (!this.props.multiple) {
             this.setState({ selectedValue: newSelection }, () => {
-                if (this.props.onChange)
+                if (notifyProps && this.props.onChange)
                     this.props.onChange(newSelection);
             });
             return;
@@ -86,7 +97,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
         }
 
         this.setState({ selectedValue: newSelection }, () => {
-            if (this.props.onChange)
+            if (notifyProps && this.props.onChange)
                 this.props.onChange(_.filter(newSelection, item => item !== SELECT_ALL_OPTION));
         });
     }

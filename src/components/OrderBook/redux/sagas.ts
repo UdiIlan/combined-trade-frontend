@@ -246,7 +246,7 @@ function* getUserOrdersStatusAsync(action) {
         let res = yield getUserOrdersStatus(100);
 
         // remove duplications (same order id with different status)
-        res = _.uniqBy(res, 'exchange_id');
+        // res = _.uniqWith(res,  (x , y) => x.exchange_id === y.exchange_id && x.order_date === y.order_date);
 
         const normalizedData: OrderActionStatus[] = _.map(res, item => {
             return {

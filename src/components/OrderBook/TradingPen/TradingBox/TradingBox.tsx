@@ -121,7 +121,7 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
     private execute() {
         const { size, price, operation, exchange, duration_sec, max_order_size } = this.state;
-        this.setState({ confirmDialog: undefined, size: undefined, price: undefined, operation: undefined, exchange: undefined, duration_sec: undefined, max_order_size: undefined });
+        this.reset();
         this.props.sendNewOrderCommand({
             size_coin: size,
             price_fiat: price,
@@ -132,6 +132,10 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
             duration_sec: duration_sec || 0,
             max_order_size: max_order_size || 0
         });
+    }
+
+    reset() {
+        this.setState({ confirmDialog: undefined, size: undefined, price: undefined, operation: undefined, exchange: undefined, duration_sec: undefined, max_order_size: undefined });
     }
 
     render() {

@@ -36,9 +36,9 @@ export default class OrderStatusItem extends React.Component<OrderStatusItemProp
                 className={
                     cx(styles.orderStatusItem,
                         { highlighted: Boolean(this.state.popover) },
-                        { failed: order.status === 'failed' || order.status === 'cancelled' },
-                        { success: order.status === 'success' || order.status.endsWith('executed') },
-                        { progress: order.status === 'pending' || order.status === 'in-progress' || order.status.endsWith('sent') })}>
+                        { failed: order.status === 'failed' || ((order.action_type === 'buy' || order.action_type === 'sell') && order.status === 'cancelled') },
+                        { success: order.status === 'success' /* || order.status.endsWith('executed') */ },
+                        { progress: order.status === 'pending' || order.status === 'in-progress' })}>
                 <span className={styles.opt}>
                     {`${order.action_type.split('_')[0]}`}
                 </span>

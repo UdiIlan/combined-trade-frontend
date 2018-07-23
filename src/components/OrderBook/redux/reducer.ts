@@ -123,7 +123,7 @@ reducerMap[OrderBookActions.SET_USER_SENT_ORDERS] = (state: OrderBookState, acti
         const lastObj = newUserOrders[0];
         const curLastObj = _.orderBy([...state.userOrders], ['order_time'], 'desc')[0];
 
-        if (lastObj.order_time < curLastObj.order_time)
+        if (lastObj.order_time.setMilliseconds(0) < curLastObj.order_time.setMilliseconds(0)) // ignore milliseconds
             newUserOrders.splice(0, 0, curLastObj);
     }
 
@@ -144,24 +144,6 @@ reducerMap[OrderBookActions.SET_ACCOUNT_BALANCE] = (state: OrderBookState, actio
 
     _.forEach(exchanges, (exchange: Exchange) => {
         ExchangeUtils.updateBalance(exchange, accountBalance);
-        // const balance = accountBalance[exchange.name];
-        // const currencyBalances = balance && balance['balances'];
-        // exchange.fees = balance && balance['fees'];
-        // exchange.totalUSD = balance && balance['total_usd_value'] && balance['total_usd_value'].toFixed(2);
-        // exchange.balance = (!!currencyBalances ?
-        //     _.map(Object.keys(currencyBalances), key => {
-        //         const coinBalance = currencyBalances[key];
-        //         const fixedDecimalDigits = key === 'USD' ? 2 : 4;
-        //         return {
-        //             coin: key,
-        //             amount: !!coinBalance.amount ? coinBalance.amount.toFixed(fixedDecimalDigits) : undefined,
-        //             available: !!coinBalance.amount ? coinBalance.amount.toFixed(fixedDecimalDigits) : undefined,
-        //             price: coinBalance.price
-        //         } as ExchangeCoinBalance;
-        //     })
-        //     :
-        //     undefined);
-
     });
 
     return { ...state, exchanges };
