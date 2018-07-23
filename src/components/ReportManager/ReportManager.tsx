@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
 const styles = require('./styles.scss');
-import { getOrdersReport } from './redux/actions';
+import { getOrdersReport, setOrdersReport } from './redux/actions';
 import FilterBar from './FilterBar';
 import ReportData from './ReportData';
 
@@ -12,12 +12,17 @@ interface ReportManagerProps {
     loading?: boolean;
     exchanges: string[];
     getOrdersReport(filters: any);
+    resetOrdersReport();
 }
 
 class ReportManager extends React.Component<ReportManagerProps, any> {
 
     constructor(props) {
         super(props);
+    }
+
+    componentWillUnmount() {
+        this.props.resetOrdersReport();
     }
 
     render() {
@@ -44,7 +49,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getOrdersReport: (filters) => dispatch(getOrdersReport(filters))
+        getOrdersReport: (filters) => dispatch(getOrdersReport(filters)),
+        resetOrdersReport: () => dispatch(setOrdersReport(undefined))
     };
 };
 
