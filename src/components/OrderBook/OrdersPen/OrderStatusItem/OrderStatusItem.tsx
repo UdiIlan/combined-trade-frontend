@@ -70,7 +70,7 @@ export default class OrderStatusItem extends React.Component<OrderStatusItemProp
                 <div className={styles.popover}>
                     <div className={styles.orderDetail}>
                         <span className={styles.key}>Order Time:</span>
-                        <span className={styles.value}>{DateUtils.format(order.order_time)}</span>
+                        <span className={styles.value}>{DateUtils.defaultFormat(order.order_time)}</span>
                     </div>
                     <div className={styles.orderDetail}>
                         <span className={styles.key}>Size:</span>

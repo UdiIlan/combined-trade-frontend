@@ -62,6 +62,13 @@ $controlMargin: 20px;
     margin-left: auto;
   }
 
+  .loading {
+    @extend .execBtn;
+    @include themify($themes) {
+      color: themed('whiteText');
+    }
+  }
+
   .exportBtn {
     color: inherit;
     margin-left: 5px;

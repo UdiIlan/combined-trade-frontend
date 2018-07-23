@@ -9,6 +9,7 @@ import ReportData from './ReportData';
 
 interface ReportManagerProps {
     data?: any[];
+    loading?: boolean;
     exchanges: string[];
     getOrdersReport(filters: any);
 }
@@ -21,11 +22,11 @@ class ReportManager extends React.Component<ReportManagerProps, any> {
 
     render() {
 
-        const { data, getOrdersReport, exchanges } = this.props;
+        const { data, getOrdersReport, exchanges, loading } = this.props;
 
         return (
             <div className={styles.reportManager}>
-                <FilterBar getReportData={getOrdersReport} exchanges={exchanges} noData={_.isEmpty(data)} />
+                <FilterBar getReportData={getOrdersReport} exchanges={exchanges} loading={loading} noData={_.isEmpty(data)} />
                 <ReportData data={data} />
             </div>
         );
@@ -36,6 +37,7 @@ class ReportManager extends React.Component<ReportManagerProps, any> {
 const mapStateToProps = (state) => {
     return {
         data: _.get(state, 'reportManager.data', []),
+        loading: _.get(state, 'reportManager.loading', false),
         exchanges: _.map(_.get(state, 'orderBook.exchanges', []), exchange => exchange.name)
     };
 };

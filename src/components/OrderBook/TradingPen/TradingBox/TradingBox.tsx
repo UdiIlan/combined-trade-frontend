@@ -150,7 +150,7 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
             <div className={styles.tradingBox}>
 
-                <Select disabled={disabled} selectedValue={exchange} className={styles.tradingOption} theme='white' formControl formLabelText='Exchange' onChange={(e) => this.setState({ exchange: e.target.value })}>
+                <Select disabled={disabled} selectedValue={exchange} className={styles.tradingOption} theme='white' formControl formLabelText='Exchange' onChange={(selection) => this.setState({ exchange: selection })}>
                     {_.map(exchanges, (exchange) => <option key={exchange} value={exchange}>{exchange}</option>)}
                 </Select>
 
@@ -158,7 +158,7 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
                 <NumericInput disabled={disabled} value={price} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ price: e.target.value })} label={getLocalizedText('price')} name='price' />
 
-                <Select disabled={disabled} selectedValue={operation} className={styles.tradingOption} theme='white' formControl formLabelText='Trade Option' onChange={e => this.setState({ operation: e.target.value })}>
+                <Select disabled={disabled} selectedValue={operation} className={styles.tradingOption} theme='white' formControl formLabelText='Trade Option' onChange={selection => this.setState({ operation: selection })}>
                     <option value='' />
                     <option value='buy'>{getLocalizedText('buy')}</option>
                     <option value='sell'>{getLocalizedText('sell')}</option>

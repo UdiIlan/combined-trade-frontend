@@ -2,13 +2,16 @@ import * as React from 'react';
 import * as _ from 'lodash';
 const styles = require('./styles.scss');
 import Button from 'components/common/core/Button';
+import Spinner from 'components/common/core/Spinner';
 import Select from 'components/common/core/Select';
 import DatePicker from 'components/common/core/DatePicker';
 import { DateUtils } from 'businessLogic/utils';
 
+const ORDER_STATUS_OPTIONS = ['Cancelled', 'Finished', 'Make Order', 'Make Order Sent', 'Make Order Executed'];
 
 interface ReportManagerProps {
     exchanges: string[];
+    loading?: boolean;
     noData?: boolean;
     getReportData(filters: any);
 }
@@ -20,36 +23,50 @@ interface ReportManagerState {
     start_date?: Date;
     end_date?: Date;
     timeRange?: TimeRangeOptions;
-    status?: string;
+    status?: string[];
 }
 
 export default class FilterBar extends React.Component<ReportManagerProps, ReportManagerState> {
 
     constructor(props) {
         super(props);
-        this.state = { timeRange: 'today', start_date: new Date(), end_date: new Date() };
+        this.state = {
+            timeRange: 'today',
+            start_date: new Date(),
+            end_date: new Date(),
+            status: ORDER_STATUS_OPTIONS,
+            exchanges: props.exchanges
+        };
         this.execute = this.execute.bind(this);
+    }
+    componentWillMount() {
+        this.updateTimeRange();
     }
 
     private execute() {
         const { exchanges, status, start_date, end_date } = this.state;
 
-        this.props.getReportData({
-            exchanges,
-            statuses: status,
-            start_date,
-            end_date
-        });
+        let filterObj = {
+            statuses: _.isEmpty(status) ? undefined : status,
+            start_date: DateUtils.format(start_date, 'YYYY-MM-DD hh:mm'),
+            end_date: DateUtils.format(end_date, 'YYYY-MM-DD hh:mm'),
+            exchanges: _.isEmpty(exchanges) ? undefined : exchanges
+        };
+
+        this.props.getReportData(filterObj);
     }
 
     private updateTimeRange() {
         const timeRange = this.state.timeRange;
         if (timeRange === 'custom') return;
 
-        let start_date = new Date();
+        let start_date;
         let end_date = new Date();
 
-        if (timeRange === 'lastWeek') {
+        if (timeRange === 'today') {
+            start_date = DateUtils.yesterday();
+        }
+        else if (timeRange === 'lastWeek') {
             start_date = DateUtils.lastWeek();
         }
 
@@ -62,11 +79,10 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
 
         return (
             <div className={styles.filterBar}>
-                {/* <span>Filter By:</span> */}
 
                 <div className={styles.filter}>
                     <span className={styles.label}>Date:</span>
-                    <Select selectedValue={timeRange} theme='white' onChange={(e) => this.setState({ timeRange: e.target.value }, () => this.updateTimeRange())}>
+                    <Select selectedValue={timeRange} theme='white' onChange={(selection) => this.setState({ timeRange: selection }, () => this.updateTimeRange())}>
                         <option value='today'>Today</option>
                         <option value='lastWeek'>Last Week</option>
                         <option value='custom'>Date Range</option>
@@ -89,10 +105,9 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
                     <span className={styles.label}>Exchange:</span>
                     <Select
                         selectedValue={exchanges}
-                        onChange={(e) => this.setState({ exchanges: e.target.value })}
+                        onChange={(selection) => this.setState({ exchanges: selection })}
                         formLabelText='Exchange'
                         multiple
-                        renderAsMenu
                         theme='white' options={this.props.exchanges} />
                 </div>
 
@@ -102,18 +117,18 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
                     <span className={styles.label}>Status:</span>
                     <Select
                         selectedValue={status}
-                        onChange={(e) => this.setState({ status: e.target.value })}
-                        theme='white'>
-                        <option />
-                        <option>Cancelled</option>
-                        <option>Finished</option>
-                        <option>Make Order</option>
-                        <option>Make Order Sent</option>
-                        <option>Make Order Executed</option>
-                    </Select>
+                        multiple
+                        onChange={(selection) => this.setState({ status: selection })}
+                        theme='white'
+                        options={ORDER_STATUS_OPTIONS} />
                 </div>
 
-                <Button onClick={this.execute} className={styles.execBtn} iconName='play_circle_filled'>GO</Button>
+                {this.props.loading ?
+                    <Spinner size={20} className={styles.loading} />
+                    :
+                    <Button onClick={this.execute} className={styles.execBtn} iconName='play_circle_filled'>GO</Button>
+                }
+
                 <Button onClick={this.execute} className={styles.exportBtn} iconName='save_alt' disabled={this.props.noData}>Export</Button>
             </div>
         );
