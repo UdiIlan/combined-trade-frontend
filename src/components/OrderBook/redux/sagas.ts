@@ -17,6 +17,7 @@ import {
     Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook,
     OrderAction, OrderActionStatus
 } from 'businessLogic/model';
+import { DateUtils } from 'businessLogic/utils';
 import { getLocalizedText } from 'lang';
 
 const getSelectedCurrency = (state) => state.app.currency;
@@ -275,11 +276,9 @@ function* getUserOrdersStatusAsync(action) {
             };
         });
 
-        // calculate last week date
-        const date = new Date();
-        date.setDate(date.getDate() - 7);
 
-        const lastOrders = _.filter(normalizedData, (order: OrderActionStatus) => order.order_time > date);
+        const lastWeekDate = DateUtils.lastWeek();
+        const lastOrders = _.filter(normalizedData, (order: OrderActionStatus) => order.order_time > lastWeekDate);
         yield put(setUserSentOrders(lastOrders));
 
     }

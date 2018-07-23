@@ -63,3 +63,8 @@ export const cancelTimedOrder = async (): Promise<any> => {
     const res = await fetcher.get('/CancelTimedOrder');
     return textToJson(res);
 };
+
+export const getOrdersReport = async (filters: any, limit = 1000): Promise<any> => {
+    const res = await fetcher.post('/GetSentOrdersFiltered', { limit, filter: filters });
+    return textToJson(res);
+};

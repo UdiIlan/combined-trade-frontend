@@ -80,13 +80,14 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                         [
                             this.renderCurrencyMenu(),
                             <Button key='reports' iconName='assessment' type='contained' aria-label='Reports' linkTo='/reports' tooltip='Reports' className={styles.actionsBtn} />,
-                            <Button key='chooseEx' onClick={this.props.manageExchanges} type='contained' iconName='ballot' aria-label='Choose Exchanges' tooltip='Choose Exchanges' className={styles.actionsBtn} />
+                            <Button key='chooseEx' onClick={this.props.manageExchanges} type='contained' iconName='storage' aria-label='Choose Exchanges' tooltip='Choose Exchanges' className={styles.actionsBtn} />
                         ]
                     );
                 }}
                 />
-
-                <Button key='orderBook' aria-label='Reports' linkTo='/' className={styles.actionsBtn}>Back to Order Book</Button>
+                <Route path='/reports' render={(props) =>
+                    <Button aria-label='Reports' iconName='keyboard_backspace' linkTo='/' className={styles.actionsBtn}>Back to Order Book</Button>}
+                />
             </RSwitch>
         );
     }
@@ -140,7 +141,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
     }
 
     private getLanguageOptions() {
-        return _.map([{ lang: 'en_us', displayName: 'English' }, { lang: 'zh_cn', displayName: '中文' }/* , { lang: 'he_il', displayName: 'עברית' } */], (item) => {
+        return _.map([{ lang: 'en_us', displayName: 'English' }, { lang: 'zh_cn', displayName: '中文' }], (item) => {
             return {
                 displayText: item.displayName,
                 icoSrc: require(`assets/icons/${item.lang}.ico`),

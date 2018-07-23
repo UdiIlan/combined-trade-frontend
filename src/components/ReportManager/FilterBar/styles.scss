@@ -1,0 +1,69 @@
+@import "~styles/colors.scss";
+$filterMargin: 100px;
+$controlMargin: 20px;
+
+.filterBar {
+  display: flex;
+  background-color: $MainBlue;
+  // justify-content: space-between;
+  padding: 0px 30px;
+  align-items: center;
+  margin: 15px 0px;
+  @include themify($themes) {
+    color: themed('whiteText');
+  }
+
+  .filter {
+    display: flex;
+    align-items: center;
+    margin-right: $filterMargin;
+
+    .label {
+      display: inline-block;
+      margin-right: $controlMargin;
+    }
+
+    .dateFilters {
+      display: flex;
+      align-items: center;
+      margin-left: $controlMargin;
+
+      .dateControl {
+        label,
+        div:first-of-type {
+          @include themify($themes) {
+            color: themed('whiteText');
+          }
+
+          &::before {
+            @include themify($themes) {
+              border-bottom-color: themed('whiteText');
+            }
+          }
+        }
+
+        &:first-of-type {
+          margin-right: $controlMargin;
+        }
+      }
+    }
+  }
+
+  .splitter {
+    display: inline-block;
+    margin-right: $filterMargin;
+    @include themify($themes) {
+      color: themed('whiteText');
+    }
+  }
+
+  .execBtn {
+    color: inherit;
+    margin-left: auto;
+  }
+
+  .exportBtn {
+    color: inherit;
+    margin-left: 5px;
+  }
+}

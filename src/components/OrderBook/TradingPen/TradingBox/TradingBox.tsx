@@ -138,6 +138,10 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
         const { size, price, operation, exchange, confirmDialog, duration_sec, max_order_size } = this.state;
         const { disabledTimedTrade } = this.props;
         const exchanges = _.map([...this.props.exchanges], item => item.name === UNIFIED_EXCHANGE_KEY ? getLocalizedText('best_exchange') : item.name);
+
+        // if no exchange is logged-in, disable trading
+        const disabled = _.isEmpty(exchanges) || (exchanges.length === 1 && exchanges[0] === getLocalizedText('best_exchange'));
+
         if (exchanges.length === 2) exchanges.splice(1, 1);
         exchanges.splice(0, 0, '');
 
@@ -146,15 +150,15 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
             <div className={styles.tradingBox}>
 
-                <Select selectedValue={exchange} className={styles.tradingOption} theme='white' formControl formLabelText='Exchange' onChange={(e) => this.setState({ exchange: e.target.value })}>
+                <Select disabled={disabled} selectedValue={exchange} className={styles.tradingOption} theme='white' formControl formLabelText='Exchange' onChange={(e) => this.setState({ exchange: e.target.value })}>
                     {_.map(exchanges, (exchange) => <option key={exchange} value={exchange}>{exchange}</option>)}
                 </Select>
 
-                <NumericInput value={size} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ size: e.target.value })} label={getLocalizedText('size')} name='size' />
+                <NumericInput disabled={disabled} value={size} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ size: e.target.value })} label={getLocalizedText('size')} name='size' />
 
-                <NumericInput value={price} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ price: e.target.value })} label={getLocalizedText('price')} name='price' />
+                <NumericInput disabled={disabled} value={price} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ price: e.target.value })} label={getLocalizedText('price')} name='price' />
 
-                <Select selectedValue={operation} className={styles.tradingOption} theme='white' formControl formLabelText='Trade Option' onChange={e => this.setState({ operation: e.target.value })}>
+                <Select disabled={disabled} selectedValue={operation} className={styles.tradingOption} theme='white' formControl formLabelText='Trade Option' onChange={e => this.setState({ operation: e.target.value })}>
                     <option value='' />
                     <option value='buy'>{getLocalizedText('buy')}</option>
                     <option value='sell'>{getLocalizedText('sell')}</option>
@@ -169,12 +173,12 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
                 {
                     (!!operation && operation !== 'buy' && operation !== 'sell') &&
                     [
-                        <NumericInput min={0} value={duration_sec} className={styles.tradingOption} key='duration' theme='white' onChange={(e) => this.setState({ duration_sec: e.target.value })} label={getLocalizedText('duration')} name='duration' />,
-                        <NumericInput min={0} value={max_order_size} key='max_order_size' theme='white' onChange={(e) => this.setState({ max_order_size: e.target.value })} label={getLocalizedText('max_order_size')} name='max_order_size' />
+                        <NumericInput disabled={disabled} min={0} value={duration_sec} className={styles.tradingOption} key='duration' theme='white' onChange={(e) => this.setState({ duration_sec: e.target.value })} label={getLocalizedText('duration')} name='duration' />,
+                        <NumericInput disabled={disabled} min={0} value={max_order_size} key='max_order_size' theme='white' onChange={(e) => this.setState({ max_order_size: e.target.value })} label={getLocalizedText('max_order_size')} name='max_order_size' />
                     ]
                 }
 
-                <Button className={cx(styles.colorInput, styles.tradingOption)} disabled={!size || !price || !operation || !exchange} onClick={() => this.confirmOrder()}>Go</Button>
+                <Button className={cx(styles.colorInput, styles.tradingOption)} disabled={disabled || !size || !price || !operation || !exchange} onClick={() => this.confirmOrder()}>Go</Button>
 
                 {confirmDialog && <Dialog open={true} {...confirmDialog} />}
 

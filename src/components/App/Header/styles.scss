@@ -52,7 +52,7 @@
         margin-right: 10px;
         font-size: 1.1rem;
         @include themify($themes) {
-          color: themed('secondaryTextColor');
+          color: themed('whiteText');
         }
       }
     }

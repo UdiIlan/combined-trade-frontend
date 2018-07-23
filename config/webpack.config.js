@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const colors = require('colors');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ROOT_PATH = path.resolve(__dirname, "..");
@@ -10,8 +11,15 @@ const APP_DIR = path.resolve(ROOT_PATH, 'src');
 const config = (env) => {
 
   const prod = env && env.prod ? true : false;
+  const analyze = env && env.analyze;
 
-  console.log(`Building in ${prod ? 'PRODUCTION'.yellow : 'DEVELOPMENT'.cyan} mode...`);  
+  if (analyze) {
+    console.log("Analyzing...".bgGreen);
+  }
+  else {
+    console.log(`Building in ${prod ? 'PRODUCTION'.yellow : 'DEVELOPMENT'.cyan} mode...`);
+  }
+
 
   return {
     devtool: (prod ? 'source-map' : 'inline-source-map'),
@@ -51,7 +59,13 @@ const config = (env) => {
           template: path.resolve(CONFIG_DIR, 'index_template.html'),
           title: 'Live Order Book',
           favicon: path.resolve(APP_DIR, "assets/icons/favicon.ico")
-        })
+        }),
+
+      (prod && analyze ?
+        new BundleAnalyzerPlugin()
+        :
+        new webpack.DefinePlugin({})
+      )
 
     ],
     module: {
@@ -83,7 +97,7 @@ const config = (env) => {
           test: /\.(sass|scss)$/,
           use: [
             { loader: 'style' },
-            { loader: `css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]&minimize=${prod}`},
+            { loader: `css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]&minimize=${prod}` },
             {
               loader: 'postcss',
               options: { config: { path: path.resolve(CONFIG_DIR, 'postcss.config.js') } }
