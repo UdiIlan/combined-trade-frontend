@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import {
     OrderBookActions, setExchanges, serActiveOrderBooks, setSignInToExchangeResult,
     setLogOutFromExchangeResult, getExchanges, setExchangesStatus, setUserSentOrders,
-    setTimedOrderStatus, getTimedOrderStatus as getTimedOrderStatusAction
+    setTimedOrderStatus, getTimedOrderStatus as getTimedOrderStatusAction, setAccountBalance
 } from './actions';
 import { showToast } from 'components/App/redux/actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
@@ -17,7 +17,7 @@ import {
     Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook,
     OrderAction, OrderActionStatus
 } from 'businessLogic/model';
-import { DateUtils } from 'businessLogic/utils';
+import { DateUtils, ExchangeUtils } from 'businessLogic/utils';
 import { getLocalizedText } from 'lang';
 
 const getSelectedCurrency = (state) => state.app.currency;
@@ -30,30 +30,16 @@ function* getExchangesAsync(action) {
         const accountBalance = yield getExchangesAccountBalance();
 
         const exchanges = _.map(Object.keys(signedInInfo), key => {
-            const exchange = signedInInfo[key];
-            const balance = accountBalance[key];
-            const currencyBalances = balance && balance['balances'];
-
-            return {
+            const exchangeObj = signedInInfo[key];
+            const exchange = {
                 name: key,
-                status: exchange['is_user_signed_in'] === 'True' ? ExchangeStatus.LOGGED_IN : ExchangeStatus.RUNNING,
-                signedInUser: exchange['signed_in_user'],
-                fees: balance && balance['fees'],
-                totalUSD: balance && balance['total_usd_value'] && balance['total_usd_value'].toFixed(2),
-                balance: (!!currencyBalances ?
-                    _.map(Object.keys(currencyBalances), key => {
-                        const coinBalance = currencyBalances[key];
-                        const fixedDecimalDigits = key === 'USD' ? 2 : 4;
-                        return {
-                            coin: key,
-                            amount: !!coinBalance.amount ? coinBalance.amount.toFixed(fixedDecimalDigits) : undefined,
-                            available: !!coinBalance.amount ? coinBalance.amount.toFixed(fixedDecimalDigits) : undefined,
-                            price: coinBalance.price
-                        } as ExchangeCoinBalance;
-                    })
-                    :
-                    undefined)
+                status: exchangeObj['is_user_signed_in'] === 'True' ? ExchangeStatus.LOGGED_IN : ExchangeStatus.RUNNING,
+                signedInUser: exchangeObj['signed_in_user'],
             } as Exchange;
+
+            ExchangeUtils.updateBalance(exchange, accountBalance);
+
+            return exchange;
         });
 
         yield put(setExchanges(exchanges));
@@ -263,15 +249,9 @@ function* getUserOrdersStatusAsync(action) {
         res = _.uniqBy(res, 'exchange_id');
 
         const normalizedData: OrderActionStatus[] = _.map(res, item => {
-
-            // convert UTC to local time
-            const dateParts = item.order_time.split('.');
-            dateParts.pop();
-            const utcDateStr = `${dateParts.join('.')}.000Z`;
-
             return {
                 ...item,
-                order_time: new Date(utcDateStr),
+                order_time: DateUtils.parseUTtcToLocalTime(item.order_time),
                 status: item.status.toLowerCase()
             };
         });
@@ -281,10 +261,18 @@ function* getUserOrdersStatusAsync(action) {
         const lastOrders = _.filter(normalizedData, (order: OrderActionStatus) => order.order_time > lastWeekDate);
         yield put(setUserSentOrders(lastOrders));
 
+        // Update user balance (may have been changed as a result of the on-going orders)
+        yield updateAccountBalance();
+
     }
     catch (err) {
         console.error('Failed to fetch user send orders: ', err);
     }
+}
+
+function* updateAccountBalance() {
+    const accountBalance = yield getExchangesAccountBalance();
+    yield put(setAccountBalance(accountBalance));
 }
 
 function* getTimedOrderStatusAsync(action) {

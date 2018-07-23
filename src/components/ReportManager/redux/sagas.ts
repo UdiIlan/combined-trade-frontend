@@ -1,17 +1,16 @@
 
 import * as _ from 'lodash';
 import { ReportManagerActions, setOrdersReport } from './actions';
-import { showToast } from 'components/App/redux/actions';
-import { takeEvery, all, put, select } from 'redux-saga/effects';
+import { takeEvery, all, put } from 'redux-saga/effects';
 import { getOrdersReport } from 'businessLogic/serverApi';
-import { Exchange } from 'businessLogic/model';
-import { getLocalizedText } from 'lang';
+import { DateUtils } from 'businessLogic/utils';
 
 
 function* getOrdersReportAsync(action) {
     try {
         const res = yield getOrdersReport(action.payload);
-        yield put(setOrdersReport(res));
+        const normalizedData = _.map(res, item => { return { ...item, order_time: DateUtils.parseUTtcToLocalTime(item.order_time) }; });
+        yield put(setOrdersReport(normalizedData));
     }
     catch (err) {
         console.error('Failed to fetch order report: ', err);

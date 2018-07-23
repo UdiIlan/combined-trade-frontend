@@ -24,6 +24,7 @@ export const OrderBookActions = {
     GET_TIMED_ORDER_STATUS: 'OrderBook/GET_TIMED_ORDER_STATUS',
     SET_TIMED_ORDER_STATUS: 'OrderBook/SET_TIMED_ORDER_STATUS',
     CANCEL_TIMED_ORDER: 'OrderBook/CANCEL_TIMED_ORDER',
+    SET_ACCOUNT_BALANCE: 'OrderBook/SET_ACCOUNT_BALANCE',
 };
 
 export const getExchanges = createAction(OrderBookActions.GET_EXCHANGES);
@@ -63,3 +64,5 @@ export const getTimedOrderStatus = createAction(OrderBookActions.GET_TIMED_ORDER
 export const setTimedOrderStatus = createAction(OrderBookActions.SET_TIMED_ORDER_STATUS, (timedOrder: TimedOrderActionStatus) => timedOrder);
 
 export const cancelTimedOrder = createAction(OrderBookActions.CANCEL_TIMED_ORDER, () => { });
+
+export const setAccountBalance = createAction(OrderBookActions.SET_ACCOUNT_BALANCE, (newBalance) => newBalance);

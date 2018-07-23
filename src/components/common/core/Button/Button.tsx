@@ -38,7 +38,11 @@ const getMIButtonVariant = (type: ButtonType) => {
 
 export default function Button(props: ButtonProps) {
     const { className, linkTo, iconName, type, intent, tooltip, ...btnProps } = props;
-    const link = !!linkTo ?  prop => <Link to={linkTo} {...prop} /> : undefined;
+    let link = !!linkTo ? prop => {
+        const rLink = <Link to={linkTo} {...prop} />;
+        if (!tooltip || btnProps.disabled) return rLink;
+        return <Tooltip title={tooltip} placement='bottom'>{rLink}</Tooltip>;
+    } : undefined;
 
     const button =
         <MIButton className={cx(styles.btn, className)} color={intent} component={link} variant={getMIButtonVariant(type)} {...btnProps}>

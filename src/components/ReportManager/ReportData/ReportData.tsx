@@ -2,13 +2,14 @@ import * as React from 'react';
 const styles = require('./styles.scss');
 import Card from 'components/common/containers/Card';
 import { default as Grid, GridColumn } from 'components/common/dataLayouts/Grid';
+import { DateUtils } from 'businessLogic/utils';
 
 const REPORT_COLUMNS = [
     { id: 'action_type', title: 'Action Type' },
     { id: 'crypto_type', title: 'Crypto Type' },
     { id: 'crypto_size', title: 'Size' },
     { id: 'price_fiat', title: 'Price' },
-    { id: 'order_time', title: 'Date' },
+    { id: 'order_time', title: 'Date', render: (item) => DateUtils.defaultFormat(item['order_time']) },
     { id: 'status', title: 'Status' },
     { id: 'exchange', title: 'Exchange' },
     { id: 'exchange_id', title: 'ID' },

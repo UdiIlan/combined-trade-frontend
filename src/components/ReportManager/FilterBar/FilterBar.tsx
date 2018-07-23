@@ -7,7 +7,7 @@ import Select from 'components/common/core/Select';
 import DatePicker from 'components/common/core/DatePicker';
 import { DateUtils } from 'businessLogic/utils';
 
-const ORDER_STATUS_OPTIONS = ['Cancelled', 'Finished', 'Make Order', 'Make Order Sent', 'Make Order Executed'];
+const ORDER_STATUS_OPTIONS = ['Cancelled', 'Finished', 'Make Order', 'Make Order Sent', 'Make Order Executed', 'Timed Take Order'];
 
 interface ReportManagerProps {
     exchanges: string[];
@@ -20,8 +20,8 @@ type TimeRangeOptions = 'today' | 'lastWeek' | 'custom';
 
 interface ReportManagerState {
     exchanges?: string[];
-    start_date?: Date;
-    end_date?: Date;
+    startDate?: Date;
+    endDate?: Date;
     timeRange?: TimeRangeOptions;
     status?: string[];
 }
@@ -32,8 +32,8 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
         super(props);
         this.state = {
             timeRange: 'today',
-            start_date: new Date(),
-            end_date: new Date(),
+            startDate: new Date(),
+            endDate: new Date(),
             status: ORDER_STATUS_OPTIONS,
             exchanges: props.exchanges
         };
@@ -43,13 +43,22 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
         this.updateTimeRange();
     }
 
+    private normalizeDate(date: Date) {
+        const now = new Date();
+        date.setHours(now.getHours());
+        date.setMinutes(now.getMinutes());
+        const utcDate =  DateUtils.toUTC(date);
+        return DateUtils.format(utcDate, 'YYYY-MM-DD HH:mm');
+    }
+
     private execute() {
-        const { exchanges, status, start_date, end_date } = this.state;
+        const { exchanges, status, startDate, endDate } = this.state;
+
 
         let filterObj = {
             statuses: _.isEmpty(status) ? undefined : status,
-            start_date: DateUtils.format(start_date, 'YYYY-MM-DD hh:mm'),
-            end_date: DateUtils.format(end_date, 'YYYY-MM-DD hh:mm'),
+            start_date: this.normalizeDate(startDate),
+            end_date: this.normalizeDate(endDate),
             exchanges: _.isEmpty(exchanges) ? undefined : exchanges
         };
 
@@ -60,22 +69,22 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
         const timeRange = this.state.timeRange;
         if (timeRange === 'custom') return;
 
-        let start_date;
-        let end_date = new Date();
+        let startDate;
+        let endDate = new Date();
 
         if (timeRange === 'today') {
-            start_date = DateUtils.yesterday();
+            startDate = DateUtils.yesterday();
         }
         else if (timeRange === 'lastWeek') {
-            start_date = DateUtils.lastWeek();
+            startDate = DateUtils.lastWeek();
         }
 
-        this.setState({ start_date, end_date });
+        this.setState({ startDate, endDate });
     }
 
     render() {
 
-        const { exchanges, timeRange, status, start_date, end_date } = this.state;
+        const { exchanges, timeRange, status, startDate, endDate } = this.state;
 
         return (
             <div className={styles.filterBar}>
@@ -91,9 +100,9 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
                     {timeRange === 'custom' &&
                         <div className={styles.dateFilters}>
                             <span className={styles.label}>From:</span>
-                            <DatePicker className={styles.dateControl} showTodayButton value={start_date} onChange={date => this.setState({ start_date: date })} />
+                            <DatePicker className={styles.dateControl} showTodayButton value={startDate} onChange={date => this.setState({ startDate: date })} />
                             <span className={styles.label}>To:</span>
-                            <DatePicker className={styles.dateControl} showTodayButton value={end_date} onChange={date => this.setState({ end_date: date })} />
+                            <DatePicker className={styles.dateControl} showTodayButton value={endDate} onChange={date => this.setState({ endDate: date })} />
                         </div>
                     }
 

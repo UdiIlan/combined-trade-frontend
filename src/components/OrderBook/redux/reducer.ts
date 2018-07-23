@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { OrderBookActions } from './actions';
 import { handleActions, Action } from 'redux-actions';
+import { ExchangeUtils } from 'businessLogic/utils';
 import {
     Exchange, ExchangeOrderBook, AccountCredentials,
     ExchangeStatus, OrderAction, OrderActionStatus,
@@ -135,6 +136,35 @@ reducerMap[OrderBookActions.SET_TIMED_ORDER_STATUS] = (state: OrderBookState, ac
 
 reducerMap[OrderBookActions.CANCEL_TIMED_ORDER] = (state: OrderBookState, action: Action<TimedOrderActionStatus>): OrderBookState => {
     return { ...state, runningTimedOrder: undefined };
+};
+
+reducerMap[OrderBookActions.SET_ACCOUNT_BALANCE] = (state: OrderBookState, action: Action<any>): OrderBookState => {
+    const exchanges = [...state.exchanges];
+    const accountBalance = action.payload;
+
+    _.forEach(exchanges, (exchange: Exchange) => {
+        ExchangeUtils.updateBalance(exchange, accountBalance);
+        // const balance = accountBalance[exchange.name];
+        // const currencyBalances = balance && balance['balances'];
+        // exchange.fees = balance && balance['fees'];
+        // exchange.totalUSD = balance && balance['total_usd_value'] && balance['total_usd_value'].toFixed(2);
+        // exchange.balance = (!!currencyBalances ?
+        //     _.map(Object.keys(currencyBalances), key => {
+        //         const coinBalance = currencyBalances[key];
+        //         const fixedDecimalDigits = key === 'USD' ? 2 : 4;
+        //         return {
+        //             coin: key,
+        //             amount: !!coinBalance.amount ? coinBalance.amount.toFixed(fixedDecimalDigits) : undefined,
+        //             available: !!coinBalance.amount ? coinBalance.amount.toFixed(fixedDecimalDigits) : undefined,
+        //             price: coinBalance.price
+        //         } as ExchangeCoinBalance;
+        //     })
+        //     :
+        //     undefined);
+
+    });
+
+    return { ...state, exchanges };
 };
 
 export default handleActions<OrderBookState, any>(reducerMap, INITIAL_STATE);
