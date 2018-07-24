@@ -14,14 +14,6 @@ const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 
-
-function getSorting(order, orderBy) {
-    return order === 'desc'
-        ? (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
-        : (a, b) => (a[orderBy] < b[orderBy] ? -1 : 1);
-}
-
-
 export interface GridColumn {
     id: string;
     title: string;
@@ -35,6 +27,8 @@ interface EnhancedTableHeadProps {
     orderBy?: string;
     onRequestSort(event, property);
 }
+
+const NESTING_CONTROL_COLUMN_ID = 'nestingControl';
 
 class EnhancedTableHead extends React.Component<EnhancedTableHeadProps, any> {
     createSortHandler = property => event => {
@@ -52,8 +46,8 @@ class EnhancedTableHead extends React.Component<EnhancedTableHeadProps, any> {
                             <TableCell
                                 key={column.id}
                                 numeric={column.numeric}
-                                /* padding={column.disablePadding ? 'none' : 'default'} */
                                 sortDirection={orderBy === column.id ? order : false}
+                                className={cx({nestingControl: column.id === NESTING_CONTROL_COLUMN_ID})}
                             >
                                 <TableSortLabel
                                     active={orderBy === column.id}
@@ -92,7 +86,6 @@ export interface GridState {
     expandedRow?: number;
 }
 
-const NESTING_CONTROL_COLUMN_ID = 'nestingControl';
 const NESTING_CONTROL_COLUMN = { id: NESTING_CONTROL_COLUMN_ID, title: ' ' };
 
 export default class Grid extends React.Component<GridProps, GridState> {
@@ -155,8 +148,7 @@ export default class Grid extends React.Component<GridProps, GridState> {
                     />
                     }
                     <TableBody>
-                        {data
-                            .sort(getSorting(sortDirection, sortBy))
+                        {_.orderBy(data, [sortBy], sortDirection)
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((item, index) => this.renderGridRow(index, item, columns)
                             )}
@@ -195,12 +187,12 @@ export default class Grid extends React.Component<GridProps, GridState> {
             _.map(columns, (col: GridColumn) => {
                 let colContent;
                 if (col.id === NESTING_CONTROL_COLUMN_ID) {
-                    colContent = _.isEmpty(item.children) ? '' : <IconButton iconName={isExpanded ? 'expand_less' : 'chevron_right'} onClick={() => this.toggleRow(index)} />;
+                    colContent = !item.children || _.isEmpty(item.children) ? '' : <IconButton iconName={isExpanded ? 'expand_less' : 'chevron_right'} onClick={() => this.toggleRow(index)} />;
                 }
                 else {
                     colContent = !col.render ? item[col.id] : col.render(item);
                 }
-                return <TableCell key={`GridRow_${index}_${col.id}`} numeric={col.numeric}>{colContent}</TableCell>;
+                return <TableCell className={cx({nestingControl: col.id === NESTING_CONTROL_COLUMN_ID})} key={`GridRow_${index}_${col.id}`} numeric={col.numeric}>{colContent}</TableCell>;
             });
 
         return (

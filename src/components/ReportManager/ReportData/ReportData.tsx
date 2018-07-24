@@ -18,7 +18,7 @@ const REPORT_COLUMNS: GridColumn[] = [
     { id: 'usd_balance', title: 'USD Balance' },
     { id: 'ask', title: 'Ask' },
     { id: 'bid', title: 'Bid' },
-    // { id: 'children', numeric: true, title: 'Children', render: (item) => item.children.length },
+    // { id: 'children', numeric: true, title: 'Children', render: (item) => item.children ? item.children.length : 0 },
 ];
 
 interface ReportDataProps {
