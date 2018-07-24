@@ -14,6 +14,7 @@ interface ReportManagerProps {
     loading?: boolean;
     noData?: boolean;
     getReportData(filters: any);
+    export();
 }
 
 type TimeRangeOptions = 'today' | 'lastWeek' | 'custom';
@@ -47,7 +48,7 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
         const now = new Date();
         date.setHours(now.getHours());
         date.setMinutes(now.getMinutes());
-        const utcDate =  DateUtils.toUTC(date);
+        const utcDate = DateUtils.toUTC(date);
         return DateUtils.format(utcDate, 'YYYY-MM-DD HH:mm');
     }
 
@@ -138,7 +139,7 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
                     <Button type='contained' onClick={this.execute} className={styles.execBtn} iconName='play_circle_filled'>GO</Button>
                 }
 
-                <Button onClick={this.execute} className={styles.exportBtn} iconName='save_alt' disabled={this.props.noData}>Export</Button>
+                <Button tooltip='Export to Excel' onClick={this.props.export} className={styles.exportBtn} iconName='save_alt' disabled={this.props.noData}>Export</Button>
             </div>
         );
     }

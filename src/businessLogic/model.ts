@@ -92,7 +92,7 @@ export interface OrderActionStatus {
     exchange_id?: string;
     order_time: Date;
     price_fiat: number;
-    status?: 'success' | 'failed' | 'pending' | 'in-progress' | 'cancelled';
+    status?: 'finished' | 'error' | 'pending' | 'in-progress' | 'cancelled' | 'open'| 'make order executed' | 'make order sent' | 'timed take order';
     timed_order?: number;
     usd_balance?: number;
 }
