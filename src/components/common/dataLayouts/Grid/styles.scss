@@ -15,6 +15,23 @@
       display: table;
       width: 100%;
       table-layout: fixed;
+
+      &.expandedRow {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+
+        .expandedRowCells {
+          table {
+            border-spacing: 0px;
+          }
+        }
+
+        .expandedRowPanel {
+          // margin-left: 30px;
+          background-color: whitesmoke;
+        }
+      }
     }
 
     td,

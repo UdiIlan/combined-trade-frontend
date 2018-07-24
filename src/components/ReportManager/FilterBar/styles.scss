@@ -58,13 +58,22 @@ $controlMargin: 20px;
     }
   }
 
-  .execBtn {
+  .btn {
     color: inherit;
     margin-left: auto;
   }
 
+  .execBtn {
+    @extend .btn;
+    padding: 0px;
+    min-height: 30px;
+    @include themify($themes) {
+      background-color: themed('successGreen');
+    }
+  }
+
   .loading {
-    @extend .execBtn;
+    @extend .btn;
     @include themify($themes) {
       color: themed('whiteText');
     }

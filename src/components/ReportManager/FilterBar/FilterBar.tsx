@@ -135,7 +135,7 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
                 {this.props.loading ?
                     <Spinner size={20} className={styles.loading} />
                     :
-                    <Button onClick={this.execute} className={styles.execBtn} iconName='play_circle_filled'>GO</Button>
+                    <Button type='contained' onClick={this.execute} className={styles.execBtn} iconName='play_circle_filled'>GO</Button>
                 }
 
                 <Button onClick={this.execute} className={styles.exportBtn} iconName='save_alt' disabled={this.props.noData}>Export</Button>
