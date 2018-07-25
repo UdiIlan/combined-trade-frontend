@@ -49,7 +49,7 @@
     "redux-persist": "^5.10.0",
     "redux-persist-transform-filter": "0.0.18",
     "redux-saga": "^0.16.0",
-    "rest-fetcher": "^1.0.9"
+    "rest-fetcher": "^1.0.11"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

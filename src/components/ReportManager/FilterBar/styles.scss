@@ -68,7 +68,7 @@ $controlMargin: 20px;
     padding: 0px;
     min-height: 30px;
     @include themify($themes) {
-      background-color: themed('successGreen');
+      background-color: themed('successBackground');
     }
   }
 

@@ -2,7 +2,7 @@ const config = require('config');
 import { Fetcher } from 'rest-fetcher';
 import { AccountCredentials, OrderAction } from './model';
 
-const fetcher = new Fetcher(config.baseUrl);
+const fetcher = new Fetcher({ baseUrl: config.baseUrl });
 
 const textToJson = (text: string) => {
     if (!text || !text.replace) return text;

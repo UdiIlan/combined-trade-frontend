@@ -6,6 +6,13 @@
   width: 25vw;
   justify-content: space-around;
   height: 25vh;
+
+  .fees {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 25px;
+  }
 }
 
 .footer {

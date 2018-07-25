@@ -22,7 +22,7 @@
 
   .logOut {
     @include themify($themes) {
-      color: themed('successGreen');
+      color: themed('successText');
     }
   }
 }

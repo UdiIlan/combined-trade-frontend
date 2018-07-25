@@ -41,12 +41,13 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
     private confirmOrder() {
         const { size, price, operation, exchange } = this.state;
+        const orderFiatPrice = price * size;
         if (this.validateOrder(size, price, operation, exchange)) {
             this.setState({
                 confirmDialog:
                 {
                     title: 'Send New Order',
-                    subTitle: [<span key='row1'>{`You are about to ${this.getOperationText(operation)} ${size} ${this.props.selectedCurrency} for ${price} USD.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
+                    subTitle: [<span key='row1'>{`You are about to ${this.getOperationText(operation)} ${size} ${this.props.selectedCurrency} for ${price} USD per ${this.props.selectedCurrency} (total price: ${orderFiatPrice}).`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
                     onOkClick: this.execute,
                     onCancelClick: () => this.setState({ confirmDialog: undefined }),
                     okBtnText: 'Send'
@@ -86,8 +87,9 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
                     if (price < 5)
                         msg = 'Minimum buying price must be grater than 5 USD.';
 
-                    if (Number(exchange.totalUSD) < Number(price))
-                        msg = `USD balance (${exchange.totalUSD}) is lower than the suggested price (${price}).`;
+                    const orderFiatPrice = price * size;
+                    if (Number(exchange.totalUSD) < Number(orderFiatPrice))
+                        msg = `USD balance (${exchange.totalUSD}) is lower than the suggested price (${orderFiatPrice}).`;
                     break;
 
                 }

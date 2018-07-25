@@ -24,7 +24,7 @@
 
   &.success {
     @include themify($themes) {
-      background-color: themed('successGreen');
+      background-color: themed('successBackground');
     }
   }
 

@@ -5,6 +5,7 @@ import Spinner from 'components/common/core/Spinner';
 import Dialog from 'components/common/modals/Dialog';
 import { AccountCredentials } from 'businessLogic/model';
 import InputText from 'components/common/core/InputText';
+import NumericInput from 'components/common/core/NumericInput';
 
 export interface SignInExchangeDialogProps {
     exchange: string;
@@ -19,6 +20,8 @@ export interface SignInExchangeDialogState {
     key?: string;
     secret?: string;
     invalidLogin?: Error;
+    makerFee?: number;
+    takerFee?: number;
 }
 
 export default class SignInExchangeDialog extends React.Component<SignInExchangeDialogProps, SignInExchangeDialogState> {
@@ -34,8 +37,8 @@ export default class SignInExchangeDialog extends React.Component<SignInExchange
 
     private doSignIn() {
         this.setState({ invalidLogin: undefined });
-        const { username, key, secret } = this.state;
-        this.props.signInToExchange({ exchange: this.props.exchange, username, key, secret, maker_fee: 0, taker_fee: 0 });
+        const { username, key, secret, makerFee, takerFee } = this.state;
+        this.props.signInToExchange({ exchange: this.props.exchange, username, key, secret, maker_fee: makerFee || 0 , taker_fee: takerFee || 0 });
     }
 
     render() {
@@ -55,6 +58,11 @@ export default class SignInExchangeDialog extends React.Component<SignInExchange
                     <InputText onChange={(e) => this.setState({ username: e.target.value })} label='Account Number' name='account_number' type='number' />
                     <InputText onChange={(e) => this.setState({ key: e.target.value })} label='API Key' name='api' type='password' />
                     <InputText onChange={(e) => this.setState({ secret: e.target.value })} label='Secret Key' name='secret_key' type='password' />
+
+                    <div className={styles.fees} >
+                        <NumericInput onChange={(e) => this.setState({ makerFee: e.target.value })} label='Maker Fee' name='maker_fee' />
+                        <NumericInput onChange={(e) => this.setState({ takerFee: e.target.value })} label='Taker Fee' name='taker_fee' />
+                    </div>
                 </div>
 
                 <div className={styles.footer} >
