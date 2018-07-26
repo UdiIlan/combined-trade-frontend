@@ -69,27 +69,27 @@ export default class OrderStatusItem extends React.Component<OrderStatusItemProp
             >
                 <div className={styles.popover}>
                     <div className={styles.orderDetail}>
-                        <span className={styles.key}>Order Time:</span>
+                        <span className={styles.key}>{getLocalizedText('order_time')}</span>
                         <span className={styles.value}>{DateUtils.defaultFormat(order.order_time)}</span>
                     </div>
                     <div className={styles.orderDetail}>
-                        <span className={styles.key}>Size:</span>
+                        <span className={styles.key}>{getLocalizedText('size')}</span>
                         <span className={styles.value}>{`${order.crypto_size} ${order.crypto_type}`}</span>
                     </div>
                     <div className={styles.orderDetail}>
-                        <span className={styles.key}>Price:</span>
+                        <span className={styles.key}>{getLocalizedText('price')}</span>
                         <span className={styles.value}>{`${order.price_fiat} USD`}</span>
                     </div>
                     <div className={styles.orderDetail}>
-                        <span className={styles.key}>Status:</span>
+                        <span className={styles.key}>{getLocalizedText('execution_status')}</span>
                         <span className={cx(styles.value, styles.capital)}>{order.status}</span>
                     </div>
                     <div className={styles.orderDetail}>
-                        <span className={styles.key}>Exchange:</span>
+                        <span className={styles.key}>{getLocalizedText('exchange')}</span>
                         <span className={styles.value}>{order.exchange}</span>
                     </div>
                     {order.exchange_id !== '0' && <div className={styles.orderDetail}>
-                        <span className={styles.key}>Order ID:</span>
+                        <span className={styles.key}>{getLocalizedText('order_id')}</span>
                         <span className={styles.value}>{order.exchange_id}</span>
                     </div>}
                 </div>

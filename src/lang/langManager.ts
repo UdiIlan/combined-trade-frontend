@@ -22,16 +22,12 @@ export type localizedKeys =
     'orderbook_header' |
     'btc_usd_option' |
     'bch_usd_option' |
-    'bitstamp' |
-    'bitfinex' |
-    'gdax' |
     'account_details' |
     'usd_balance' |
     'not_available' |
     'unified' |
     'asks' |
     'bids' |
-    'bitstamp_credentials' |
     'account_number' |
     'api_key' |
     'secret' |
@@ -42,7 +38,6 @@ export type localizedKeys =
     'BTC' |
     'BCH' |
     'buy_at' |
-    'set_bitstamp_credentials' |
     'logout' |
     'no_user' |
     'sent_transactions' |
@@ -50,13 +45,13 @@ export type localizedKeys =
     'export_all_orders' |
     'export_shown_orders' |
     'unavailable' |
-    'bitstamp_short' |
     'manual_short' |
     'timed_short' |
     'finished' |
     'cancelled' |
     'size' |
     'price' |
+    'price_limit' |
     'usd' |
     'best_exchange' |
     'sell' |
@@ -90,5 +85,40 @@ export type localizedKeys =
     'cancel' |
     'ok' |
     'buy_limit' |
-    'sell_limit'
+    'sell_limit' |
+    'selected_currency' |
+    'back_to_orders_book' |
+    'reports' |
+    'choose_exchanges' |
+    'choose_language' |
+    'user_settings' |
+    'contact_support' |
+    'dark_theme' |
+    'loading_account_info' |
+    'choose' |
+    'exchanges' |
+    'select_exchanges' |
+    'are_you_sure' |
+    'cancel_order_confirm' |
+    'trading_area' |
+    'sold' |
+    'bought' |
+    'out_of' |
+    'send' |
+    'send_new_order' |
+    'invalid_order' |
+    'min_order_price_err' |
+    'order_status' |
+    'order_time' |
+    'exchange' |
+    'order_id' |
+    'logout_exchange_confirm' |
+    'stop_exchange_confirm' |
+    'remove_exchange_confirm'|
+    'hide_exchange_confirm'|
+    'stop' |
+    'remove' |
+    'hide'|
+    'login' |
+    'timed_order_success'
     ;

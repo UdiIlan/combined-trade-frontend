@@ -18,7 +18,7 @@ export interface DialogProps {
     okBtnDisabled?: boolean;
     okBtnHidden?: boolean;
     cancelBtnText?: string;
-    intent?: 'default' | 'danger' | 'info';
+    intent?: 'default' | 'success' | 'danger' | 'info';
     onOkClick?();
     onCancelClick?();
 }
@@ -45,7 +45,11 @@ export default class Dialog extends React.Component<DialogProps, any> {
                 classes={{ paper: styles.dialog }}
                 aria-labelledby='form-dialog-title'>
 
-                <DialogTitle disableTypography className={cx(styles.header, { danger: this.props.intent === 'danger' })} id='form-dialog-title'>{this.props.title}</DialogTitle>
+                <DialogTitle
+                    disableTypography
+                    className={cx(styles.header, { danger: this.props.intent === 'success' }, { danger: this.props.intent === 'success' })}
+                    id='form-dialog-title'>{this.props.title}
+                </DialogTitle>
 
                 <DialogContent className={styles.content}>
                     {this.props.subTitle && <DialogContentText>

@@ -7,7 +7,7 @@ import Select from 'components/common/core/Select';
 import DatePicker from 'components/common/core/DatePicker';
 import { DateUtils } from 'businessLogic/utils';
 
-const ORDER_STATUS_OPTIONS = ['Cancelled', 'Finished', 'Make Order', 'Make Order Sent', 'Make Order Executed', 'Timed Take Order'];
+const ORDER_STATUS_OPTIONS = ['Cancelled', 'Finished', 'Make Order', 'Make Order Sent', 'Make Order Executed', 'Timed Take Order', 'Timed Order'];
 
 interface ReportManagerProps {
     exchanges: string[];
@@ -57,10 +57,10 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
 
 
         let filterObj = {
-            statuses: _.isEmpty(status) ? undefined : status,
+            statuses: _.isEmpty(status) || status.length === ORDER_STATUS_OPTIONS.length ? undefined : status,
             start_date: this.normalizeDate(startDate),
             end_date: this.normalizeDate(endDate),
-            exchanges: _.isEmpty(exchanges) ? undefined : exchanges
+            exchanges: _.isEmpty(exchanges) || exchanges.length === this.props.exchanges.length ? undefined : exchanges
         };
 
         this.props.getReportData(filterObj);
@@ -93,7 +93,7 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
                 <div className={styles.filter}>
                     <span className={styles.label}>Date:</span>
                     <Select selectedValue={timeRange} theme='white' onChange={(selection) => this.setState({ timeRange: selection }, () => this.updateTimeRange())}>
-                        <option value='today'>Today</option>
+                        <option value='today'>Last Day</option>
                         <option value='lastWeek'>Last Week</option>
                         <option value='custom'>Date Range</option>
                     </Select>

@@ -1,11 +1,12 @@
 import * as React from 'react';
+import { getLocalizedText } from 'lang';
 const styles = require('./styles.scss');
 import Card from 'components/common/containers/Card';
 import { default as Grid, GridColumn } from 'components/common/dataLayouts/Grid';
 import { DateUtils } from 'businessLogic/utils';
 
 const REPORT_COLUMNS: GridColumn[] = [
-    { id: 'action_type', title: 'Action Type' },
+    { id: 'action_type', title: 'Action Type', render: (item) => getLocalizedText(item['action_type']) },
     { id: 'crypto_type', title: 'Crypto Type' },
     { id: 'crypto_size', title: 'Size' },
     { id: 'price_fiat', title: 'Price' },

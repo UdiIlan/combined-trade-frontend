@@ -12,7 +12,7 @@ function* getOrdersReportAsync(action) {
         const normalizedData = _.map(res, item => { return { ...item, order_time: DateUtils.parseUTtcToLocalTime(item.order_time) }; });
 
         // Those are commands that the user had manually triggered.
-        const userManualOrders = _.filter(normalizedData, order => order.status === 'Make Order' || order.status === 'Timed Take Order' || !order.timed_order);
+        const userManualOrders = _.filter(normalizedData, order => order.status === 'Make Order' || order.status === 'Timed Take Order' ||  order.status === 'Timed Order' || !order.timed_order);
 
         // Set children order for each command
         _.forEach(userManualOrders, (command, index) => {

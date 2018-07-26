@@ -32,7 +32,7 @@ export default class OrdersPen extends React.Component<OrdersPenProps, any> {
             <Sidebar
                 ref={(sidebar) => this.sidebar = sidebar}
                 className={cx(styles.ordersPen, className)}
-                header='Order Status'
+                header={getLocalizedText('order_status')}
                 collapsedItems={<Badge className={styles.badge} color='primary' badgeContent={orders ? orders.length : 0}><IconButton className={styles.badgeIco} iconName='receipt' onClick={() => this.sidebar.open()} /> </Badge>}
                 align='right'
                 collapsible>

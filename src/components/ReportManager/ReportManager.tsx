@@ -5,6 +5,7 @@ const styles = require('./styles.scss');
 import { getOrdersReport, setOrdersReport } from './redux/actions';
 import FilterBar from './FilterBar';
 import ReportData from './ReportData';
+import { UNIFIED_EXCHANGE_KEY } from 'businessLogic/model';
 
 
 interface ReportManagerProps {
@@ -29,12 +30,13 @@ class ReportManager extends React.Component<ReportManagerProps, any> {
     render() {
 
         const { data, getOrdersReport, exchanges, loading } = this.props;
+        const actualExchanges = _.filter(exchanges, item => item !== UNIFIED_EXCHANGE_KEY);
 
         return (
             <div className={styles.reportManager}>
                 <FilterBar
                     getReportData={getOrdersReport}
-                    exchanges={exchanges}
+                    exchanges={actualExchanges}
                     loading={loading}
                     noData={_.isEmpty(data)}
                     export={this.exportOrders}

@@ -10,6 +10,7 @@ import ExchangeInfo from './ExchangeInfo';
 import ExchangeData from './ExchangeData';
 import ExchangeHeaderBar from './ExchangeHeaderBar';
 import SignInExchangeDialog from './SignInExchangeDialog';
+import { getLocalizedText } from 'lang';
 
 export interface ExchangeProps {
     exchange: IExchange;
@@ -57,11 +58,11 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
         this.setState({
             confirmDialog:
             {
-                title: `Log Out ${name}`,
-                subTitle: [<span key='row1'>{`You are about to log out from ${name}.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
+                title: `${getLocalizedText('logout')} ${name}`,
+                subTitle: [<span key='row1'>{`${getLocalizedText('logout_exchange_confirm')} ${name}.`}</span>, <br key='separator' />, <span key='row2'>{getLocalizedText('are_you_sure')}</span>],
                 onOkClick: () => this.props.logOutFromExchange(name),
                 onCancelClick: () => this.closeConfirmationDialog(),
-                okBtnText: 'Log Out'
+                okBtnText: getLocalizedText('logout')
             }
         });
     }
@@ -75,11 +76,11 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
         this.setState({
             confirmDialog:
             {
-                title: `Stop ${name}`,
-                subTitle: [<span key='row1'>{`You are about to stop ${name}.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
+                title: `${getLocalizedText('stop')} ${name}`,
+                subTitle: [<span key='row1'>{`${getLocalizedText('stop_exchange_confirm')} ${name}.`}</span>, <br key='separator' />, <span key='row2'>{getLocalizedText('are_you_sure')}</span>],
                 onOkClick: () => this.props.stopExchange(name),
                 onCancelClick: () => this.closeConfirmationDialog(),
-                okBtnText: 'Stop'
+                okBtnText: getLocalizedText('stop')
             }
         });
     }
@@ -89,14 +90,14 @@ export default class Exchange extends React.Component<ExchangeProps, ExchangeSta
         this.setState({
             confirmDialog:
             {
-                title: `${stop ? 'Remove' : 'Hide'} ${name}`,
-                subTitle: [<span key='row1'>{`You are about to ${stop ? 'remove and stop' : 'hide'} ${name}.`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
+                title: `${stop ? getLocalizedText('remove') : getLocalizedText('hide')} ${name}`,
+                subTitle: [<span key='row1'>{`${stop ? getLocalizedText('remove_exchange_confirm') : getLocalizedText('hide_exchange_confirm')} ${name}.`}</span>, <br key='separator' />, <span key='row2'>{getLocalizedText('are_you_sure')}</span>],
                 onOkClick: () => {
                     if (stop) this.props.stopExchange(name);
                     this.props.removeExchange(name);
                 },
                 onCancelClick: () => this.closeConfirmationDialog(),
-                okBtnText: stop ? 'Remove' : 'Hide'
+                okBtnText: stop ? getLocalizedText('remove') : getLocalizedText('hide')
             }
         });
     }

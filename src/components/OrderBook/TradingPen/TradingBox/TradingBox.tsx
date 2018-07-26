@@ -46,11 +46,11 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
             this.setState({
                 confirmDialog:
                 {
-                    title: 'Send New Order',
-                    subTitle: [<span key='row1'>{`You are about to ${this.getOperationText(operation)} ${size} ${this.props.selectedCurrency} for ${price} USD per ${this.props.selectedCurrency} (total price: ${orderFiatPrice}).`}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>],
+                    title: getLocalizedText('send_new_order'),
+                    subTitle: [<span key='row1'>{`You are about to ${this.getOperationText(operation)} ${size} ${this.props.selectedCurrency} for ${price} USD per ${this.props.selectedCurrency} (total price: ${orderFiatPrice}).`}</span>, <br key='separator' />, <span key='row2'>{getLocalizedText('are_you_sure')}</span>],
                     onOkClick: this.execute,
                     onCancelClick: () => this.setState({ confirmDialog: undefined }),
-                    okBtnText: 'Send'
+                    okBtnText: getLocalizedText('send')
                 }
             });
         }
@@ -85,11 +85,11 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
                 case 'buy_limit':
                 case 'buy': {
                     if (price < 5)
-                        msg = 'Minimum buying price must be grater than 5 USD.';
+                        msg = getLocalizedText('min_order_price_err');
 
                     const orderFiatPrice = price * size;
                     if (Number(exchange.totalUSD) < Number(orderFiatPrice))
-                        msg = `USD balance (${exchange.totalUSD}) is lower than the suggested price (${orderFiatPrice}).`;
+                        msg = `Inefficient balance (${exchange.totalUSD}) ,${orderFiatPrice} needed.`;
                     break;
 
                 }
@@ -107,7 +107,7 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
             this.setState({
                 confirmDialog:
                 {
-                    title: 'Invalid Order',
+                    title: getLocalizedText('invalid_order'),
                     subTitle: msg,
                     onCancelClick: () => this.setState({ confirmDialog: undefined }),
                     okBtnHidden: true,
@@ -123,6 +123,12 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
     private execute() {
         const { size, price, operation, exchange, duration_sec, max_order_size } = this.state;
+        let exchanges = [];
+        if (exchange === getLocalizedText('best_exchange'))
+            _.forEach(this.props.exchanges, item => { if (item.name !== UNIFIED_EXCHANGE_KEY) exchanges.push(item.name); });
+        else
+            exchanges.push(exchange);
+
         this.reset();
         this.props.sendNewOrderCommand({
             size_coin: size,
@@ -130,7 +136,7 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
             crypto_type: this.props.selectedCurrency,
             fiat_type: 'USD',
             action_type: operation,
-            exchanges: [exchange],
+            exchanges: exchanges,
             duration_sec: duration_sec || 0,
             max_order_size: max_order_size || 0
         });
@@ -156,13 +162,13 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
             <div className={styles.tradingBox}>
 
-                <Select disabled={disabled} selectedValue={exchange} className={styles.tradingOption} theme='white' formControl formLabelText='Exchange' onChange={(selection) => this.setState({ exchange: selection })}>
+                <Select disabled={disabled} selectedValue={exchange} className={styles.tradingOption} theme='white' formControl formLabelText={getLocalizedText('exchange')} onChange={(selection) => this.setState({ exchange: selection })}>
                     {_.map(exchanges, (exchange) => <option key={exchange} value={exchange}>{exchange}</option>)}
                 </Select>
 
                 <NumericInput disabled={disabled} value={size} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ size: e.target.value })} label={getLocalizedText('size')} name='size' />
 
-                <NumericInput disabled={disabled} value={price} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ price: e.target.value })} label={getLocalizedText('price')} name='price' />
+                <NumericInput disabled={disabled} value={price} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ price: e.target.value })} label={getLocalizedText('price_limit')} name='price' />
 
                 <Select disabled={disabled} selectedValue={operation} className={styles.tradingOption} theme='white' formControl formLabelText='Trade Option' onChange={selection => this.setState({ operation: selection })}>
                     <option value='' />
@@ -171,8 +177,8 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
                     {!disabledTimedTrade && [
                         <option key='timed_buy' value='timed_buy'>{getLocalizedText('timed_buy')}</option>,
                         <option key='timed_sell' value='timed_sell'>{getLocalizedText('timed_sell')}</option>,
-                        <option key='buy_limit' value='buy_limit'>Timed Buy Making</option>,
-                        <option key='sell_limit' value='sell_limit'>Timed Sell Making</option>,
+                        <option key='buy_limit' value='buy_limit'>{getLocalizedText('buy_limit')}</option>,
+                        <option key='sell_limit' value='sell_limit'>{getLocalizedText('sell_limit')}</option>,
                     ]}
                 </Select>
 

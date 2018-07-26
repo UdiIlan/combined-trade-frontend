@@ -38,23 +38,16 @@ export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBar
         const actions = [];
         if (!this.props.hideActions) {
 
-            // if (isExchangedStopped)
-            //     actions.push(<IconButton
-            //         key='start' tooltip='Start' aria-label='Play' iconName='play_circle_filled_white' onClick={(e) => this.props.startExchange()} />);
-            // else
-
-
-
             if (isExchangedStopped || isRunningButLoggedOut)
-                actions.push(<IconButton key='logIn' tooltip='Log In'
+                actions.push(<IconButton key='logIn' tooltip={getLocalizedText('login')}
                     onClick={(e) => this.props.signInToExchange()} disabled={isExchangedStopped} aria-label='log-in' iconName='vpn_key' />);
             else
                 actions.push(<IconButton className={styles.logOut} key='logOut' tooltip={`${getLocalizedText('logout', 'Log Out')} - (${this.props.signedInUser})`}
                     onClick={(e) => this.props.logOutFromExchange()} disabled={isUserLoggingIn} aria-label='log-out' iconName='exit_to_app' />);
 
-            actions.push(<IconButton key='hide' tooltip='Hide' aria-label='Hide' iconName='visibility_off' onClick={(e) => this.props.removeExchange()} />);
+            actions.push(<IconButton key='hide' tooltip={getLocalizedText('hide')} aria-label='Hide' iconName='visibility_off' onClick={(e) => this.props.removeExchange()} />);
 
-            actions.push(<IconButton key='remove' tooltip='Remove' aria-label='Remove' iconName='cancel' onClick={(e) => this.props.removeExchange(true)} />);
+            actions.push(<IconButton key='remove' tooltip={getLocalizedText('remove')} aria-label='Remove' iconName='cancel' onClick={(e) => this.props.removeExchange(true)} />);
         }
 
         return (

@@ -25,11 +25,11 @@ export default function configureStore(cb) {
     let store;
 
     if (process.env.NODE_ENV === 'production') {
-        console.log('Running on production environments');
+        console.debug('Running on production environments');
         store = createStore(persistedReducer, {}, compose(middleware, f => f));
     }
     else {
-        console.log('Running on dev environments');
+        console.debug('Running on dev environments');
         const devtools: any = window['devToolsExtension'] ? window['devToolsExtension']() : (f: any) => f; // add support for Redux dev tools
 
         store = createStore(persistedReducer, {}, compose(middleware, devtools));

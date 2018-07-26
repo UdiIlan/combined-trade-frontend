@@ -17,6 +17,7 @@ import Exchange from './Exchange';
 import ManageExchangeDialog from './ManageExchangeDialog';
 import TradingPen from './TradingPen';
 import OrdersPen from './OrdersPen';
+import { getLocalizedText } from 'lang';
 
 const EXCHANGE_PULLING_RATE = 3000;
 
@@ -98,7 +99,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
             <div className={styles.orderBook}>
                 <div className={styles.content}>
                     {loading || _.isEmpty(exchanges) ?
-                        <Spinner className={styles.loader} size={80} text={'Loading Account Info...'} />
+                        <Spinner className={styles.loader} size={80} text={getLocalizedText('loading_account_info')} />
                         :
                         [
                             <TradingPen

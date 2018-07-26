@@ -47,11 +47,11 @@ export default class ManageExchangeDialog extends React.Component<ManageExchange
         return (
             <Dialog
                 open={true}
-                okBtnText='Choose'
+                okBtnText={getLocalizedText('choose')}
                 onOkClick={this.updateExchanges}
                 okBtnDisabled={!hadChanges}
-                title={'Choose Exchanges'}
-                subTitle={'Select one (or more) exchanges from the bellow list:'}
+                title={`${getLocalizedText('choose')} ${getLocalizedText('exchanges')}`}
+                subTitle={getLocalizedText('select_exchanges')}
                 onCancelClick={this.props.onCancel}
             >
 

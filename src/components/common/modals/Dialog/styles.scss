@@ -1,3 +1,5 @@
+@import "~styles/colors.scss";
+
 .dialog {
   min-width: 25vw;
 
@@ -5,7 +7,15 @@
     font-size: 1.5rem;
 
     &.danger {
-      color: red;
+      @include themify($themes) {
+        color: themed('redError');
+      }
+    }
+
+    &.success {
+      @include themify($themes) {
+        color: themed('successText');
+      }
     }
   }
 

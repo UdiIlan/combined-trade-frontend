@@ -14,7 +14,7 @@ import {
 }
     from 'businessLogic/serverApi';
 import {
-    Exchange, ExchangeStatus, ExchangeCoinBalance, ExchangeOrderBook,
+    Exchange, ExchangeStatus, ExchangeOrderBook,
     OrderAction, OrderActionStatus
 } from 'businessLogic/model';
 import { DateUtils, ExchangeUtils } from 'businessLogic/utils';
@@ -57,10 +57,10 @@ function* getActiveOrdersAsync(action) {
             const orderBook = res[key];
             const exchangeOB = {
                 exchange: key,
-                asks: orderBook.asks,
+                asks: _.orderBy(orderBook.asks, ['price'], 'desc'),
                 bids: orderBook.bids,
                 averageSpread: !!orderBook['average_spread'] ? orderBook['average_spread'].toFixed(2) : undefined,
-                lastPrice: orderBook['last_price']
+                lastPrice: orderBook['last_price'] ? { ...orderBook['last_price'], time: new Date(Number(orderBook['last_price'].time * 1000)) } : undefined
             } as ExchangeOrderBook;
 
             if (!_.isEmpty(exchangeOB.asks) && !_.isEmpty(exchangeOB.asks)) {
@@ -202,7 +202,7 @@ function* selectExchangesAsync(action) {
         yield put(showToast({ intent: 'error', message: `Failed to select ${errs.length} exchanges.` }));
     }
     else {
-        if (!_.isEmpty(exchangesToAdd)) yield put(showToast({ intent: 'success', message: `${exchangesToAdd.length} were exchanges successfully addeed.` }));
+        if (!_.isEmpty(exchangesToAdd)) yield put(showToast({ intent: 'success', message: `${exchangesToAdd.length} exchange${exchangesToAdd.length > 1 ? 's were' : 'was'} successfully addeed.` }));
     }
 
 }
@@ -257,8 +257,8 @@ function* getUserOrdersStatusAsync(action) {
         });
 
 
-        const lastWeekDate = DateUtils.lastWeek();
-        const lastOrders = _.filter(normalizedData, (order: OrderActionStatus) => order.order_time > lastWeekDate);
+        const yesterdayDate = DateUtils.yesterday();
+        const lastOrders = _.filter(normalizedData, (order: OrderActionStatus) => order.order_time > yesterdayDate);
         yield put(setUserSentOrders(lastOrders));
 
         // Update user balance (may have been changed as a result of the on-going orders)

@@ -79,14 +79,14 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                     return (
                         [
                             this.renderCurrencyMenu(),
-                            <Button key='reports' iconName='assessment' type='contained' aria-label='Reports' linkTo='/reports' tooltip='Reports' className={styles.actionsBtn} />,
-                            <Button key='chooseEx' onClick={this.props.manageExchanges} type='contained' iconName='storage' aria-label='Choose Exchanges' tooltip='Choose Exchanges' className={styles.actionsBtn} />
+                            <Button key='reports' iconName='assessment' type='contained' aria-label='Reports' linkTo='/reports' tooltip={getLocalizedText('reports')} className={styles.actionsBtn} />,
+                            <Button key='chooseEx' onClick={this.props.manageExchanges} type='contained' iconName='storage' aria-label='Choose Exchanges' tooltip={getLocalizedText('choose_exchanges')} className={styles.actionsBtn} />
                         ]
                     );
                 }}
                 />
                 <Route path='/reports' render={(props) =>
-                    <Button aria-label='Reports' iconName='keyboard_backspace' linkTo='/' className={styles.actionsBtn}>Back to Order Book</Button>}
+                    <Button aria-label='Reports' iconName='keyboard_backspace' linkTo='/' className={styles.actionsBtn}>{getLocalizedText('back_to_orders_book')}</Button>}
                 />
             </RSwitch>
         );
@@ -105,7 +105,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
     private renderCurrencyMenu() {
         return (
             <div key='selectCurrency' className={styles.selectCurrency}>
-                <span className={styles.label}>Selected Currency:</span>
+                <span className={styles.label}>{getLocalizedText('selected_currency')}</span>
                 <Select
                     selectedValue={this.props.currentCurrency}
                     onChange={(selection) => this.props.setCurrency(selection as SupportedCurrencies)}
@@ -127,7 +127,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                     aria-label='More'
                     aria-owns={langMenu ? 'simple-menu' : null}
                     aria-haspopup='true'
-                    tooltip='Change Language'
+                    tooltip={getLocalizedText('choose_language')}
                     onClick={this.handleLangMenuClick}>
                     <img className={styles.langIco} src={require(`assets/icons/${this.props.currentLang}.ico`)} />
                 </IconButton>
@@ -161,7 +161,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                     aria-label='More'
                     aria-owns={userMenu ? 'simple-menu' : null}
                     aria-haspopup='true'
-                    tooltip='User Settings'
+                    tooltip={getLocalizedText('user_settings')}
                     iconName='person'
                     className={styles.userIco}
                     onClick={this.handleUserMenuClick}>
@@ -171,13 +171,13 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                     openTarget={userMenu}
                     onClose={this.closeMenu}
                     options={[
-                        { displayText: 'Contact Support', iconName: 'help', onClick: (e) => window.location.href = 'mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' },
+                        { displayText: getLocalizedText('contact_support'), iconName: 'help', onClick: (e) => window.location.href = 'mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' },
                         {
                             children: <Switch
                                 checked={this.props.theme === 'dark'}
                                 onChange={(e) => this.props.setTheme(e.target.checked ? 'dark' : 'light')}
                                 value='checkedTheme'
-                                label='Dark theme'
+                                label={getLocalizedText('dark_theme')}
                                 labelClass={styles.themeSelector}
                             />
                         }

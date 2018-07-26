@@ -30,7 +30,7 @@ reducerMap[OrderBookActions.GET_EXCHANGES] = (state: OrderBookState, action: Act
 reducerMap[OrderBookActions.SET_EXCHANGES] = (state: OrderBookState, action: Action<Exchange[]>): OrderBookState => {
     if (!state.exchangesStatus) {
         const exchangesStatus = {};
-        _.forEach(action.payload, (exchange => exchangesStatus[exchange.name] = true));
+        _.forEach(action.payload, ((exchange: Exchange) => exchangesStatus[exchange.name] = exchange.status !== ExchangeStatus.STOPPED));
         return { ...state, exchanges: action.payload, exchangesStatus: exchangesStatus, loading: false };
     }
     else

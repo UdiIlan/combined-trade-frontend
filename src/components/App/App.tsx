@@ -6,12 +6,13 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import bmTheme from 'themes';
 const styles = require('./styles.scss');
 import Header from './Header';
-import { SupportedLanguages, getLocalizedText } from 'lang';
+import { SupportedLanguages } from 'lang';
 import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
 import { sesLanguage, setCurrency, resetToast, setTheme } from './redux/actions';
 import OrderBook from 'components/OrderBook';
 import ReportManager from 'components/ReportManager';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
+import { isNull } from 'util';
 
 export interface AppProps {
     currentLang: SupportedLanguages;
@@ -56,7 +57,14 @@ class App extends React.Component<AppProps, AppState> {
         this.props.setCurrency(newCurrency);
     }
 
+    componentWillUpdate() {
+        if (!!this.orderBook && isNull(this.orderBook.getWrappedInstance())) {
+            this.orderBook = undefined;
+        }
+    }
+
     render() {
+
         return (
             <MuiThemeProvider theme={bmTheme}>
 
@@ -69,7 +77,7 @@ class App extends React.Component<AppProps, AppState> {
                         setCurrency={this.setNewCurrency}
                         theme={this.props.theme}
                         setTheme={this.props.setTheme}
-                        manageExchanges={this.orderBook ? this.orderBook.manageExchanges : undefined}
+                        manageExchanges={this.orderBook ? this.orderBook.getWrappedInstance().manageExchanges : undefined}
                     />
 
                     <div className={styles.content}>
@@ -77,8 +85,9 @@ class App extends React.Component<AppProps, AppState> {
                             <Route exact path='/' render={(props) => {
                                 return (
                                     <OrderBook ref={(orderBook: any) => {
+                                        if (!orderBook || isNull(orderBook)) return;
                                         if (!this.orderBook) {
-                                            this.orderBook = orderBook.getWrappedInstance();
+                                            this.orderBook = orderBook;
                                             this.forceUpdate();
                                         }
                                     }} />
@@ -95,16 +104,6 @@ class App extends React.Component<AppProps, AppState> {
 
                     {!!this.state.toast && <Toast intent={this.state.toast.intent} message={this.state.toast.message} open={true} />}
 
-                    {/* <footer>
-                                <div>{getLocalizedText('supportLink')}<a className={styles.supportLink} href='mailto:support@bitmaintech.com?Subject=Live%20Order%20Book%20-%20Support' target='_top'>support@bitmaintech.com</a></div>
-                                <Switch
-                                    checked={this.props.theme === 'dark'}
-                                    onChange={(e) => this.props.setTheme(e.target.checked ? 'dark' : 'light')}
-                                    value='checkedTheme'
-                                    label='Dark theme'
-                                    labelClass={styles.themeSelector}
-                                />
-                            </footer> */}
                 </div>
 
             </MuiThemeProvider >

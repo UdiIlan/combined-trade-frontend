@@ -20,7 +20,8 @@ export interface TradingPenProps {
     cancelTimedOrder();
 }
 export interface TradingPenState {
-    openDialog?: boolean;
+    openDialog?: DialogProps;
+    timedOrderCancelled?: boolean;
 }
 
 export default class TradingPen extends React.Component<TradingPenProps, TradingPenState> {
@@ -28,37 +29,78 @@ export default class TradingPen extends React.Component<TradingPenProps, Trading
     constructor(props) {
         super(props);
         this.state = {};
+        this.sendNewOrder = this.sendNewOrder.bind(this);
     }
 
     private tb: TradingBox;
 
     private cancelRunningOrder() {
-        this.props.cancelTimedOrder();
-        this.setState({ openDialog: false });
-        if (this.tb) this.tb.reset();
+
+        const confirmDialog = {
+            title: getLocalizedText('cancel_timed_order'),
+            subTitle: [
+                <span key='row1'>{getLocalizedText('cancel_order_confirm')}</span>,
+                <br key='separator' />,
+                <span key='row2'>{getLocalizedText('are_you_sure')}</span>
+            ],
+            onOkClick: () => this.setState({ openDialog: undefined, timedOrderCancelled: true },
+                () => {
+                    this.props.cancelTimedOrder();
+                    if (this.tb) this.tb.reset();
+                }),
+            onCancelClick: () => this.setState({ openDialog: undefined }),
+        };
+
+        this.setState({ openDialog: confirmDialog, timedOrderCancelled: true });
+
+    }
+
+    componentWillReceiveProps(nextProps: TradingPenProps) {
+        if (!!this.props.runningTimedOrder && !nextProps.runningTimedOrder && !this.state.timedOrderCancelled) {
+            const dialog = {
+                title: getLocalizedText('timed_order_success'),
+                subTitle: [
+                    <span key='row1'>{`Action Type: ${getLocalizedText(nextProps.runningTimedOrder.action_type)}`}</span>,
+                    <br key='separator1' />,
+                    <span key='row2'>{`Done: ${nextProps.runningTimedOrder.timed_order_done_size}`}</span>,
+                    <br key='separator2' />,
+                    <span key='row3'>{`Price: ${nextProps.runningTimedOrder.timed_order_price_fiat}`}</span>
+                ],
+                onCancelClick: () => this.setState({ openDialog: undefined }),
+                okBtnHidden: true,
+                intent: 'success',
+                cancelBtnText: 'OK'
+            } as DialogProps;
+
+            this.setState({ openDialog: dialog });
+        }
+    }
+
+    sendNewOrder(command: OrderAction) {
+        this.setState({ timedOrderCancelled: true }, () => this.props.sendNewOrderCommand(command));
     }
 
     render() {
-        const { className, runningTimedOrder, ...otherProps } = this.props;
+        const { className, runningTimedOrder, sendNewOrderCommand, ...otherProps } = this.props;
+        const completed = runningTimedOrder && runningTimedOrder.timed_order_done_size ? runningTimedOrder.timed_order_done_size : 0;
         return (
-            <Sidebar className={cx(styles.tradingPen, className)} header='Trading Area' align='left' collapsible open>
-                <TradingBox ref={tb => this.tb = tb} disabledTimedTrade={!!runningTimedOrder} {...otherProps} />
+            <Sidebar className={cx(styles.tradingPen, className)} header={getLocalizedText('trading_area')} align='left' collapsible open>
+                <TradingBox ref={tb => this.tb = tb} disabledTimedTrade={!!runningTimedOrder} sendNewOrderCommand={this.sendNewOrder} {...otherProps} />
 
-                {!!runningTimedOrder &&
+                {!!runningTimedOrder && !this.state.timedOrderCancelled &&
                     <div className={styles.timedOrder}>
-                        <span className={styles.text}>{`${runningTimedOrder.action_type.indexOf('buy') < 0 ? 'Sold' : 'Bought'} ${runningTimedOrder.timed_order_done_size} out of ${runningTimedOrder.timed_order_required_size} ${this.props.selectedCurrency}`}</span>
-                        <ProgressBar className={styles.progress} value={runningTimedOrder.timed_order_done_size / runningTimedOrder.timed_order_required_size} />
-                        <Button onClick={() => this.setState({ openDialog: true })} className={styles.cancelBtn}>Cancel</Button>
+                        <span className={styles.text}>{`${runningTimedOrder.action_type.indexOf('buy') < 0 ? getLocalizedText('sold') : getLocalizedText('bought')} ${completed.toFixed(4)} ${getLocalizedText('out_of')} ${runningTimedOrder.timed_order_required_size} ${this.props.selectedCurrency}`}</span>
+                        <ProgressBar className={styles.progress} value={(completed / runningTimedOrder.timed_order_required_size) * 100} />
+                        <Button onClick={() => this.cancelRunningOrder()} className={styles.cancelBtn}>{getLocalizedText('cancel')}</Button>
                     </div>
                 }
 
-                <Dialog
-                    open={this.state.openDialog || false}
-                    title='Cancel Timed Order'
-                    subTitle={[<span key='row1'>{'You are about to cancel running timed order.'}</span>, <br key='separator' />, <span key='row2'>Are you sure?</span>]}
-                    onOkClick={() => this.cancelRunningOrder()}
-                    onCancelClick={() => this.setState({ openDialog: false })}
-                />
+                {!!this.state.openDialog &&
+                    <Dialog
+                        open={true}
+                        {...this.state.openDialog}
+                    />
+                }
 
             </Sidebar>
         );

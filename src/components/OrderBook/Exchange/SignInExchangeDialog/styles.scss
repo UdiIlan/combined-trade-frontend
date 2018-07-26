@@ -1,17 +1,30 @@
 @import '~styles/colors.scss';
 
 .signInDialogContent {
-  display: flex;
-  flex-direction: column;
   width: 25vw;
-  justify-content: space-around;
-  height: 25vh;
+  height: 30vh;
 
-  .fees {
+  .required {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 25px;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 70%;
+    margin-bottom: 20px;
+  }
+
+  .feesContainer {
+    margin-top: 35px;
+
+    .cb {
+      height: 15px;
+    }
+
+    .fees {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
   }
 }
 
