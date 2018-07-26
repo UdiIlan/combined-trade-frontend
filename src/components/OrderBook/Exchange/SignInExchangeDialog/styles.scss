@@ -30,9 +30,15 @@
 
 .footer {
   margin-top: 20px;
+  padding-top: 20px;
   height: 20px;
 
+  .footerItem {
+    margin-top: 25px;
+  }
+
   .invalidLogin {
+    @extend .footerItem;
     @include themify($themes) {
       color: themed('redError');
     }

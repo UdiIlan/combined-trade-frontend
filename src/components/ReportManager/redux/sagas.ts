@@ -24,8 +24,8 @@ function* getOrdersReportAsync(action) {
 
             // for each command take all the automated orders in between this order original index and the previous user command.
             const cmdIndex = normalizedData.indexOf(command);
-            const prevCmdIndex = normalizedData.indexOf(userManualOrders[index - 1 >= 0 ? index - 1 : 0]);
-            command.children = _.slice(normalizedData, prevCmdIndex + 1, cmdIndex);
+            const prevCmdIndex = index - 1 >= 0 ? normalizedData.indexOf(userManualOrders[index - 1]) + 1 : 0;
+            command.children = _.slice(normalizedData, prevCmdIndex, cmdIndex);
 
         });
 

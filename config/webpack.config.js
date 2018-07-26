@@ -57,7 +57,7 @@ const config = (env) => {
       new HtmlWebpackPlugin(
         {
           template: path.resolve(CONFIG_DIR, 'index_template.html'),
-          title: 'Live Order Book',
+          title: 'Smart Trader',
           favicon: path.resolve(APP_DIR, "assets/icons/favicon.ico")
         }),
 

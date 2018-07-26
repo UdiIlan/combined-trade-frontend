@@ -47,7 +47,7 @@ export default class Dialog extends React.Component<DialogProps, any> {
 
                 <DialogTitle
                     disableTypography
-                    className={cx(styles.header, { danger: this.props.intent === 'success' }, { danger: this.props.intent === 'success' })}
+                    className={cx(styles.header, { danger: this.props.intent === 'success' }, { success: this.props.intent === 'success' })}
                     id='form-dialog-title'>{this.props.title}
                 </DialogTitle>
 

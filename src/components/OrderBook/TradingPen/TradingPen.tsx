@@ -49,9 +49,11 @@ export default class TradingPen extends React.Component<TradingPenProps, Trading
                     if (this.tb) this.tb.reset();
                 }),
             onCancelClick: () => this.setState({ openDialog: undefined }),
-        };
+            okBtnText: 'Yes, Cancel',
+            cancelBtnText: 'No, Ignore'
+        } as DialogProps;
 
-        this.setState({ openDialog: confirmDialog, timedOrderCancelled: true });
+        this.setState({ openDialog: confirmDialog });
 
     }
 
@@ -60,11 +62,9 @@ export default class TradingPen extends React.Component<TradingPenProps, Trading
             const dialog = {
                 title: getLocalizedText('timed_order_success'),
                 subTitle: [
-                    <span key='row1'>{`Action Type: ${getLocalizedText(nextProps.runningTimedOrder.action_type)}`}</span>,
+                    <span key='row1'>{`Action Type: ${getLocalizedText(this.props.runningTimedOrder.action_type)}`}</span>,
                     <br key='separator1' />,
-                    <span key='row2'>{`Done: ${nextProps.runningTimedOrder.timed_order_done_size}`}</span>,
-                    <br key='separator2' />,
-                    <span key='row3'>{`Price: ${nextProps.runningTimedOrder.timed_order_price_fiat}`}</span>
+                    <span key='row2'>{`Done: ${this.props.runningTimedOrder.timed_order_done_size ? this.props.runningTimedOrder.timed_order_done_size.toFixed(4) : 0}`}</span>
                 ],
                 onCancelClick: () => this.setState({ openDialog: undefined }),
                 okBtnHidden: true,
@@ -77,7 +77,7 @@ export default class TradingPen extends React.Component<TradingPenProps, Trading
     }
 
     sendNewOrder(command: OrderAction) {
-        this.setState({ timedOrderCancelled: true }, () => this.props.sendNewOrderCommand(command));
+        this.setState({ timedOrderCancelled: false }, () => this.props.sendNewOrderCommand(command));
     }
 
     render() {
@@ -89,7 +89,7 @@ export default class TradingPen extends React.Component<TradingPenProps, Trading
 
                 {!!runningTimedOrder && !this.state.timedOrderCancelled &&
                     <div className={styles.timedOrder}>
-                        <span className={styles.text}>{`${runningTimedOrder.action_type.indexOf('buy') < 0 ? getLocalizedText('sold') : getLocalizedText('bought')} ${completed.toFixed(4)} ${getLocalizedText('out_of')} ${runningTimedOrder.timed_order_required_size} ${this.props.selectedCurrency}`}</span>
+                        <span className={styles.text}>{`${runningTimedOrder.action_type.indexOf('buy') < 0 ? getLocalizedText('sold') : getLocalizedText('bought')} ${completed > 0 ? completed.toFixed(4) : 0} ${getLocalizedText('out_of')} ${runningTimedOrder.timed_order_required_size} ${this.props.selectedCurrency}`}</span>
                         <ProgressBar className={styles.progress} value={(completed / runningTimedOrder.timed_order_required_size) * 100} />
                         <Button onClick={() => this.cancelRunningOrder()} className={styles.cancelBtn}>{getLocalizedText('cancel')}</Button>
                     </div>

@@ -64,7 +64,7 @@ function* getActiveOrdersAsync(action) {
             } as ExchangeOrderBook;
 
             if (!_.isEmpty(exchangeOB.asks) && !_.isEmpty(exchangeOB.asks)) {
-                exchangeOB.currentSpread = exchangeOB.asks[0].price - exchangeOB.bids[0].price;
+                exchangeOB.currentSpread = _.last(exchangeOB.asks).price - exchangeOB.bids[0].price;
             }
 
             return exchangeOB;
@@ -89,7 +89,7 @@ function* signInToExchangeAsync(action) {
             yield put(setSignInToExchangeResult(exchange, new Error('Invalid credentials.')));
     }
     catch (err) {
-        yield put(setSignInToExchangeResult(exchange, err));
+        yield put(setSignInToExchangeResult(exchange, new Error('Invalid credentials.')));
         console.error('Failed to sign-in to exchange: ', err);
     }
 }
@@ -202,7 +202,7 @@ function* selectExchangesAsync(action) {
         yield put(showToast({ intent: 'error', message: `Failed to select ${errs.length} exchanges.` }));
     }
     else {
-        if (!_.isEmpty(exchangesToAdd)) yield put(showToast({ intent: 'success', message: `${exchangesToAdd.length} exchange${exchangesToAdd.length > 1 ? 's were' : 'was'} successfully addeed.` }));
+        if (!_.isEmpty(exchangesToAdd)) yield put(showToast({ intent: 'success', message: `${exchangesToAdd.length} exchange ${exchangesToAdd.length > 1 ? 's were' : 'was'} successfully addeed.` }));
     }
 
 }
