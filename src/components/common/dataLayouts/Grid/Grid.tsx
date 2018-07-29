@@ -47,7 +47,7 @@ class EnhancedTableHead extends React.Component<EnhancedTableHeadProps, any> {
                                 key={column.id}
                                 numeric={column.numeric}
                                 sortDirection={orderBy === column.id ? order : false}
-                                className={cx({nestingControl: column.id === NESTING_CONTROL_COLUMN_ID})}
+                                className={cx({ nestingControl: column.id === NESTING_CONTROL_COLUMN_ID })}
                             >
                                 <TableSortLabel
                                     active={orderBy === column.id}
@@ -102,11 +102,11 @@ export default class Grid extends React.Component<GridProps, GridState> {
     }
 
     handleChangePage = (event, page) => {
-        this.setState({ page });
+        this.setState({ page, expandedRow: undefined });
     }
 
     handleChangeRowsPerPage = event => {
-        this.setState({ rowsPerPage: event.target.value });
+        this.setState({ rowsPerPage: event.target.value, expandedRow: undefined });
     }
 
     handleRequestSort = (event, property: string) => {
@@ -192,7 +192,7 @@ export default class Grid extends React.Component<GridProps, GridState> {
                 else {
                     colContent = !col.render ? item[col.id] : col.render(item);
                 }
-                return <TableCell className={cx({nestingControl: col.id === NESTING_CONTROL_COLUMN_ID})} key={`GridRow_${index}_${col.id}`} numeric={col.numeric}>{colContent}</TableCell>;
+                return <TableCell className={cx({ nestingControl: col.id === NESTING_CONTROL_COLUMN_ID })} key={`GridRow_${index}_${col.id}`} numeric={col.numeric}>{colContent}</TableCell>;
             });
 
         return (
@@ -205,7 +205,7 @@ export default class Grid extends React.Component<GridProps, GridState> {
                 {isExpanded ?
                     [
                         <td key={0} className={styles.expandedRowCells}>
-                            <table><tbody><tr>{rowCells}</tr></tbody></table>
+                            <table id='expandedGridRowDetails'><tbody><tr>{rowCells}</tr></tbody></table>
                         </td>,
                         <td className={styles.expandedRowPanel} key={1} >
                             {this.props.renderNestedItems(item)}
@@ -215,5 +215,12 @@ export default class Grid extends React.Component<GridProps, GridState> {
                 }
             </TableRow>
         );
+    }
+
+    componentDidUpdate() {
+        if (this.state.expandedRow) {
+            const er = document.getElementById('expandedGridRowDetails');
+            if (er && er.scrollIntoView) er.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'nearest' });
+        }
     }
 }
