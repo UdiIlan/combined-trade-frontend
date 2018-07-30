@@ -22,7 +22,7 @@ const config = (env) => {
 
 
   return {
-    devtool: (prod ? 'source-map' : 'inline-source-map'),
+    devtool: (prod ? undefined : 'inline-source-map'),
     devServer: {
       hot: true,
       open: true,
