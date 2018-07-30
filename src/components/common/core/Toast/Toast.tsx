@@ -7,7 +7,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import IconButton from 'components/common/core/IconButton';
 
-const DEFAULT_AUTO_HIDE_TIME = 5000;
+const DEFAULT_AUTO_HIDE_TIME = 2000;
 
 export type ToastIntent = 'success' | 'error' | 'info' | 'warning';
 
