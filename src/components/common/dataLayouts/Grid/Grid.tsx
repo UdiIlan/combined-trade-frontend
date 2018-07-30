@@ -83,7 +83,8 @@ export interface GridState {
     selected?: any[];
     page?: number;
     rowsPerPage?: number;
-    expandedRow?: number;
+    expandedRows: number[];
+    lastExpandedRow?: number;
 }
 
 const NESTING_CONTROL_COLUMN = { id: NESTING_CONTROL_COLUMN_ID, title: ' ' };
@@ -97,16 +98,17 @@ export default class Grid extends React.Component<GridProps, GridState> {
             page: 0,
             rowsPerPage: 50,
             sortBy: props.sortBy,
-            sortDirection: props.sortDirection
+            sortDirection: props.sortDirection,
+            expandedRows: []
         };
     }
 
     handleChangePage = (event, page) => {
-        this.setState({ page, expandedRow: undefined });
+        this.setState({ page, expandedRows: [] });
     }
 
     handleChangeRowsPerPage = event => {
-        this.setState({ rowsPerPage: event.target.value, expandedRow: undefined });
+        this.setState({ rowsPerPage: event.target.value, expandedRows: [] });
     }
 
     handleRequestSort = (event, property: string) => {
@@ -174,15 +176,21 @@ export default class Grid extends React.Component<GridProps, GridState> {
     }
 
     private toggleRow(rowIndex) {
-        if (this.state.expandedRow === rowIndex)
-            this.setState({ expandedRow: undefined });
-        else
-            this.setState({ expandedRow: rowIndex });
+        const expandedRows = [...this.state.expandedRows];
+        const curIndex = expandedRows.indexOf(rowIndex);
+        if (curIndex >= 0)
+            expandedRows.splice(curIndex, 1);
+        else {
+            expandedRows.push(rowIndex);
+            this.setState({ lastExpandedRow: rowIndex });
+        }
+
+        this.setState({ expandedRows });
     }
 
     private renderGridRow(index: number, item: any, columns: GridColumn[]) {
 
-        const isExpanded = this.state.expandedRow === index;
+        const isExpanded = this.state.expandedRows.indexOf(index) >= 0;
         const rowCells =
             _.map(columns, (col: GridColumn) => {
                 let colContent;
@@ -205,7 +213,7 @@ export default class Grid extends React.Component<GridProps, GridState> {
                 {isExpanded ?
                     [
                         <td key={0} className={styles.expandedRowCells}>
-                            <table id='expandedGridRowDetails'><tbody><tr>{rowCells}</tr></tbody></table>
+                            <table id={`expandedGridRowDetails_${index}`}><tbody><tr>{rowCells}</tr></tbody></table>
                         </td>,
                         <td className={styles.expandedRowPanel} key={1} >
                             {this.props.renderNestedItems(item)}
@@ -218,8 +226,9 @@ export default class Grid extends React.Component<GridProps, GridState> {
     }
 
     componentDidUpdate() {
-        if (this.state.expandedRow) {
-            const er = document.getElementById('expandedGridRowDetails');
+        // ensure that the last expanded row is scrolled into view.
+        if (this.state.lastExpandedRow) {
+            const er = document.getElementById(`expandedGridRowDetails_${this.state.lastExpandedRow}`);
             if (er && er.scrollIntoView) er.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'nearest' });
         }
     }

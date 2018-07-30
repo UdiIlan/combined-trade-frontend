@@ -8,20 +8,18 @@ import { default as Grid, GridColumn } from 'components/common/dataLayouts/Grid'
 import { DateUtils } from 'businessLogic/utils';
 
 const REPORT_COLUMNS: GridColumn[] = [
-    { id: 'action_type', title: 'Action Type', render: (item) => getLocalizedText(item['action_type']) },
+    { id: 'action_type', title: 'Action Type', render: item => getLocalizedText(item.action_type) },
     { id: 'crypto_type', title: 'Crypto Type' },
     { id: 'crypto_size', title: 'Size' },
     { id: 'price_fiat', title: 'Price' },
-    { id: 'order_time', title: 'Date', render: (item) => DateUtils.defaultFormat(item['order_time']) },
+    { id: 'order_time', title: 'Date', render: item => DateUtils.defaultFormat(item.order_time) },
     { id: 'status', title: 'Status' },
     { id: 'exchange', title: 'Exchange' },
     { id: 'exchange_id', title: 'ID' },
-    { id: 'crypto_available', title: 'Crypto Balance' },
-    // { id: 'timed_order', title: 'Is Timed Order' },
-    { id: 'usd_balance', title: 'USD Balance' },
+    { id: 'crypto_available', title: 'Crypto Balance', render: item => parseFloat(item.crypto_available).toFixed(4) },
+    { id: 'usd_balance', title: 'USD Balance', render: item => parseFloat(item.usd_balance).toFixed(4) },
     { id: 'ask', title: 'Ask' },
     { id: 'bid', title: 'Bid' },
-    // { id: 'children', numeric: true, title: 'Children', render: (item) => item.children ? item.children.length : 0 },
 ];
 
 interface ReportDataProps {

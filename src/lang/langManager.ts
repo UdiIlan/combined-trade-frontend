@@ -42,8 +42,7 @@ export type localizedKeys =
     'no_user' |
     'sent_transactions' |
     'transactions' |
-    'export_all_orders' |
-    'export_shown_orders' |
+    'export' |
     'unavailable' |
     'manual_short' |
     'timed_short' |
@@ -121,5 +120,6 @@ export type localizedKeys =
     'hide' |
     'login' |
     'timed_order_success' |
-    'start'
+    'start' |
+    'go'
     ;

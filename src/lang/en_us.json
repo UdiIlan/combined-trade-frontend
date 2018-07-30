@@ -101,6 +101,7 @@
     "hide": "Hide",
     "login": "Log In",
     "timed_order_success": "Timed Order Finished Successfully",
-    "start": "Start"
+    "start": "Start",
+    "go" : "GO"
 
 }

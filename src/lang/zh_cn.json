@@ -72,14 +72,14 @@
     "choose_exchanges": "Choose Exchanges",
     "choose_language": "Change Language",
     "user_settings": "User Settings",
-    "contact_support" : "Contact Support",
-    "dark_theme" : "Dark Theme",
+    "contact_support": "Contact Support",
+    "dark_theme": "Dark Theme",
     "loading_account_info": "Loading Account Info...",
     "choose": "Choose",
     "exchanges": "Exchanges",
     "select_exchanges": "Select one (or more) exchanges from the bellow list:",
     "are_you_sure": "Are you sure?",
-    "cancel_order_confirm" : "You are about to cancel running timed order.",
+    "cancel_order_confirm": "You are about to cancel running timed order.",
     "trading_area": "Treading Area",
     "sold": "Sold",
     "bought": "Bought",
@@ -101,5 +101,6 @@
     "hide": "Hide",
     "login": "Log In",
     "timed_order_success": "Timed Order Finished Successfully",
-    "start": "Start"
+    "start": "Start",
+    "go": "GO"
 }

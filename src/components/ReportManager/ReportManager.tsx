@@ -6,6 +6,8 @@ import { getOrdersReport, setOrdersReport } from './redux/actions';
 import FilterBar from './FilterBar';
 import ReportData from './ReportData';
 import { UNIFIED_EXCHANGE_KEY } from 'businessLogic/model';
+import { DateUtils } from 'businessLogic/utils';
+import { getLocalizedText } from 'lang';
 
 
 interface ReportManagerProps {
@@ -55,22 +57,34 @@ class ReportManager extends React.Component<ReportManagerProps, any> {
                 _.forEach(order.children, order => orders.push(order));
         });
 
-        const headers = ['Type', 'Exchange', 'Order Date and Time', 'Timed / Manual', 'Size', 'Coin', 'Price', 'Status', 'USD Balance', 'Crypto Balance'];
+        const headers = ['Action Type', 'Crypto Type', 'Size', 'Price', 'Date', 'Status', 'Exchange', 'ID', 'Crypto Balance', 'USD Balance', 'Ask', 'Bid'];
         const headers_row = headers.join(',');
         let data_rows = '';
-        let timed_order_dict = { 0: 'Manual', 1: 'Timed' };
         for (let i = 0; i < orders.length; ++i) {
-            let curr_row = [orders[i].action_type, orders[i].exchange, orders[i].order_time,
-            timed_order_dict[orders[i].timed_order], parseFloat(orders[i].crypto_size).toFixed(4),
-            orders[i].crypto_type, orders[i].price_fiat, orders[i].status,
-            orders[i].usd_balance, orders[i].crypto_available];
+            const item = orders[i];
+
+            const curr_row = [
+                getLocalizedText(item.action_type),
+                item.crypto_type,
+                item.crypto_size,
+                item.price_fiat,
+                DateUtils.defaultFormat(item.order_time),
+                item.status,
+                item.exchange.replace(',', '/'),
+                item.exchange_id,
+                parseFloat(item.crypto_available).toFixed(4),
+                parseFloat(item.usd_balance).toFixed(4),
+                item.ask,
+                item.bid
+            ];
+
             data_rows = data_rows + curr_row.join(',') + '\n';
         }
-        let encodedUri = encodeURI('data:text/csv;charset=utf-8,' + headers_row + '\n' + data_rows);
-        let link = document.createElement('a');
+        const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + headers_row + '\n' + data_rows);
+        const link = document.createElement('a');
         link.setAttribute('href', encodedUri);
-        let currentDate = new Date();
-        let datetime = `${currentDate.getFullYear()}_00${currentDate.getMonth() + 1}_00${currentDate.getDate()}_00${currentDate.getHours()}_00${currentDate.getMinutes()}_00${currentDate.getSeconds()}`;
+        const currentDate = new Date();
+        const datetime = `${currentDate.getFullYear()}_00${currentDate.getMonth() + 1}_00${currentDate.getDate()}_00${currentDate.getHours()}_00${currentDate.getMinutes()}_00${currentDate.getSeconds()}`;
 
         // Creating a downloadable link and clicking on it
         link.setAttribute('download', 'sent_orders_' + datetime + '.csv');

@@ -6,6 +6,7 @@ import Spinner from 'components/common/core/Spinner';
 import Select from 'components/common/core/Select';
 import DatePicker from 'components/common/core/DatePicker';
 import { DateUtils } from 'businessLogic/utils';
+import { getLocalizedText } from 'lang';
 
 const ORDER_STATUS_OPTIONS = ['Cancelled', 'Finished', 'Make Order', 'Make Order Sent', 'Make Order Executed', 'Timed Take Order', 'Timed Order'];
 
@@ -136,10 +137,10 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
                 {this.props.loading ?
                     <Spinner size={20} className={styles.loading} />
                     :
-                    <Button type='contained' onClick={this.execute} className={styles.execBtn} iconName='play_circle_filled'>GO</Button>
+                    <Button type='contained' onClick={this.execute} className={styles.execBtn} iconName='play_circle_filled'>{getLocalizedText('go')}</Button>
                 }
 
-                <Button tooltip='Export to Excel' onClick={this.props.export} className={styles.exportBtn} iconName='save_alt' disabled={this.props.noData}>Export</Button>
+                <Button tooltip='Export to CSV' onClick={this.props.export} className={styles.exportBtn} iconName='save_alt' disabled={this.props.noData}>{getLocalizedText('export')}</Button>
             </div>
         );
     }
