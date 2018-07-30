@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { getLocalizedText } from 'lang';
 const styles = require('./styles.scss');
+const classNames = require('classnames/bind');
+const cx = classNames.bind(styles);
 import Card from 'components/common/containers/Card';
 import { default as Grid, GridColumn } from 'components/common/dataLayouts/Grid';
 import { DateUtils } from 'businessLogic/utils';
@@ -24,6 +26,7 @@ const REPORT_COLUMNS: GridColumn[] = [
 
 interface ReportDataProps {
     data?: any[];
+    loading?: boolean;
 }
 
 export default class ReportData extends React.Component<ReportDataProps, any> {
@@ -34,7 +37,7 @@ export default class ReportData extends React.Component<ReportDataProps, any> {
 
     render() {
         return (
-            <Card className={styles.reportData}>
+            <Card className={cx(styles.reportData, { blurring: this.props.loading })}>
                 <Grid
                     sortBy='order_time'
                     sortDirection='desc'

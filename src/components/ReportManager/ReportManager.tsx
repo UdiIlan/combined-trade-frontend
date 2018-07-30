@@ -41,7 +41,7 @@ class ReportManager extends React.Component<ReportManagerProps, any> {
                     noData={_.isEmpty(data)}
                     export={this.exportOrders}
                 />
-                <ReportData data={data} />
+                <ReportData data={data} loading={loading} />
             </div>
         );
     }

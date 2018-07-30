@@ -26,9 +26,11 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
 
         if (this.props.stopped) return <div className={cx(styles.exchangeDataScrollContainer, { stopped: true })}>Stopped</div>;
 
-        if (!this.props.orderBook) return <div className={styles.loading}><Spinner size={20} /></div>;
+
+        if (!this.props.orderBook || !this.props.orderBook.currentSpread) return <div className={styles.loading}><Spinner size={20} /></div>;
 
         const { lastPrice, averageSpread, currentSpread } = this.props.orderBook;
+
         const isUnifiedEx = this.props.orderBook.exchange === UNIFIED_EXCHANGE_KEY;
 
         return (

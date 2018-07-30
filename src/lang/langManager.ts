@@ -114,11 +114,12 @@ export type localizedKeys =
     'order_id' |
     'logout_exchange_confirm' |
     'stop_exchange_confirm' |
-    'remove_exchange_confirm'|
-    'hide_exchange_confirm'|
+    'remove_exchange_confirm' |
+    'hide_exchange_confirm' |
     'stop' |
     'remove' |
-    'hide'|
+    'hide' |
     'login' |
-    'timed_order_success'
+    'timed_order_success' |
+    'start'
     ;

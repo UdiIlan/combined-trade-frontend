@@ -2,12 +2,14 @@
   padding: 0px 10px;
   height: calc(100% - 100px);
 
+  &.blurring {
+    filter: blur(0.1rem);
+  }
+
   .grid {
     height: 100%;
 
     .orderNestedContainer {
-      // height: 500px;
-      // background-color: darkcyan;
       width: 100%;
     }
   }

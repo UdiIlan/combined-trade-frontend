@@ -38,9 +38,12 @@ export default class ExchangeHeaderBar extends React.Component<ExchangeHeaderBar
         const actions = [];
         if (!this.props.hideActions) {
 
-            if (isExchangedStopped || isRunningButLoggedOut)
+            if (isRunningButLoggedOut)
                 actions.push(<IconButton key='logIn' tooltip={getLocalizedText('login')}
-                    onClick={(e) => this.props.signInToExchange()} disabled={isExchangedStopped} aria-label='log-in' iconName='vpn_key' />);
+                    onClick={(e) => this.props.signInToExchange()} aria-label='log-in' iconName='vpn_key' />);
+            else if (isExchangedStopped)
+                actions.push(<IconButton key='start' tooltip={getLocalizedText('start')}
+                    onClick={(e) => this.props.startExchange()} aria-label='start' iconName='play_arrow' />);
             else
                 actions.push(<IconButton className={styles.logOut} key='logOut' tooltip={`${getLocalizedText('logout', 'Log Out')} - (${this.props.signedInUser})`}
                     onClick={(e) => this.props.logOutFromExchange()} disabled={isUserLoggingIn} aria-label='log-out' iconName='exit_to_app' />);
