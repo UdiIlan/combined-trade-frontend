@@ -26,7 +26,7 @@ export default class OrderItem extends React.Component<OrderItemProps, any> {
         const { order, showSource } = this.props;
         return (
             <div className={styles.order}>
-                <span className={styles.orderSize}>{order.size.toFixed(2)}</span>
+                <span className={styles.orderSize}>{order.size.toFixed(4)}</span>
                 <span className={styles.orderAt} > {getLocalizedText('buy_at')} </span>
                 <span className={styles.orderPrice}>{order.price.toFixed(2)}</span>
                 {showSource && <span className={styles.orderSource}>{`(${order.source})`}</span>}

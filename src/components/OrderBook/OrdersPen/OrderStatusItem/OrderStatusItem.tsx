@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { DateUtils } from 'businessLogic/utils';
+import { DateUtils, MathUtils } from 'businessLogic/utils';
 const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
@@ -44,7 +44,7 @@ export default class OrderStatusItem extends React.Component<OrderStatusItemProp
                 </span>
                 <span className={styles.splitter}>|</span>
                 <span className={styles.info}>
-                    {`${order.crypto_size} ${order.crypto_type} @ ${order.price_fiat} USD`}
+                    {`${MathUtils.toFixed(order.crypto_size, 4)} ${order.crypto_type} @ ${MathUtils.toFixed(order.price_fiat)} USD`}
                 </span>
             </li >,
             this.renderPopover(order)
@@ -74,11 +74,11 @@ export default class OrderStatusItem extends React.Component<OrderStatusItemProp
                     </div>
                     <div className={styles.orderDetail}>
                         <span className={styles.key}>{getLocalizedText('size')}</span>
-                        <span className={styles.value}>{`${order.crypto_size} ${order.crypto_type}`}</span>
+                        <span className={styles.value}>{`${MathUtils.toFixed(order.crypto_size, 4)} ${order.crypto_type}`}</span>
                     </div>
                     <div className={styles.orderDetail}>
                         <span className={styles.key}>{getLocalizedText('price')}</span>
-                        <span className={styles.value}>{`${order.price_fiat} USD`}</span>
+                        <span className={styles.value}>{`${MathUtils.toFixed(order.price_fiat)} USD`}</span>
                     </div>
                     <div className={styles.orderDetail}>
                         <span className={styles.key}>{getLocalizedText('execution_status')}</span>

@@ -5,13 +5,13 @@ const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import Card from 'components/common/containers/Card';
 import { default as Grid, GridColumn } from 'components/common/dataLayouts/Grid';
-import { DateUtils } from 'businessLogic/utils';
+import { DateUtils, MathUtils } from 'businessLogic/utils';
 
 const REPORT_COLUMNS: GridColumn[] = [
     { id: 'action_type', title: 'Action Type', render: item => getLocalizedText(item.action_type) },
     { id: 'crypto_type', title: 'Crypto Type' },
-    { id: 'crypto_size', title: 'Size' },
-    { id: 'price_fiat', title: 'Price' },
+    { id: 'crypto_size', title: 'Size', render: item => parseFloat(item.crypto_size).toFixed(4) },
+    { id: 'price_fiat', title: 'Price', render: item => MathUtils.toFixed(item.price_fiat) },
     { id: 'order_time', title: 'Date', render: item => DateUtils.defaultFormat(item.order_time) },
     { id: 'status', title: 'Status' },
     { id: 'exchange', title: 'Exchange' },

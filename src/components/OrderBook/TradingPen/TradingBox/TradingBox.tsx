@@ -41,7 +41,7 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
     private confirmOrder() {
         const { size, price, operation, exchange } = this.state;
-        const orderFiatPrice = price * size;
+        const orderFiatPrice = (price * size).toFixed(2);
         if (this.validateOrder(size, price, operation, exchange)) {
             this.setState({
                 confirmDialog:
@@ -87,7 +87,7 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
                     if (price < 5)
                         msg = getLocalizedText('min_order_price_err');
 
-                    const orderFiatPrice = price * size;
+                    const orderFiatPrice = (price * size).toFixed(2);
                     if (Number(exchange.totalUSD) < Number(orderFiatPrice))
                         msg = `Inefficient balance (${exchange.totalUSD}) ,${orderFiatPrice} needed.`;
                     break;

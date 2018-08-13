@@ -58,3 +58,13 @@ export const ExchangeUtils = {
             undefined);
     }
 };
+
+export const MathUtils = {
+    toFixed: (num: number, numOfDigits = 2) => {
+        if (num % 1 !== 0)
+            // Cast to string and return the last two numbers.
+            return num.toFixed(numOfDigits);
+
+        return num.toString();
+    }
+};
