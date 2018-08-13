@@ -59,7 +59,7 @@ export default class ExchangeData extends React.Component<ExchangeDataProps, any
                                 </div>,
                                 <div key='last' className={styles.infoItem}>
                                     <span>{getLocalizedText('last')}</span>
-                                    <span className={cx({ valuePos: lastPrice && lastPrice.price >= 0 }, { valueNeg: lastPrice && lastPrice.price < 0 })}>
+                                    <span className={cx({ valuePos: lastPrice && lastPrice.type === 'buy' }, { valueNeg: lastPrice && lastPrice.type === 'sell' })}>
                                         {lastPrice ?
                                             `${lastPrice.price.toFixed(2)} ${lastPrice.time.toLocaleTimeString()}`
                                             :
