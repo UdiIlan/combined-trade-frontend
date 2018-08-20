@@ -61,7 +61,8 @@ export const ExchangeUtils = {
 
 export const MathUtils = {
     toFixed: (num: number, numOfDigits = 2) => {
-        if (num % 1 !== 0)
+        if (!num) return;
+        if (num.toFixed && num % 1 !== 0)
             // Cast to string and return the last two numbers.
             return num.toFixed(numOfDigits);
 
