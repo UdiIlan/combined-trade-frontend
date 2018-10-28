@@ -9,6 +9,7 @@ import Header from './Header';
 import { SupportedLanguages } from 'lang';
 import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
 import { sesLanguage, setCurrency, resetToast, setTheme } from './redux/actions';
+import Login from 'components/Login';
 import OrderBook from 'components/OrderBook';
 import ReportManager from 'components/ReportManager';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
@@ -19,6 +20,7 @@ export interface AppProps {
     currentCurrency: SupportedCurrencies;
     toast?: ToastProps;
     theme: AppTheme;
+    userName: String;
     sesLanguage(newLang: SupportedLanguages);
     setCurrency(newCurrency: SupportedCurrencies);
     resetToast();
@@ -94,7 +96,7 @@ class App extends React.Component<AppProps, AppState> {
                                 );
                             }}
                             />
-
+                            <Route path='/login' component={Login}  />
                             <Route path='/reports' component={ReportManager} />
 
                             <Route path='*' render={(props) => <div>NOT FOUND!</div>} />
