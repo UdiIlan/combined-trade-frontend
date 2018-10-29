@@ -12,7 +12,7 @@ import rootReducer from './reducers';
 export const history = createHashHistory();
 
 const sagaMiddleware = createSagaMiddleware();
-const middleware = applyMiddleware(sagaMiddleware);
+const middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history));
 
 const appReducer = createFilter('app', ['language', 'currency', 'theme']);
 const orderBookReducer = createFilter('orderBook', ['exchangesStatus']);
