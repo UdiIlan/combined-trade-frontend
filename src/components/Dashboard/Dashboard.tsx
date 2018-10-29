@@ -14,6 +14,20 @@ export default class Dashboard extends React.Component<any, any> {
     return (
       <div className={styles.dashboard}>
 
+        <div>
+
+        </div>
+
+
+        <div>
+
+        </div>
+
+
+        <div>
+
+        </div>
+
       </div>
     );
   }

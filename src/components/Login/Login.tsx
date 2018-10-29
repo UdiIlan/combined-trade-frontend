@@ -1,13 +1,18 @@
 import * as React from 'react';
 
-class Login extends React.Component<any, any> {
+interface LoginProps {
+    userLogin(userName: string, password: string);
+}
+
+class Login extends React.Component<LoginProps, any> {
 
     constructor(props) {
         super(props);
-        this.state = { userName: '' };
-
         this.doLogin = this.doLogin.bind(this);
     }
+
+    userNameInput;
+    passwordInput;
 
     render() {
         return (
@@ -15,11 +20,11 @@ class Login extends React.Component<any, any> {
                 <h2>Demo Trading Platform</h2>
                 <div>
                     <label>user name  </label>
-                    <input type='text' name='login' onChange={(e) => this.setState({userName: e.target.value})} />
+                    <input ref={(input) => this.userNameInput = input} type='text' name='login' />
                 </div>
                 <div>
                     <label>password  </label>
-                    <input type='text' name='password' />
+                    <input ref={(input) => this.passwordInput = input} type='text' name='password' />
                 </div>
                 <div>
                     <button onClick={this.doLogin}>Login </button>
@@ -29,8 +34,17 @@ class Login extends React.Component<any, any> {
     }
 
     doLogin(e) {
-        this.props.userLogin(this.state.userName);
+        this.props.userLogin(this.userNameInput.value, this.passwordInput.value);
     }
 }
+
+
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         userLogin: (userName: string, password: string) => dispatch(login(userName))
+//     };
+// };
+
+// export default connect(null, mapDispatchToProps)(Login);
 
 export default Login;

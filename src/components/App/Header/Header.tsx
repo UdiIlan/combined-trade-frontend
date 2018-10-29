@@ -81,7 +81,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                     return (
                         [
                             <Button key='reports' iconName='assessment' type='contained' aria-label='Reports' linkTo='/reports' tooltip={getLocalizedText('reports')} className={styles.actionsBtn} />,
-                            <Button key='trades' aria-label='Reports' iconName='swap_vertical_circle' linkTo='/trades' className={styles.actionsBtn} tooltip='Trades' />
+                            <Button key='trades' aria-label='Trades' iconName='swap_vertical_circle' linkTo='/trades' className={styles.actionsBtn} tooltip='Trades' />
                         ]
                     );
                 }}

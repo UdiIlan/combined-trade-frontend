@@ -2,20 +2,21 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import { Redirect } from 'react-router';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import bmTheme from 'themes';
 const styles = require('./styles.scss');
 import Header from './Header';
 import { SupportedLanguages } from 'lang';
 import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
-import { sesLanguage, setCurrency, resetToast, setTheme } from './redux/actions';
+import { sesLanguage, setCurrency, resetToast, setTheme, login } from './redux/actions';
 import Login from 'components/Login';
 import OrderBook from 'components/OrderBook';
 import Dashboard from 'components/Dashboard';
 import ReportManager from 'components/ReportManager';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
 import { isNull } from 'util';
+import EnsureLogin from './EnsureLogin';
+import { th } from 'date-fns/esm/locale';
 
 export interface AppProps {
     currentLang: SupportedLanguages;
@@ -27,6 +28,8 @@ export interface AppProps {
     setCurrency(newCurrency: SupportedCurrencies);
     resetToast();
     setTheme(theme: AppTheme);
+    doLogin(userName: string, password: string);
+
 }
 
 export interface AppState {
@@ -86,23 +89,28 @@ class App extends React.Component<AppProps, AppState> {
 
                     <div className={styles.content}>
                         <Switch>
-                            <Route exact path='/' component={Dashboard} />
-                            <Route path='/trades' render={(props) => {
-                                return (
-                                    <OrderBook ref={(orderBook: any) => {
-                                        if (!orderBook || isNull(orderBook)) return;
-                                        if (!this.orderBook) {
-                                            this.orderBook = orderBook;
-                                            this.forceUpdate();
-                                        }
-                                    }} />
-                                );
-                            }}
-                            />
-                            <Route path='/login' component={Login} />
-                            <Route path='/reports' component={ReportManager} />
+                            <Route path='/login' render={(props) => <Login userLogin={this.props.doLogin} />} />
+                            <EnsureLogin userName={this.props.userName}>
+                                <Switch>
+                                    <Route exact path='/' component={Dashboard} />
+                                    <Route path='/trades' render={(props) => {
+                                        return (
+                                            <OrderBook ref={(orderBook: any) => {
+                                                if (!orderBook || isNull(orderBook)) return;
+                                                if (!this.orderBook) {
+                                                    this.orderBook = orderBook;
+                                                    this.forceUpdate();
+                                                }
+                                            }} />
+                                        );
+                                    }}
+                                    />
+                                    <Route path='/reports' component={ReportManager} />
 
-                            <Route path='*' render={(props) => <div>NOT FOUND!</div>} />
+                                    <Route path='*' render={(props) => <div>NOT FOUND!</div>} />
+                                </Switch>
+                            </EnsureLogin>
+
                         </Switch>
 
                     </div>
@@ -137,7 +145,8 @@ const mapDispatchToProps = (dispatch) => {
             document.body.classList.remove(prevTheme);
             document.body.classList.add(newTheme);
             dispatch(setTheme(theme));
-        }
+        },
+        doLogin: (userName: string, password: string) => dispatch(login(userName))
     };
 };
 
