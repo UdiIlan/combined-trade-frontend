@@ -16,6 +16,13 @@
     width: 200px;
     margin-right: 25px;
     margin-left: 10px;
+    cursor: pointer;
+
+    .link {
+      height: 100%;
+      width: 100%;
+      display: inline-block;
+    }
   }
 
   .mainHeader {
