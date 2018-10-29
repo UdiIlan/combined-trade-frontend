@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { Route, Switch as RSwitch } from 'react-router-dom';
+import { Route, Switch as RSwitch, Link } from 'react-router-dom';
 
 const styles = require('./styles.scss');
 import { Menu, MenuItem } from 'components/common/core/Menu';
@@ -54,7 +54,9 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
 
         return (
             <header className={styles.header}>
-                <div className={styles.logo} />
+                <div className={styles.logo} >
+                    <Link className={styles.link} to={'/'} />
+                </div>
 
                 <h1 className={styles.mainHeader}>
                     {getLocalizedText('orderbook_header')}
@@ -78,15 +80,26 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                 <Route exact path='/' render={(props) => {
                     return (
                         [
+                            <Button key='reports' iconName='assessment' type='contained' aria-label='Reports' linkTo='/reports' tooltip={getLocalizedText('reports')} className={styles.actionsBtn} />,
+                            <Button key='trades' aria-label='Reports' iconName='swap_vertical_circle' linkTo='/trades' className={styles.actionsBtn} tooltip='Trades' />
+                        ]
+                    );
+                }}
+                />
+
+                <Route path='/trades' render={(props) => {
+                    return (
+                        [
                             this.renderCurrencyMenu(),
                             <Button key='reports' iconName='assessment' type='contained' aria-label='Reports' linkTo='/reports' tooltip={getLocalizedText('reports')} className={styles.actionsBtn} />,
                             <Button key='chooseEx' onClick={this.props.manageExchanges} type='contained' iconName='storage' aria-label='Choose Exchanges' tooltip={getLocalizedText('choose_exchanges')} className={styles.actionsBtn} />
                         ]
                     );
                 }}
+
                 />
                 <Route path='/reports' render={(props) =>
-                    <Button aria-label='Reports' iconName='keyboard_backspace' linkTo='/' className={styles.actionsBtn}>{getLocalizedText('back_to_orders_book')}</Button>}
+                    <Button aria-label='Reports' iconName='keyboard_backspace' linkTo='/trades' className={styles.actionsBtn}>{getLocalizedText('back_to_orders_book')}</Button>}
                 />
             </RSwitch>
         );

@@ -12,6 +12,7 @@ import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
 import { sesLanguage, setCurrency, resetToast, setTheme } from './redux/actions';
 import Login from 'components/Login';
 import OrderBook from 'components/OrderBook';
+import Dashboard from 'components/Dashboard';
 import ReportManager from 'components/ReportManager';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
 import { isNull } from 'util';
@@ -85,24 +86,20 @@ class App extends React.Component<AppProps, AppState> {
 
                     <div className={styles.content}>
                         <Switch>
-                            <Route exact path='/' render={(props) => {
-                                if (this.props.userName) {
-                                    return (
-                                        <OrderBook ref={(orderBook: any) => {
-                                            if (!orderBook || isNull(orderBook)) return;
-                                            if (!this.orderBook) {
-                                                this.orderBook = orderBook;
-                                                this.forceUpdate();
-                                            }
-                                        }} />
-                                    );
-                                }
-                                else {
-                                    return ( <Redirect to='/login' />);
-                                }
+                            <Route exact path='/' component={Dashboard} />
+                            <Route path='/trades' render={(props) => {
+                                return (
+                                    <OrderBook ref={(orderBook: any) => {
+                                        if (!orderBook || isNull(orderBook)) return;
+                                        if (!this.orderBook) {
+                                            this.orderBook = orderBook;
+                                            this.forceUpdate();
+                                        }
+                                    }} />
+                                );
                             }}
                             />
-                            <Route path='/login' component={Login}/>
+                            <Route path='/login' component={Login} />
                             <Route path='/reports' component={ReportManager} />
 
                             <Route path='*' render={(props) => <div>NOT FOUND!</div>} />
