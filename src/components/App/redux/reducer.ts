@@ -42,7 +42,7 @@ reducerMap[AppActions.SET_THEME] = (state: AppState, action: Action<AppTheme>): 
 };
 
 
-reducerMap[AppActions.LOGIN] = (state: AppState, action: Action<String>): AppState => {
+reducerMap[AppActions.SET_LOOGEDIN_USER] = (state: AppState, action: Action<String>): AppState => {
     return { ...state, userName: action.payload };
 };
 

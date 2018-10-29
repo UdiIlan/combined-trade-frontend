@@ -90,6 +90,7 @@ class App extends React.Component<AppProps, AppState> {
                     <div className={styles.content}>
                         <Switch>
                             <Route path='/login' render={(props) => <Login userLogin={this.props.doLogin} />} />
+
                             <EnsureLogin userName={this.props.userName}>
                                 <Switch>
                                     <Route exact path='/' component={Dashboard} />
@@ -146,7 +147,7 @@ const mapDispatchToProps = (dispatch) => {
             document.body.classList.add(newTheme);
             dispatch(setTheme(theme));
         },
-        doLogin: (userName: string, password: string) => dispatch(login(userName))
+        doLogin: (userName: string, password: string) => dispatch(login(userName, password))
     };
 };
 

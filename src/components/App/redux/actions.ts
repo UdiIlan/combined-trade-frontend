@@ -10,6 +10,7 @@ export const AppActions = {
     RESET_TOAST: 'APP/RESET_TOAST',
     SET_THEME: 'APP/SET_THEME',
     LOGIN: 'APP/LOGIN',
+    SET_LOOGEDIN_USER: 'APP/SET_LOOGEDIN_USER',
     LOGOUT: 'APP/LOGOUT',
 };
 
@@ -19,11 +20,13 @@ export const setCurrency = createAction(AppActions.SET_CURRENCY, (newCurrency: S
 
 export const showToast = createAction(AppActions.SHOW_TOAST, (toast: ToastProps) => toast);
 
-export const resetToast = createAction(AppActions.RESET_TOAST, () => {});
+export const resetToast = createAction(AppActions.RESET_TOAST, () => { });
 
 export const setTheme = createAction(AppActions.SET_THEME, (theme: AppTheme) => theme);
 
-export const login = createAction(AppActions.LOGIN, (loggedUserName: String) => loggedUserName);
+export const login = createAction(AppActions.LOGIN, (userName: String, password: String) => { return { userName, password }; });
 
-export const logout = createAction(AppActions.LOGOUT, () => {});
+export const setLoggedInUser = createAction(AppActions.SET_LOOGEDIN_USER, (loggedUserName: String) => loggedUserName);
+
+export const logout = createAction(AppActions.LOGOUT, () => { });
 

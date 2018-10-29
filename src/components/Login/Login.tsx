@@ -1,4 +1,8 @@
 import * as React from 'react';
+import InputText from '../common/core/InputText';
+import Button from '../common/core/Button';
+import { FormLabel } from '@material-ui/core';
+const styles = require('./styles.scss');
 
 interface LoginProps {
     userLogin(userName: string, password: string);
@@ -16,18 +20,17 @@ class Login extends React.Component<LoginProps, any> {
 
     render() {
         return (
-            <div>
-                <h2>Demo Trading Platform</h2>
+            <div className={styles.required}>
                 <div>
-                    <label>user name  </label>
-                    <input ref={(input) => this.userNameInput = input} type='text' name='login' />
+                    <FormLabel>user name  </FormLabel>
+                    <InputText ref={(input) => this.userNameInput = input} type='text' name='login' />
                 </div>
                 <div>
-                    <label>password  </label>
-                    <input ref={(input) => this.passwordInput = input} type='text' name='password' />
+                    <FormLabel>password  </FormLabel>
+                    <InputText ref={(input) => this.passwordInput = input} type='text' name='password' />
                 </div>
                 <div>
-                    <button onClick={this.doLogin}>Login </button>
+                    <Button onClick={this.doLogin}>Login </Button>
                 </div>
             </div>
         );
