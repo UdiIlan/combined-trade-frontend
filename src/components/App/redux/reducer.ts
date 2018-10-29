@@ -9,12 +9,14 @@ export interface AppState {
     currency: SupportedCurrencies;
     theme: AppTheme;
     toast?: ToastProps;
+    userName: String;
 }
 
 const INITIAL_STATE: AppState = {
     language: 'en_us',
     currency: 'BTC',
-    theme: 'light'
+    theme: 'light',
+    userName: ''
 };
 
 let reducerMap = {};
@@ -38,6 +40,16 @@ reducerMap[AppActions.RESET_TOAST] = (state: AppState, action: Action<void>): Ap
 reducerMap[AppActions.SET_THEME] = (state: AppState, action: Action<AppTheme>): AppState => {
     return { ...state, theme: action.payload };
 };
+
+
+reducerMap[AppActions.LOGIN] = (state: AppState, action: Action<String>): AppState => {
+    return { ...state, userName: action.payload };
+};
+
+reducerMap[AppActions.LOGOUT] = (state: AppState, action: Action<void>): AppState => {
+    return { ...state, userName: undefined };
+};
+
 
 
 export default handleActions<AppState, any>(reducerMap, INITIAL_STATE);

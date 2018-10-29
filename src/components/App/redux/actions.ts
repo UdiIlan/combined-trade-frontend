@@ -9,6 +9,8 @@ export const AppActions = {
     SHOW_TOAST: 'APP/SHOW_TOAST',
     RESET_TOAST: 'APP/RESET_TOAST',
     SET_THEME: 'APP/SET_THEME',
+    LOGIN: 'APP/LOGIN',
+    LOGOUT: 'APP/LOGOUT',
 };
 
 export const sesLanguage = createAction(AppActions.SET_LANG, (newLang: SupportedLanguages) => newLang);
@@ -20,3 +22,8 @@ export const showToast = createAction(AppActions.SHOW_TOAST, (toast: ToastProps)
 export const resetToast = createAction(AppActions.RESET_TOAST, () => {});
 
 export const setTheme = createAction(AppActions.SET_THEME, (theme: AppTheme) => theme);
+
+export const login = createAction(AppActions.LOGIN, (loggedUserName: String) => loggedUserName);
+
+export const logout = createAction(AppActions.LOGOUT, () => {});
+

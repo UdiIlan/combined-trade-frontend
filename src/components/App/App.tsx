@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import bmTheme from 'themes';
 const styles = require('./styles.scss');
@@ -85,18 +86,23 @@ class App extends React.Component<AppProps, AppState> {
                     <div className={styles.content}>
                         <Switch>
                             <Route exact path='/' render={(props) => {
-                                return (
-                                    <OrderBook ref={(orderBook: any) => {
-                                        if (!orderBook || isNull(orderBook)) return;
-                                        if (!this.orderBook) {
-                                            this.orderBook = orderBook;
-                                            this.forceUpdate();
-                                        }
-                                    }} />
-                                );
+                                if (this.props.userName) {
+                                    return (
+                                        <OrderBook ref={(orderBook: any) => {
+                                            if (!orderBook || isNull(orderBook)) return;
+                                            if (!this.orderBook) {
+                                                this.orderBook = orderBook;
+                                                this.forceUpdate();
+                                            }
+                                        }} />
+                                    );
+                                }
+                                else {
+                                    return ( <Redirect to='/login' />);
+                                }
                             }}
                             />
-                            <Route path='/login' component={Login}  />
+                            <Route path='/login' component={Login}/>
                             <Route path='/reports' component={ReportManager} />
 
                             <Route path='*' render={(props) => <div>NOT FOUND!</div>} />
@@ -119,6 +125,7 @@ const mapStateToProps = (state, ownProps) => {
         currentCurrency: _.get(state, 'app.currency', 'BTC'),
         toast: _.get(state, 'app.toast', undefined),
         theme: _.get(state, 'app.theme', 'light'),
+        userName: _.get(state, 'app.userName', undefined)
     };
 };
 
