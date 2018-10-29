@@ -11,7 +11,7 @@ function* setLangAsync(action) {
 function* doLoginAsync(action) {
     const { userName, password } = action.payload;
     yield put(setLoggedInUser(userName));
-    // yield history.push('/');
+    yield put(push('/'));
 }
 
 export function* AppSagas() {
