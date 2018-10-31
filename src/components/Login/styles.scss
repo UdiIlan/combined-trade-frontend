@@ -1,0 +1,32 @@
+@import '~styles/colors.scss';
+
+.backgroundLogin{
+    background-image: url('../../assets/images/bitmain.jpg');
+      /* Full height */
+    flex: 1;
+    display: inline;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.loginDialogContent {
+  width: 15vw;
+  height: 20vh;
+  
+.userInput{
+    width: 250px;
+    margin: 10px;
+}
+  
+.invalidLogin {
+    @include themify($themes) {
+      color: themed('redError');
+    }
+    width: 300px;
+    margin-top: 25px;
+    font-weight: 500;
+  }
+}

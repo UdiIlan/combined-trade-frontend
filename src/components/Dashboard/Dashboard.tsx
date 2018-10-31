@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
+import { FormLabel } from '@material-ui/core';
 const styles = require('./styles.scss');
 
 export default class Dashboard extends React.Component<any, any> {
@@ -15,6 +16,8 @@ export default class Dashboard extends React.Component<any, any> {
       <div className={styles.dashboard}>
 
         <div>
+            <FormLabel>Dashboard  </FormLabel>
+
 
         </div>
 

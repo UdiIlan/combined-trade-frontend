@@ -17,6 +17,7 @@ export interface DialogProps {
     okBtnText?: string;
     okBtnDisabled?: boolean;
     okBtnHidden?: boolean;
+    cancelBtnHidden?: boolean;
     cancelBtnText?: string;
     intent?: 'default' | 'success' | 'danger' | 'info';
     onOkClick?();
@@ -60,9 +61,11 @@ export default class Dialog extends React.Component<DialogProps, any> {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => this.handleClose(false)} color='primary'>
-                        {this.props.cancelBtnText || getLocalizedText('cancel')}
-                    </Button>
+                    {!this.props.cancelBtnHidden &&
+                        <Button onClick={() => this.handleClose(false)} color='primary'>
+                            {this.props.cancelBtnText || getLocalizedText('cancel')}
+                        </Button>
+                    }
                     {!this.props.okBtnHidden &&
                         <Button disabled={this.props.okBtnDisabled} onClick={() => this.handleClose(true)} color='primary'>
                             {this.props.okBtnText || getLocalizedText('ok')}

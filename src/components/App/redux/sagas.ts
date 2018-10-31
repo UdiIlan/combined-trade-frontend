@@ -1,5 +1,5 @@
 
-import { AppActions, setLoggedInUser } from './actions';
+import { AppActions, setLoggedInUser, setWrongUserDetails } from './actions';
 import { takeEvery, all, put } from 'redux-saga/effects';
 import {updateCurLang} from 'lang';
 import { push } from 'connected-react-router';
@@ -10,8 +10,14 @@ function* setLangAsync(action) {
 
 function* doLoginAsync(action) {
     const { userName, password } = action.payload;
-    yield put(setLoggedInUser(userName));
-    yield put(push('/'));
+    if (userName === 'admin' && password === 'admin') {
+        yield put(setLoggedInUser(userName));
+        yield put(push('/'));
+    }
+    else {
+        yield put(setWrongUserDetails());
+        // yield put(push('/'));
+    }
 }
 
 export function* AppSagas() {

@@ -12,6 +12,7 @@ export const AppActions = {
     LOGIN: 'APP/LOGIN',
     SET_LOOGEDIN_USER: 'APP/SET_LOOGEDIN_USER',
     LOGOUT: 'APP/LOGOUT',
+    SET_WRONG_USER_DETAILS: 'APP/SET_WRONG_USER_DETAILS'
 };
 
 export const sesLanguage = createAction(AppActions.SET_LANG, (newLang: SupportedLanguages) => newLang);
@@ -29,4 +30,6 @@ export const login = createAction(AppActions.LOGIN, (userName: String, password:
 export const setLoggedInUser = createAction(AppActions.SET_LOOGEDIN_USER, (loggedUserName: String) => loggedUserName);
 
 export const logout = createAction(AppActions.LOGOUT, () => { });
+
+export const setWrongUserDetails = createAction(AppActions.SET_WRONG_USER_DETAILS, () => true);
 

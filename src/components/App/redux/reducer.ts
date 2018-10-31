@@ -10,13 +10,15 @@ export interface AppState {
     theme: AppTheme;
     toast?: ToastProps;
     userName: String;
+    wrongUserDetails: boolean;
 }
 
 const INITIAL_STATE: AppState = {
     language: 'en_us',
     currency: 'BTC',
     theme: 'light',
-    userName: ''
+    userName: '',
+    wrongUserDetails: false
 };
 
 let reducerMap = {};
@@ -48,6 +50,10 @@ reducerMap[AppActions.SET_LOOGEDIN_USER] = (state: AppState, action: Action<Stri
 
 reducerMap[AppActions.LOGOUT] = (state: AppState, action: Action<void>): AppState => {
     return { ...state, userName: undefined };
+};
+
+reducerMap[AppActions.SET_WRONG_USER_DETAILS] = (state: AppState, action: Action<boolean>): AppState => {
+    return { ...state, wrongUserDetails: true };
 };
 
 
