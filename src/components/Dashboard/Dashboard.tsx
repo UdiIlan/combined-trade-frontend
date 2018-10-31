@@ -15,20 +15,23 @@ export default class Dashboard extends React.Component<any, any> {
     return (
       <div className={styles.dashboard}>
 
-        <div>
-            <FormLabel>Dashboard  </FormLabel>
+        <h1 className={styles.header}></h1>
 
+        <div className={styles.row} >
+          <div className={styles.widget}>
+          </div>
 
+          <div className={styles.widget}>
+          </div>
         </div>
 
 
-        <div>
+        <div className={styles.row} >
+          <div className={styles.widget}>
+          </div>
 
-        </div>
-
-
-        <div>
-
+          <div className={styles.widget}>
+          </div>
         </div>
 
       </div>

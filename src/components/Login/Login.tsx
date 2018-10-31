@@ -24,7 +24,7 @@ class Login extends React.Component<LoginProps, any> {
     render() {
         return (
             <div className={styles.backgroundLogin}>
-                 <Dialog title='Login' open={true} cancelBtnHidden={true}
+                 <Dialog title='Login' okBtnText='Login' open={true} cancelBtnHidden={true}
                 onOkClick={() => this.doLogin()}>
                 <div className={styles.loginDialogContent} >
                     <InputText className={styles.userInput} ref={(input) => this.userNameInput = input } label='user name' type='text' name='login' />
