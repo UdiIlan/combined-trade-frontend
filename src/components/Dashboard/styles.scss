@@ -1,2 +1,27 @@
-.dashboard {
+.dashboard { 
+    display: flex;
+    flex: 1;
+    flex-direction: column;
 }
+
+.dashboardContent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+// .header{
+    
+// }
+
+//  .row{
+//     display: flex;
+//  }
+
+
+ .widget{
+    border: 1px solid;
+    border-radius: 3px;
+    flex: 1;
+ }
