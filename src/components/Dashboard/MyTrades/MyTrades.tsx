@@ -24,7 +24,7 @@ export default class MyTrades extends React.Component<TradesProps, any> {
         // const orders = this.props.orderBook[type];
         return (
             <div >
-                <h4>{`Price  Amount  Type`}</h4>
+                <h4>Last Activities</h4>
                 {_.map(this.props.myTrades, (trade: Trade, index) =>
                     <TradeItem trade={trade} />
                 )}
