@@ -6,9 +6,8 @@ import Balance from './Balance';
 import Rates from './Rates';
 import MyTrades from './MyTrades';
 import Graph from './Graph';
-import Card from '../common/containers/Card';
-import Button from '../common/core/Button';
-import IconButton from '../common/core/IconButton';
+import Card from 'components/common/containers/Card';
+import IconButton from 'components/common/core/IconButton';
 const styles = require('./styles.scss');
 
 
