@@ -17,20 +17,34 @@ class Login extends React.Component<LoginProps, any> {
         this.doLogin = this.doLogin.bind(this);
     }
 
-    userNameInput;
-    passwordInput;
+    private userNameInput;
+    private passwordInput;
 
+    enterKeyPress = (e) => {
+        const event = e || window.event,
+            key = (event.keyCode || event.which);
+
+        key === 13 || key === 3 ? this.doLogin() : false;
+    }
+
+    componentDidMount() {
+        document.addEventListener('keypress', this.enterKeyPress);
+    }
+
+    componentWillUnMount() {
+        document.removeEventListener('keypress', this.enterKeyPress);
+    }
 
     render() {
         return (
             <div className={styles.backgroundLogin}>
-                 <Dialog title='Login' okBtnText='Login' open={true} cancelBtnHidden={true}
-                onOkClick={() => this.doLogin()}>
-                <div className={styles.loginDialogContent} >
-                    <InputText className={styles.userInput} ref={(input) => this.userNameInput = input } label='user name' type='text' name='login' />
-                    <InputText className={styles.userInput}  ref={(input) => this.passwordInput = input} label='password' type='password' name='password' />
-                    {(this.props.wrongUserDetails ) ? <div className={styles.invalidLogin}> * Wrong login details - Please try again </div> : <div /> }
-                </div>
+                <Dialog title='Login' okBtnText='Login' open={true} cancelBtnHidden={true}
+                    onOkClick={() => this.doLogin()}>
+                    <div className={styles.loginDialogContent} >
+                        <InputText className={styles.userInput} ref={(input) => this.userNameInput = input} label='user name' type='text' name='login' />
+                        <InputText className={styles.userInput} ref={(input) => this.passwordInput = input} label='password' type='password' name='password' />
+                        {(this.props.wrongUserDetails) ? <div className={styles.invalidLogin}> * Wrong login details - Please try again </div> : <div />}
+                    </div>
                 </Dialog>
             </div>
         );
