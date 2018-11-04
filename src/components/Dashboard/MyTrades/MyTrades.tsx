@@ -26,7 +26,7 @@ export default class MyTrades extends React.Component<TradesProps, any> {
             <div >
                 <h4>{`Price  Amount  Type`}</h4>
                 {_.map(this.props.myTrades, (trade: Trade, index) =>
-                    <TradeItem trade={trade} />
+                    <TradeItem key={index} trade={trade} />
                 )}
             </div>
         );
