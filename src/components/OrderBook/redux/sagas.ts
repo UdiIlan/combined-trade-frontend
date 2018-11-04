@@ -243,7 +243,7 @@ function* sendOrderCommandAsync(action) {
 
 function* getUserOrdersStatusAsync(action) {
     try {
-        const res = yield getUserOrdersStatus(100);
+        const res = yield getUserOrdersStatus(action.payload);
 
         // remove duplications (same order id with different status)
         // res = _.uniqWith(res,  (x , y) => x.exchange_id === y.exchange_id && x.order_date === y.order_date);

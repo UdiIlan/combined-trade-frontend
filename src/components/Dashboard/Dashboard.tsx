@@ -77,7 +77,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getUserOrdersStatus: () => dispatch(getUserOrdersStatus())
+    getUserOrdersStatus: () => dispatch(getUserOrdersStatus(10))
   };
 };
 

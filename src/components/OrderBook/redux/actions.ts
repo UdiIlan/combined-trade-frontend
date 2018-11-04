@@ -55,7 +55,10 @@ export const setExchangesStatus = createAction(OrderBookActions.SET_EXCHANGES_ST
 
 export const sendOrderCommand = createAction(OrderBookActions.SEND_ORDER_COMMAND, (command: OrderAction) => command);
 
-export const getUserOrdersStatus = createAction(OrderBookActions.GET_USER_SENT_ORDERS, () => { });
+export const getUserOrdersStatus = (limit = 100) => {
+    const getUserOrdersStatusCreator =  createAction(OrderBookActions.GET_USER_SENT_ORDERS, (limit: number) => limit);
+    return getUserOrdersStatusCreator(limit);
+};
 
 export const setUserSentOrders = createAction(OrderBookActions.SET_USER_SENT_ORDERS, (lastOrders: OrderActionStatus[]) => lastOrders);
 
