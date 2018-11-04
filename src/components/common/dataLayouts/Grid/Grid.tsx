@@ -74,6 +74,7 @@ export interface GridProps {
     sortDirection?: SortDirection;
     sortBy?: string;
     nested?: boolean;
+    disablePagination?: boolean;
     renderNestedItems?(item: any);
 }
 
@@ -126,7 +127,7 @@ export default class Grid extends React.Component<GridProps, GridState> {
     }
 
     render() {
-        const { data, className, renderNestedItems, nested } = this.props;
+        const { data, className, renderNestedItems, nested, disablePagination } = this.props;
         const columns = [...this.props.columns];
 
         // set nesting control (or empty column in case of a nested grid)
@@ -155,7 +156,7 @@ export default class Grid extends React.Component<GridProps, GridState> {
                             .map((item, index) => this.renderGridRow(index, item, columns)
                             )}
                     </TableBody>
-                    {!nested && <TableFooter>
+                    {!nested && !disablePagination && <TableFooter>
                         <TableRow>
                             <TablePagination
                                 colSpan={3}

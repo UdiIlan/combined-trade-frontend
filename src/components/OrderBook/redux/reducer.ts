@@ -139,6 +139,8 @@ reducerMap[OrderBookActions.CANCEL_TIMED_ORDER] = (state: OrderBookState, action
 };
 
 reducerMap[OrderBookActions.SET_ACCOUNT_BALANCE] = (state: OrderBookState, action: Action<any>): OrderBookState => {
+    if (_.isEmpty(state.exchanges)) return state;
+
     const exchanges = [...state.exchanges];
     const accountBalance = action.payload;
 

@@ -1,19 +1,34 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
+import { OrderActionStatus } from 'businessLogic/model';
+import { getUserOrdersStatus } from 'components/OrderBook/redux/actions';
 import UserBalance from './UserBalance';
 import Rates from './Rates';
-import MyTrades from './MyTrades';
+import MyOrders from './MyOrders';
 import Graph from './Graph';
 import Card from 'components/common/containers/Card';
+import { type } from 'os';
 const styles = require('./styles.scss');
 
+interface DashboardStateProps {
+  userOrders: OrderActionStatus[];
+}
 
-export default class Dashboard extends React.Component<any, any> {
+interface DashboardDispatchProps {
+  getUserOrdersStatus();
+}
+
+type DashboardProps = DashboardStateProps & DashboardDispatchProps;
+
+class Dashboard extends React.Component<DashboardProps, any> {
 
   constructor(props) {
     super(props);
-    this.state = {};
+  }
+
+  componentWillMount() {
+    this.props.getUserOrdersStatus();
   }
 
   render() {
@@ -32,7 +47,7 @@ export default class Dashboard extends React.Component<any, any> {
             </Card>
 
             <Card className={styles.widget}>
-              <MyTrades myTrades={[{ price: '100', amount: '2', type: 'sell' }, { price: '300', amount: '4', type: 'buy' }]}> </MyTrades>
+              <MyOrders userLastOrders={this.props.userOrders}> </MyOrders>
             </Card>
           </div>
 
@@ -47,14 +62,23 @@ export default class Dashboard extends React.Component<any, any> {
             </Card>
           </div>
 
-          {/*           <div className={styles.widgetColumn} >
-            <Card className={styles.widget}>
-              <Graph />
-            </Card>
-          </div> */}
         </div>
 
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    userOrders: _.get(state, 'orderBook.userOrders')
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUserOrdersStatus: () => dispatch(getUserOrdersStatus())
+  };
+};
+
+export default connect<DashboardStateProps, DashboardDispatchProps>(mapStateToProps, mapDispatchToProps)(Dashboard);
