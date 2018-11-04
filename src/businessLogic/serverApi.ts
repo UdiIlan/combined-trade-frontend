@@ -19,6 +19,10 @@ export const getExchangesAccountBalance = async (): Promise<any> => {
     return textToJson(res);
 };
 
+export const getTotalUserBalance = async (): Promise<any> => {
+    // TO-DO
+};
+
 export const getActiveOrderBook = async (currency): Promise<any> => {
     const res = await fetcher.get(`/ActiveOrderbooks/${currency}-USD`);
     return textToJson(res);

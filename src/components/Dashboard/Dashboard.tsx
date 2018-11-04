@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import { FormLabel } from '@material-ui/core';
-import Balance from './Balance';
+import UserBalance from './UserBalance';
 import Rates from './Rates';
 import MyTrades from './MyTrades';
 import Graph from './Graph';
@@ -26,7 +26,7 @@ export default class Dashboard extends React.Component<any, any> {
         <div className={styles.dashboardContent}>
           <div className={styles.widgetColumn} >
             <Card className={styles.widget}>
-              <Balance usd='300' btc='2'></Balance>
+              <UserBalance userBalance={{}}></UserBalance>
             </Card>
 
             <Card className={styles.widget}>
