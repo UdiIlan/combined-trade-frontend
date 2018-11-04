@@ -1,12 +1,12 @@
 import * as React from 'react';
+const graph = require('../../../assets/images/Graph.png');
+
 
 
 interface GraphProps {
-    usd: string;
-    btc: string;
 }
 
-export default class Graph extends React.Component<BalanceProps, any> {
+export default class Graph extends React.Component<any, any> {
     constructor(props) {
         super(props);
     }
@@ -14,9 +14,7 @@ export default class Graph extends React.Component<BalanceProps, any> {
     render() {
         return (
             <div>
-                <h1>Your Balance</h1>
-                <div>USD: {this.props.usd}</div>
-                <div>BTC: {this.props.btc}</div>
+                 <img src={graph}/>
             </div>
             );
     }

@@ -8,7 +8,7 @@ const styles = require('./styles.scss');
 import Header from './Header';
 import { SupportedLanguages } from 'lang';
 import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
-import { sesLanguage, setCurrency, resetToast, setTheme, login } from './redux/actions';
+import { sesLanguage, setCurrency, resetToast, setTheme, login, logout } from './redux/actions';
 import Login from 'components/Login';
 import OrderBook from 'components/OrderBook';
 import Dashboard from 'components/Dashboard';
@@ -30,6 +30,7 @@ export interface AppProps {
     resetToast();
     setTheme(theme: AppTheme);
     doLogin(userName: string, password: string);
+    doLogout();
 
 }
 
@@ -94,7 +95,7 @@ class App extends React.Component<AppProps, AppState> {
 
                             <EnsureLogin userName={this.props.userName}>
                                 <Switch>
-                                    <Route exact path='/' component={Dashboard} />
+                                    <Route exact path='/' render={(props) => <Dashboard userLogout={this.props.doLogout} />} />
                                     <Route path='/trades' render={(props) => {
                                         return (
                                             <OrderBook ref={(orderBook: any) => {
@@ -149,7 +150,8 @@ const mapDispatchToProps = (dispatch) => {
             document.body.classList.add(newTheme);
             dispatch(setTheme(theme));
         },
-        doLogin: (userName: string, password: string) => dispatch(login(userName, password))
+        doLogin: (userName: string, password: string) => dispatch(login(userName, password)),
+        doLogout: () => dispatch(logout())
     };
 };
 
