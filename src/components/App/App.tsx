@@ -87,6 +87,7 @@ class App extends React.Component<AppProps, AppState> {
                         theme={this.props.theme}
                         setTheme={this.props.setTheme}
                         manageExchanges={this.orderBook ? this.orderBook.getWrappedInstance().manageExchanges : undefined}
+                        userLogout={this.props.doLogout}
                     />
 
                     <div className={styles.content}>
@@ -95,7 +96,7 @@ class App extends React.Component<AppProps, AppState> {
 
                             <EnsureLogin userName={this.props.userName}>
                                 <Switch>
-                                    <Route exact path='/' render={(props) => <Dashboard userLogout={this.props.doLogout} />} />
+                                    <Route exact path='/' render={(props) => <Dashboard />} />
                                     <Route path='/trades' render={(props) => {
                                         return (
                                             <OrderBook ref={(orderBook: any) => {

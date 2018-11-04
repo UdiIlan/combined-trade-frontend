@@ -19,6 +19,7 @@ export interface HeaderProps {
     setCurrency(newCurrency: SupportedCurrencies);
     manageExchanges();
     setTheme(theme: AppTheme);
+    userLogout();
 }
 
 export interface HeaderState {
@@ -31,6 +32,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
     constructor(props) {
         super(props);
         this.state = { langMenu: null, userMenu: null };
+        this.doLogout = this.doLogout.bind(this);
     }
 
     handleLangMenuClick = event => {
@@ -193,10 +195,15 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                                 label={getLocalizedText('dark_theme')}
                                 labelClass={styles.themeSelector}
                             />
-                        }
+                        },
+                        { displayText: getLocalizedText('logout'), iconName: 'logout', onClick: (e) => this.doLogout() }
                     ]} />
             </div >
         );
+    }
+
+    doLogout() {
+        this.props.userLogout();
     }
 
 

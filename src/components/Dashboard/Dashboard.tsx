@@ -12,15 +12,10 @@ import IconButton from '../common/core/IconButton';
 const styles = require('./styles.scss');
 
 
-interface DashboardProps {
-  userLogout();
-}
-
-export default class Dashboard extends React.Component<DashboardProps, any> {
+export default class Dashboard extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-    this.doLogout = this.doLogout.bind(this);
     this.state = {};
   }
 
@@ -51,13 +46,8 @@ export default class Dashboard extends React.Component<DashboardProps, any> {
             </Card>
           </div>
         </div>
-        <IconButton className={styles.button} onClick={() => this.doLogout()}>Logout</IconButton>
 
       </div>
     );
   }
-
-  doLogout() {
-    this.props.userLogout();
-}
 }
