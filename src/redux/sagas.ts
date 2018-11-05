@@ -2,10 +2,11 @@
 import { AppSagas } from 'components/App/redux/sagas';
 import { OrderBookSagas } from 'components/OrderBook/redux/sagas';
 import { ReportManagerSagas } from 'components/ReportManager/redux/sagas';
-
+import { DashboardSagas } from 'components/Dashboard/redux/sagas';
 
 import { actionChannel, fork, take, call, all } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
+
 
 export const throttle = (ms, pattern, task, ...args) => fork(function* () {
     const throttleChannel = yield actionChannel(pattern);
@@ -30,6 +31,7 @@ export function* takeFirst(pattern, saga, ...args) {
 export default function* rootSaga(): any {
     yield all([
         AppSagas(),
+        DashboardSagas(),
         OrderBookSagas(),
         ReportManagerSagas()
     ]);

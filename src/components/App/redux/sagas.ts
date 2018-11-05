@@ -3,6 +3,7 @@ import { AppActions, setLoggedInUser, setWrongUserDetails } from './actions';
 import { takeEvery, all, put } from 'redux-saga/effects';
 import {updateCurLang} from 'lang';
 import { push } from 'connected-react-router';
+import { getTotalUserBalance } from '~/businessLogic/serverApi';
 
 function* setLangAsync(action) {
     yield updateCurLang(action.payload);
@@ -16,7 +17,6 @@ function* doLoginAsync(action) {
     }
     else {
         yield put(setWrongUserDetails());
-        // yield put(push('/'));
     }
 }
 

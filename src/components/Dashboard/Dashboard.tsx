@@ -2,22 +2,26 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import { OrderActionStatus } from 'businessLogic/model';
-import { getUserOrdersStatus } from 'components/OrderBook/redux/actions';
 import UserBalance from './UserBalance';
 import Rates from './Rates';
 import MyOrders from './MyOrders';
 import Graph from './Graph';
 import Card from 'components/common/containers/Card';
-import { type } from 'os';
+import { getUserBalance, setUserBalance } from './redux/actions';
+import { getUserOrdersStatus } from '../OrderBook/redux/actions';
 const styles = require('./styles.scss');
 
 interface DashboardStateProps {
   userOrders: OrderActionStatus[];
+  userBalance: object;
 }
 
 interface DashboardDispatchProps {
   getUserOrdersStatus();
+  getUserBalance();
+  setUserBalance();
 }
+
 
 type DashboardProps = DashboardStateProps & DashboardDispatchProps;
 
@@ -39,7 +43,7 @@ class Dashboard extends React.Component<DashboardProps, any> {
         <div className={styles.dashboardContent}>
           <div className={styles.widgetColumn} >
             <Card className={styles.widget}>
-              <UserBalance userBalance={{}}></UserBalance>
+              <UserBalance userBalance={this.props.userBalance} getUserBalance= {this.props.getUserBalance}></UserBalance>
             </Card>
 
             <Card className={styles.widget}>
@@ -71,13 +75,16 @@ class Dashboard extends React.Component<DashboardProps, any> {
 
 const mapStateToProps = (state) => {
   return {
-    userOrders: _.get(state, 'orderBook.userOrders')
+    userOrders: _.get(state, 'orderBook.userOrders'),
+    userBalance: _.get(state, 'dashboard.userBalance')
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getUserOrdersStatus: () => dispatch(getUserOrdersStatus(10))
+    getUserOrdersStatus: () => dispatch(getUserOrdersStatus()),
+    getUserBalance: () => dispatch(getUserBalance()),
+    setUserBalance: () => dispatch(setUserBalance(this.userBalance))
   };
 };
 

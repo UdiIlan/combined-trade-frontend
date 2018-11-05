@@ -56,6 +56,4 @@ reducerMap[AppActions.SET_WRONG_USER_DETAILS] = (state: AppState, action: Action
     return { ...state, wrongUserDetails: true };
 };
 
-
-
 export default handleActions<AppState, any>(reducerMap, INITIAL_STATE);
