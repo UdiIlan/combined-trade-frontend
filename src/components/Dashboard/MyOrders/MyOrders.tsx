@@ -17,7 +17,6 @@ export default class MyOrders extends React.Component<MyOrdersProps, any> {
     render() {
         return (
             <div >
-                <h4>Last Orders</h4>
                 {
                     _.isEmpty(this.props.userLastOrders) ?
                         'N/A'

@@ -15,7 +15,6 @@ export default class Balance extends React.Component<BalanceProps, any> {
     render() {
         return (
             <div>
-                <h1>My Balance</h1>
                {/*  <div>USD: {this.props.usd}</div>
                 <div>BTC: {this.props.btc}</div> */}
             </div>

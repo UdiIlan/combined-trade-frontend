@@ -7,8 +7,7 @@ import UserBalance from './UserBalance';
 import Rates from './Rates';
 import MyOrders from './MyOrders';
 import Graph from './Graph';
-import Card from 'components/common/containers/Card';
-import { type } from 'os';
+import Widget from 'components/common/containers/Widget';
 const styles = require('./styles.scss');
 
 interface DashboardStateProps {
@@ -34,32 +33,31 @@ class Dashboard extends React.Component<DashboardProps, any> {
   render() {
     return (
       <div className={styles.dashboard}>
-        {/* <h1 className={styles.header}>Dashboard</h1> */}
 
         <div className={styles.dashboardContent}>
           <div className={styles.widgetColumn} >
-            <Card className={styles.widget}>
+            <Widget title={'My Balance'} className={styles.widget}>
               <UserBalance userBalance={{}}></UserBalance>
-            </Card>
+            </Widget>
 
-            <Card className={styles.widget}>
+            <Widget title={'Exchange Rates'} className={styles.widget}>
               <Rates btc='300$' bch='200$' eth='100$'></Rates>
-            </Card>
+            </Widget>
 
-            <Card className={styles.widget}>
+            <Widget title={'Last Orders'} className={styles.widget}>
               <MyOrders userLastOrders={this.props.userOrders}> </MyOrders>
-            </Card>
+            </Widget>
           </div>
 
 
           <div className={styles.widgetColumn} >
-            <Card className={styles.widget}>
+            <Widget title={'test'} className={styles.widget} loading>
 
-            </Card>
+            </Widget>
 
-            <Card className={styles.widget}>
+            <Widget title={'BTC Trend'} className={styles.widget}>
               <Graph />
-            </Card>
+            </Widget>
           </div>
 
         </div>
