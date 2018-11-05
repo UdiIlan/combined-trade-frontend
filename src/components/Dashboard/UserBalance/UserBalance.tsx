@@ -3,8 +3,6 @@ const styles = require('./styles.scss');
 
 
 interface BalanceProps {
-    // usd: string;
-    // btc: string;
     userBalance: object;
     getUserBalance();
 }

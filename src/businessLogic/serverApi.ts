@@ -23,6 +23,11 @@ export const getTotalUserBalance =  () => {
     return {usd: '200', btc: '100'};
 };
 
+
+export const getExchangeRates =  () => {
+    return {BTC: '200', BCH: '100', ETH: '300'};
+};
+
 export const getActiveOrderBook = async (currency): Promise<any> => {
     const res = await fetcher.get(`/ActiveOrderbooks/${currency}-USD`);
     return textToJson(res);
