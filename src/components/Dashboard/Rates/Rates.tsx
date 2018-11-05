@@ -15,7 +15,6 @@ export default class Rates extends React.Component<RatesProps, any> {
     render() {
         return (
             <div>
-                <h1>Exchange Rates</h1>
                 <div>BTC: {this.props.btc}</div>
                 <div>BCH: {this.props.bch}</div>
                 <div>ETH: {this.props.eth}</div>

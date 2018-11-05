@@ -20,7 +20,6 @@ export default class Balance extends React.Component<BalanceProps, any> {
     render() {
         return (
             <div>
-                <h1>My Balance</h1>
                 <div>
                 {Object.keys(this.props.userBalance).map(key => (
                     <p> {key} {this.props.userBalance[key]} </p>
