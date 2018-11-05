@@ -1,0 +1,16 @@
+.rate{
+    color: cadetblue;
+    font-size: 2rem;
+    margin-left: 20px;
+    padding: 3px; 
+}
+
+.detail {
+    display: inline-block;
+    font-size: inherit;
+  }
+
+.asset {
+    @extend .detail;
+    margin-right: 10px;
+  }

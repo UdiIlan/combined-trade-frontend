@@ -1,4 +1,5 @@
 import * as React from 'react';
+const styles = require('./styles.scss');
 
 
 interface RatesProps {
@@ -15,10 +16,10 @@ export default class Rates extends React.Component<RatesProps, any> {
         return (
             <div>
                 {Object.keys(this.props.exchangeRates).map(key => (
-                    <h4>
-                        {key.toUpperCase()}
-                        <span>{': ' + this.props.exchangeRates[key]}</span>
-                    </h4>
+                    <div className={styles.rate}>
+                        <span className={styles.asset}>{`${key.toUpperCase()}: `}</span>
+                        <span className={styles.asset}>{`${this.props.exchangeRates[key]}$`}</span>
+                    </div>
                  ))}
             </div>
             );
