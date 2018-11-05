@@ -1,4 +1,5 @@
 import * as React from 'react';
+const styles = require('./styles.scss');
 
 
 interface BalanceProps {
@@ -19,12 +20,13 @@ export default class Balance extends React.Component<BalanceProps, any> {
 
     render() {
         return (
-            <div>
-                <div>
+            <div className={styles.balance}>
                 {Object.keys(this.props.userBalance).map(key => (
-                    <p> {key} {this.props.userBalance[key]} </p>
+                    <h4>
+                        {key.toUpperCase()}
+                        <span>{': ' + this.props.userBalance[key]}</span>
+                    </h4>
                  ))}
-                </div>
             </div>
             );
     }

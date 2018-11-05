@@ -14,10 +14,6 @@ const INITIAL_STATE: DashboardState = {
 
 let reducerMap = {};
 
-reducerMap[DashboardActions.GET_USER_BALANCE] = (state: DashboardState, action: Action<void>): DashboardState => {
-    return { ...state, userBalance: {} };
-};
-
 reducerMap[DashboardActions.SET_USER_BALANCE] = (state: DashboardState, action: Action<any>): DashboardState => {
     return { ...state, userBalance: action.payload.userBalance };
 };

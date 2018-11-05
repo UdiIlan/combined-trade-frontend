@@ -20,7 +20,6 @@ interface DashboardStateProps {
 interface DashboardDispatchProps {
   getUserOrdersStatus();
   getUserBalance();
-  setUserBalance();
 }
 
 
@@ -45,6 +44,11 @@ class Dashboard extends React.Component<DashboardProps, any> {
             <Widget title={'My Balance'} className={styles.widget}>
               <UserBalance userBalance={this.props.userBalance} getUserBalance= {this.props.getUserBalance}></UserBalance>
             </Widget>
+            <Widget title={'BTC Trend'} className={styles.widget}>
+              <Graph />
+            </Widget>
+          </div>
+          <div className={styles.widgetColumn} >
 
             <Widget title={'Exchange Rates'} className={styles.widget}>
               <Rates btc='300$' bch='200$' eth='100$'></Rates>
@@ -53,16 +57,9 @@ class Dashboard extends React.Component<DashboardProps, any> {
             <Widget title={'Last Orders'} className={styles.widget}>
               <MyOrders userLastOrders={this.props.userOrders}> </MyOrders>
             </Widget>
-          </div>
 
-
-          <div className={styles.widgetColumn} >
             <Widget title={'test'} className={styles.widget} loading>
 
-            </Widget>
-
-            <Widget title={'BTC Trend'} className={styles.widget}>
-              <Graph />
             </Widget>
           </div>
 
@@ -83,8 +80,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getUserOrdersStatus: () => dispatch(getUserOrdersStatus()),
-    getUserBalance: () => dispatch(getUserBalance()),
-    setUserBalance: () => dispatch(setUserBalance(this.userBalance))
+    getUserBalance: () => dispatch(getUserBalance())
   };
 };
 
