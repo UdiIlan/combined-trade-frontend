@@ -4,16 +4,11 @@ const styles = require('./styles.scss');
 
 interface BalanceProps {
     userBalance: object;
-    getUserBalance();
 }
 
 export default class Balance extends React.Component<BalanceProps, any> {
     constructor(props) {
         super(props);
-    }
-
-    componentWillMount() {
-        this.props.getUserBalance();
     }
 
     render() {

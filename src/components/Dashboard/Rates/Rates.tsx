@@ -3,7 +3,6 @@ import * as React from 'react';
 
 interface RatesProps {
     exchangeRates: object;
-    getExchangeRates();
 }
 
 export default class Rates extends React.Component<RatesProps, any> {
@@ -11,9 +10,6 @@ export default class Rates extends React.Component<RatesProps, any> {
         super(props);
     }
 
-    componentWillMount() {
-        this.props.getExchangeRates();
-    }
 
     render() {
         return (

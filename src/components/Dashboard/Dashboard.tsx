@@ -35,6 +35,8 @@ class Dashboard extends React.Component<DashboardProps, any> {
 
   componentWillMount() {
     this.props.getUserOrdersStatus();
+    this.props.getExchangeRates();
+    this.props.getUserBalance();
   }
 
   render() {
@@ -45,15 +47,15 @@ class Dashboard extends React.Component<DashboardProps, any> {
 
           <div className={styles.widgetColumn} >
 
-            <Widget title={'My Balance'} className={styles.widget}>
-              <UserBalance userBalance={this.props.userBalance} getUserBalance={this.props.getUserBalance}></UserBalance>
+            <Widget title={'My Balance'} className={styles.widget} loading={!this.props.userBalance}>
+              <UserBalance userBalance={this.props.userBalance} ></UserBalance>
             </Widget>
 
-            <Widget title={'Exchange Rates'} className={styles.widget}>
-              <Rates exchangeRates={this.props.exchangeRates} getExchangeRates= {this.props.getExchangeRates}></Rates>
+            <Widget title={'Exchange Rates'} className={styles.widget} loading={!this.props.exchangeRates}>
+              <Rates exchangeRates={this.props.exchangeRates} ></Rates>
             </Widget>
 
-            <Widget title={'Last Orders'} className={styles.widget}>
+            <Widget title={'Last Orders'} className={styles.widget} loading={!this.props.userOrders}>
               <MyOrders userLastOrders={this.props.userOrders}> </MyOrders>
             </Widget>
 
