@@ -2,9 +2,8 @@ import * as React from 'react';
 
 
 interface RatesProps {
-    bch: string;
-    btc: string;
-    eth: string;
+    exchangeRates: object;
+    getExchangeRates();
 }
 
 export default class Rates extends React.Component<RatesProps, any> {
@@ -12,12 +11,19 @@ export default class Rates extends React.Component<RatesProps, any> {
         super(props);
     }
 
+    componentWillMount() {
+        this.props.getExchangeRates();
+    }
+
     render() {
         return (
             <div>
-                <div>BTC: {this.props.btc}</div>
-                <div>BCH: {this.props.bch}</div>
-                <div>ETH: {this.props.eth}</div>
+                {Object.keys(this.props.exchangeRates).map(key => (
+                    <h4>
+                        {key.toUpperCase()}
+                        <span>{': ' + this.props.exchangeRates[key]}</span>
+                    </h4>
+                 ))}
             </div>
             );
     }

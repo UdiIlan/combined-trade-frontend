@@ -7,7 +7,7 @@ import Rates from './Rates';
 import MyOrders from './MyOrders';
 import Graph from './Graph';
 import Card from 'components/common/containers/Card';
-import { getUserBalance, setUserBalance } from './redux/actions';
+import { getUserBalance, getExchangeRates } from './redux/actions';
 import { getUserOrdersStatus } from '../OrderBook/redux/actions';
 import Widget from 'components/common/containers/Widget';
 const styles = require('./styles.scss');
@@ -15,11 +15,13 @@ const styles = require('./styles.scss');
 interface DashboardStateProps {
   userOrders: OrderActionStatus[];
   userBalance: object;
+  exchangeRates: object;
 }
 
 interface DashboardDispatchProps {
   getUserOrdersStatus();
   getUserBalance();
+  getExchangeRates();
 }
 
 
@@ -48,7 +50,7 @@ class Dashboard extends React.Component<DashboardProps, any> {
             </Widget>
 
             <Widget title={'Exchange Rates'} className={styles.widget}>
-              <Rates btc='300$' bch='200$' eth='100$'></Rates>
+              <Rates exchangeRates={this.props.exchangeRates} getExchangeRates= {this.props.getExchangeRates}></Rates>
             </Widget>
 
             <Widget title={'Last Orders'} className={styles.widget}>
@@ -78,14 +80,16 @@ class Dashboard extends React.Component<DashboardProps, any> {
 const mapStateToProps = (state) => {
   return {
     userOrders: _.get(state, 'orderBook.userOrders'),
-    userBalance: _.get(state, 'dashboard.userBalance')
+    userBalance: _.get(state, 'dashboard.userBalance'),
+    exchangeRates: _.get(state, 'dashboard.exchangeRates')
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getUserOrdersStatus: () => dispatch(getUserOrdersStatus()),
-    getUserBalance: () => dispatch(getUserBalance())
+    getUserBalance: () => dispatch(getUserBalance()),
+    getExchangeRates: () => dispatch(getExchangeRates())
   };
 };
 
