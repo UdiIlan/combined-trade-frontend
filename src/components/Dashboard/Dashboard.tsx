@@ -40,15 +40,12 @@ class Dashboard extends React.Component<DashboardProps, any> {
       <div className={styles.dashboard}>
 
         <div className={styles.dashboardContent}>
+
           <div className={styles.widgetColumn} >
+
             <Widget title={'My Balance'} className={styles.widget}>
-              <UserBalance userBalance={this.props.userBalance} getUserBalance= {this.props.getUserBalance}></UserBalance>
+              <UserBalance userBalance={this.props.userBalance} getUserBalance={this.props.getUserBalance}></UserBalance>
             </Widget>
-            <Widget title={'BTC Trend'} className={styles.widget}>
-              <Graph />
-            </Widget>
-          </div>
-          <div className={styles.widgetColumn} >
 
             <Widget title={'Exchange Rates'} className={styles.widget}>
               <Rates btc='300$' bch='200$' eth='100$'></Rates>
@@ -58,11 +55,19 @@ class Dashboard extends React.Component<DashboardProps, any> {
               <MyOrders userLastOrders={this.props.userOrders}> </MyOrders>
             </Widget>
 
+
+          </div>
+
+
+          <div className={styles.widgetColumn} >
+
             <Widget title={'test'} className={styles.widget} loading>
 
             </Widget>
+            <Widget title={'BTC Trend'} className={styles.widget}>
+              <Graph />
+            </Widget>
           </div>
-
         </div>
 
       </div>

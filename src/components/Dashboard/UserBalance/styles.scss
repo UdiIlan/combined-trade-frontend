@@ -1,3 +1,32 @@
-.balance{
-    padding-left: 20px;
+.balance {
+  padding-left: 20px;
+  display: flex;
+
+  .balanceItem {
+    display: flex;
+    flex: 1;
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    height: 10VH;
+    background: cadetblue;
+    border: 3px solid;
+    justify-content: center;
+    align-items: center;
+
+    .detail {
+      display: inline-block;
+      font-size: inherit;
+    }
+
+    .asset {
+      @extend .detail;
+      margin-right: 10px;
+    }
+
+    .value {
+      @extend .detail;
+    }
+  }
 }

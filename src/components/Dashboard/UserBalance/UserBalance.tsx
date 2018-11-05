@@ -22,10 +22,10 @@ export default class Balance extends React.Component<BalanceProps, any> {
         return (
             <div className={styles.balance}>
                 {Object.keys(this.props.userBalance).map(key => (
-                    <h4>
-                        {key.toUpperCase()}
-                        <span>{': ' + this.props.userBalance[key]}</span>
-                    </h4>
+                    <div className={styles.balanceItem} key={key}>
+                        <span className={styles.asset}>{`${key.toUpperCase()}:`}</span>
+                        <span className={styles.value}>{this.props.userBalance[key]}</span>
+                    </div>
                  ))}
             </div>
             );
