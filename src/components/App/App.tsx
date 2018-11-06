@@ -24,6 +24,7 @@ export interface AppProps {
     toast?: ToastProps;
     theme: AppTheme;
     userName: String;
+    loggedInTime: Date;
     wrongUserDetails?: boolean;
     sesLanguage(newLang: SupportedLanguages);
     setCurrency(newCurrency: SupportedCurrencies);
@@ -94,7 +95,7 @@ class App extends React.Component<AppProps, AppState> {
                         <Switch>
                             <Route path='/login'  render={(props) => <Login userLogin={this.props.doLogin} wrongUserDetails={this.props.wrongUserDetails}/>} />
 
-                            <EnsureLogin userName={this.props.userName}>
+                            <EnsureLogin userName={this.props.userName} loggedInTime={this.props.loggedInTime}>
                                 <Switch>
                                     <Route exact path='/' render={(props) => <Dashboard />} />
                                     <Route path='/trades' render={(props) => {
@@ -135,6 +136,7 @@ const mapStateToProps = (state, ownProps) => {
         toast: _.get(state, 'app.toast', undefined),
         theme: _.get(state, 'app.theme', 'light'),
         userName: _.get(state, 'app.userName', undefined),
+        loggedInTime: _.get(state, 'app.loggedInTime', undefined),
         wrongUserDetails: _.get(state, 'app.wrongUserDetails', false)
     };
 };

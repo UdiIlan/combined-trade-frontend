@@ -10,6 +10,7 @@ export interface AppState {
     theme: AppTheme;
     toast?: ToastProps;
     userName: String;
+    loggedInTime: Date;
     wrongUserDetails: boolean;
 }
 
@@ -18,6 +19,7 @@ const INITIAL_STATE: AppState = {
     currency: 'BTC',
     theme: 'light',
     userName: '',
+    loggedInTime: undefined,
     wrongUserDetails: false
 };
 
@@ -44,8 +46,12 @@ reducerMap[AppActions.SET_THEME] = (state: AppState, action: Action<AppTheme>): 
 };
 
 
-reducerMap[AppActions.SET_LOOGEDIN_USER] = (state: AppState, action: Action<String>): AppState => {
+reducerMap[AppActions.SET_LOGGED_IN_USER] = (state: AppState, action: Action<String>): AppState => {
     return { ...state, userName: action.payload };
+};
+
+reducerMap[AppActions.SET_LOGGED_IN_TIME] = (state: AppState, action: Action<Date>): AppState => {
+    return { ...state, loggedInTime: action.payload };
 };
 
 reducerMap[AppActions.LOGOUT] = (state: AppState, action: Action<void>): AppState => {

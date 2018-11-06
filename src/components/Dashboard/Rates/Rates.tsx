@@ -14,14 +14,15 @@ export default class Rates extends React.Component<RatesProps, any> {
 
     render() {
         return (
-            <div>
+            <div className={styles.container}>
                 {Object.keys(this.props.exchangeRates).map(key => (
-                    <div className={styles.rate} key={key}>
-                        <span className={styles.asset}>{`${key.toUpperCase()}: `}</span>
-                        <span className={styles.asset}>{`${this.props.exchangeRates[key]}$`}</span>
+                    <div className={styles.ratesContainer} key={key}>
+                        <span className={styles.icon}><img src={require(`../../../assets/icons/${key.toLowerCase()}.svg`)}></img></span>
+                        <span> {`${key.toUpperCase()} `}</span>
+                        <span className={styles.rate}>{`${this.props.exchangeRates[key]}$`}</span>
                     </div>
-                 ))}
+                ))}
             </div>
-            );
+        );
     }
 }
