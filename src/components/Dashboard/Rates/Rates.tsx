@@ -16,7 +16,7 @@ export default class Rates extends React.Component<RatesProps, any> {
         return (
             <div>
                 {Object.keys(this.props.exchangeRates).map(key => (
-                    <div className={styles.rate}>
+                    <div className={styles.rate} key={key}>
                         <span className={styles.asset}>{`${key.toUpperCase()}: `}</span>
                         <span className={styles.asset}>{`${this.props.exchangeRates[key]}$`}</span>
                     </div>

@@ -1,35 +1,39 @@
-.dashboard { 
-    display: flex;
-    flex: 1;
-    padding: 20px;
+.dashboard {
+  display: flex;
+  flex: 1;
+  padding: 20px;
 }
 
-.dashboardContent{
-    display: flex;
-    justify-content: center;
-    flex-direction: column; 
-    flex: 1;
-    height: 100%;
+.dashboardContent {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
 }
 
-.widgetBalance{
-    display: flex;
-    flex: 1;
-    height: 200px;
-    width: 200px;
+.widgetBalance {
+  display: flex;
+  flex: 1;
+  height: 200px;
+  width: 200px;
 }
 
-.widgetColumn{
-    display: flex;
-    flex: 2; 
+.widgetColumn {
+  display: flex;
+  flex: 2;
 }
 
- .widget{
-    margin: 10px;
-    flex: 1;
-    padding: 20px;
- }
+.widget {
+  margin: 10px;
+  flex: 1;
+  padding: 20px;
 
- .button{
-    display: flex;
- }
+  &.orders {
+    flex: 2;
+  }
+}
+
+.button {
+  display: flex;
+}
