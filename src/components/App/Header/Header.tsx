@@ -108,8 +108,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                 <span className={styles.label}>{getLocalizedText('selected_currency')}</span>
                 <Select
                     selectedValue={this.props.currentCurrency}
-                    onChange={(selection) => this.props.setCurrency(selection as SupportedCurrencies)}
-                    theme='white'>
+                    onChange={(selection) => this.props.setCurrency(selection as SupportedCurrencies)}>
                     <option value='BTC'>{getLocalizedText('btc_usd_option')}</option>
                     <option value='BCH'>{getLocalizedText('bch_usd_option')}</option>
                 </Select>

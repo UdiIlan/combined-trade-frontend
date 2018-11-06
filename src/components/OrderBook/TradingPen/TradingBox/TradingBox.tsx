@@ -37,6 +37,11 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
         super(props);
         this.state = {};
         this.execute = this.execute.bind(this);
+        this.onPriceChanged = this.onPriceChanged.bind(this);
+    }
+
+    shouldComponentUpdate(newProps: TradingBoxProps, newState: TradingBoxState) {
+        return !_.isEqual(this.props, newProps) || !_.isEqual(this.state, newState);
     }
 
     private confirmOrder() {
@@ -146,6 +151,15 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
         this.setState({ confirmDialog: undefined, size: undefined, price: undefined, operation: undefined, exchange: undefined, duration_sec: undefined, max_order_size: undefined });
     }
 
+    private onPriceChanged(value: number) {
+        const newPrice = value;
+
+        if (newPrice === this.state.price) return;
+        // set the default maxOrderSize value to the maximum of 0.2 and (newPrice / 100)
+        const maxOrderSize = Math.max(0.2, Number(newPrice / 100));
+        this.setState({ price: newPrice, max_order_size: maxOrderSize });
+    }
+
     render() {
         const { size, price, operation, exchange, confirmDialog, duration_sec, max_order_size } = this.state;
         const { disabledTimedTrade } = this.props;
@@ -159,18 +173,17 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
 
         return (
 
-
             <div className={styles.tradingBox}>
 
-                <Select disabled={disabled} selectedValue={exchange} className={styles.tradingOption} theme='white' formControl formLabelText={getLocalizedText('exchange')} onChange={(selection) => this.setState({ exchange: selection })}>
+                <Select disabled={disabled} selectedValue={exchange} className={styles.tradingOption} formControl formLabelText={getLocalizedText('exchange')} onChange={(selection) => this.setState({ exchange: selection })}>
                     {_.map(exchanges, (exchange) => <option key={exchange} value={exchange}>{exchange}</option>)}
                 </Select>
 
-                <NumericInput disabled={disabled} value={size} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ size: e.target.value })} label={getLocalizedText('size')} name='size' />
+                <NumericInput name='size' disabled={disabled} value={size} min={0} className={styles.tradingOption} onChange={(e) => this.setState({ size: e.target.value })} label={getLocalizedText('size')} />
 
-                <NumericInput disabled={disabled} value={price} min={0} className={styles.tradingOption} theme='white' onChange={(e) => this.setState({ price: e.target.value })} label={getLocalizedText('price_limit')} name='price' />
+                <NumericInput name='price' disabled={disabled} value={price} min={0} className={styles.tradingOption} onBlur={this.onPriceChanged} label={getLocalizedText('price_limit')} />
 
-                <Select disabled={disabled} selectedValue={operation} className={styles.tradingOption} theme='white' formControl formLabelText='Trade Option' onChange={selection => this.setState({ operation: selection })}>
+                <Select disabled={disabled} selectedValue={operation} className={styles.tradingOption} formControl formLabelText='Trade Option' onChange={selection => this.setState({ operation: selection })}>
                     <option value='' />
                     <option value='buy'>{getLocalizedText('buy')}</option>
                     <option value='sell'>{getLocalizedText('sell')}</option>
@@ -185,8 +198,8 @@ export default class TradingBox extends React.Component<TradingBoxProps, Trading
                 {
                     (!!operation && operation !== 'buy' && operation !== 'sell') &&
                     [
-                        <NumericInput disabled={disabled} min={0} value={duration_sec} className={styles.tradingOption} key='duration' theme='white' onChange={(e) => this.setState({ duration_sec: e.target.value })} label={getLocalizedText('duration')} name='duration' />,
-                        <NumericInput disabled={disabled} min={0} value={max_order_size} key='max_order_size' theme='white' onChange={(e) => this.setState({ max_order_size: e.target.value })} label={getLocalizedText('max_order_size')} name='max_order_size' />
+                        <NumericInput disabled={disabled} min={0} value={duration_sec} className={styles.tradingOption} key='duration' onChange={(e) => this.setState({ duration_sec: e.target.value })} label={getLocalizedText('duration')} name='duration' />,
+                        <NumericInput disabled={disabled} min={0} value={max_order_size} key='max_order_size' onChange={(e) => this.setState({ max_order_size: e.target.value })} label={getLocalizedText('max_order_size')} name='max_order_size' />
                     ]
                 }
 
