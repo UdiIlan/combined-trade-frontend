@@ -19,6 +19,7 @@ export interface TradingPenProps {
     sendNewOrderCommand(command: OrderAction);
     cancelTimedOrder();
 }
+
 export interface TradingPenState {
     openDialog?: DialogProps;
     timedOrderCancelled?: boolean;
@@ -85,7 +86,7 @@ export default class TradingPen extends React.Component<TradingPenProps, Trading
         const completed = runningTimedOrder && runningTimedOrder.timed_order_done_size ? runningTimedOrder.timed_order_done_size : 0;
         return (
             <Sidebar className={cx(styles.tradingPen, className)} header={getLocalizedText('trading_area')} align='left' collapsible open>
-                <TradingBox ref={tb => this.tb = tb} disabledTimedTrade={!!runningTimedOrder} sendNewOrderCommand={this.sendNewOrder} {...otherProps} />
+                <TradingBox ref={tb => this.tb = tb} disableTrade={!!runningTimedOrder} sendNewOrderCommand={this.sendNewOrder} {...otherProps} />
 
                 {!!runningTimedOrder && !this.state.timedOrderCancelled &&
                     <div className={styles.timedOrder}>

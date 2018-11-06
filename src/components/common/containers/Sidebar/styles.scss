@@ -60,5 +60,9 @@
     transition: all .3s ease-out;
     height: calc(100% - 70px);
     padding: 0px 2px;
+
+    &.hidden {
+      display: none;
+    }
   }
 }
