@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 import { SupportedLanguages } from 'lang';
-import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
+import { SupportedCurrencies, AppTheme, UserDetails } from 'businessLogic/model';
 import { ToastProps } from 'components/common/core/Toast';
 
 export const AppActions = {
@@ -10,8 +10,7 @@ export const AppActions = {
     RESET_TOAST: 'APP/RESET_TOAST',
     SET_THEME: 'APP/SET_THEME',
     LOGIN: 'APP/LOGIN',
-    SET_LOGGED_IN_USER: 'APP/SET_LOGGED_IN_USER',
-    SET_LOGGED_IN_TIME: 'APP/SET_LOGGED_IN_TIME',
+    SET_LOGGED_IN_USER_DETAILS: 'APP/SET_LOGGED_IN_USER_DETAILS',
     LOGOUT: 'APP/LOGOUT',
     SET_WRONG_USER_DETAILS: 'APP/SET_WRONG_USER_DETAILS',
 };
@@ -26,11 +25,9 @@ export const resetToast = createAction(AppActions.RESET_TOAST, () => { });
 
 export const setTheme = createAction(AppActions.SET_THEME, (theme: AppTheme) => theme);
 
-export const login = createAction(AppActions.LOGIN, (userName: String, password: String) => { return { userName, password }; });
+export const login = createAction(AppActions.LOGIN, (userName: string, password: string) => { return { userName, password }; });
 
-export const setLoggedInUser = createAction(AppActions.SET_LOGGED_IN_USER, (loggedUserName: String) => loggedUserName);
-
-export const setLoggedInTime = createAction(AppActions.SET_LOGGED_IN_TIME, (loggedInTime: Date) => loggedInTime);
+export const setLoggedInUserDetails = createAction(AppActions.SET_LOGGED_IN_USER_DETAILS, (userDetails: UserDetails) => userDetails);
 
 export const logout = createAction(AppActions.LOGOUT, () => { });
 

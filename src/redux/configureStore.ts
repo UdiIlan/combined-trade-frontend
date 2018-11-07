@@ -14,7 +14,7 @@ export const history = createHashHistory();
 const sagaMiddleware = createSagaMiddleware();
 const middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history));
 
-const appReducer = createFilter('app', ['language', 'currency', 'theme', 'userName', 'loggedInTime']);
+const appReducer = createFilter('app', ['language', 'currency', 'theme', 'userDetails']);
 const dashboardReducer = createFilter('dashboard', [ 'userBalance']);
 const orderBookReducer = createFilter('orderBook', ['exchangesStatus']);
 const persistConfig = {

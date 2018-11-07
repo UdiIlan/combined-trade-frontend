@@ -7,7 +7,7 @@ import bmTheme from 'themes';
 const styles = require('./styles.scss');
 import Header from './Header';
 import { SupportedLanguages } from 'lang';
-import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
+import { SupportedCurrencies, AppTheme, UserDetails } from 'businessLogic/model';
 import { sesLanguage, setCurrency, resetToast, setTheme, login, logout } from './redux/actions';
 import Login from 'components/Login';
 import OrderBook from 'components/OrderBook';
@@ -23,8 +23,7 @@ export interface AppProps {
     currentCurrency: SupportedCurrencies;
     toast?: ToastProps;
     theme: AppTheme;
-    userName: string;
-    loggedInTime: Date;
+    userDetails: UserDetails;
     wrongUserDetails?: boolean;
     sesLanguage(newLang: SupportedLanguages);
     setCurrency(newCurrency: SupportedCurrencies);
@@ -95,7 +94,7 @@ class App extends React.Component<AppProps, AppState> {
                         <Switch>
                             <Route path='/login'  render={(props) => <Login userLogin={this.props.doLogin} wrongUserDetails={this.props.wrongUserDetails}/>} />
 
-                            <EnsureLogin userName={this.props.userName} loggedInTime={this.props.loggedInTime}>
+                            <EnsureLogin userDetails={this.props.userDetails}>
                                 <Switch>
                                     <Route exact path='/' render={(props) => <Dashboard />} />
                                     <Route path='/trades' render={(props) => {
@@ -135,8 +134,7 @@ const mapStateToProps = (state, ownProps) => {
         currentCurrency: _.get(state, 'app.currency', 'BTC'),
         toast: _.get(state, 'app.toast', undefined),
         theme: _.get(state, 'app.theme', 'light'),
-        userName: _.get(state, 'app.userName', undefined),
-        loggedInTime: _.get(state, 'app.loggedInTime', undefined),
+        userDetails: _.get(state, 'app.userDetails', undefined),
         wrongUserDetails: _.get(state, 'app.wrongUserDetails', false)
     };
 };

@@ -8,6 +8,10 @@ export type SupportedFiatCurrencies = 'USD';
 
 export const UNIFIED_EXCHANGE_KEY = 'Unified';
 
+export interface UserDetails {
+    userName: string;
+    loggedInTime: Date;
+}
 
 /************************** Exchange ******************************************** */
 export interface ExchangeCoinBalance {

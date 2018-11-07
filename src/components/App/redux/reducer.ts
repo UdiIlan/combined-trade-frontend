@@ -1,7 +1,7 @@
 import { AppActions } from './actions';
 import { handleActions, Action } from 'redux-actions';
 import { SupportedLanguages } from 'lang';
-import { SupportedCurrencies, AppTheme } from 'businessLogic/model';
+import { SupportedCurrencies, AppTheme, UserDetails } from 'businessLogic/model';
 import { ToastProps } from 'components/common/core/Toast';
 
 export interface AppState {
@@ -9,8 +9,7 @@ export interface AppState {
     currency: SupportedCurrencies;
     theme: AppTheme;
     toast?: ToastProps;
-    userName: String;
-    loggedInTime: Date;
+    userDetails: UserDetails;
     wrongUserDetails: boolean;
 }
 
@@ -18,8 +17,7 @@ const INITIAL_STATE: AppState = {
     language: 'en_us',
     currency: 'BTC',
     theme: 'light',
-    userName: '',
-    loggedInTime: undefined,
+    userDetails: undefined,
     wrongUserDetails: false
 };
 
@@ -46,16 +44,12 @@ reducerMap[AppActions.SET_THEME] = (state: AppState, action: Action<AppTheme>): 
 };
 
 
-reducerMap[AppActions.SET_LOGGED_IN_USER] = (state: AppState, action: Action<String>): AppState => {
-    return { ...state, userName: action.payload };
-};
-
-reducerMap[AppActions.SET_LOGGED_IN_TIME] = (state: AppState, action: Action<Date>): AppState => {
-    return { ...state, loggedInTime: action.payload };
+reducerMap[AppActions.SET_LOGGED_IN_USER_DETAILS] = (state: AppState, action: Action<UserDetails>): AppState => {
+    return { ...state, userDetails: action.payload };
 };
 
 reducerMap[AppActions.LOGOUT] = (state: AppState, action: Action<void>): AppState => {
-    return { ...state, userName: undefined };
+    return { ...state, userDetails: undefined };
 };
 
 reducerMap[AppActions.SET_WRONG_USER_DETAILS] = (state: AppState, action: Action<boolean>): AppState => {
