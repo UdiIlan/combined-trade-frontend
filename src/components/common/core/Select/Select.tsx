@@ -23,6 +23,7 @@ export interface SelectProps {
     formHelperText?: string;
     formLabelText?: string;
     disabled?: boolean;
+    inline?: boolean;
     multiple?: boolean;
     selectAll?: boolean;
     options?: string[];
@@ -120,7 +121,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
         const select = (
             <MISelect
                 native={!this.props.multiple}
-                className={cx(styles.select, this.props.className)}
+                className={cx(styles.select, this.props.className, { inline: this.props.inline })}
                 value={this.state.selectedValue}
                 onChange={(e) => this.updateSelection(e.target.value)}
                 disabled={this.props.disabled}

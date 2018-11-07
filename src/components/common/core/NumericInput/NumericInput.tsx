@@ -1,6 +1,8 @@
 import * as React from 'react';
 import TextField from '@material-ui/core/TextField';
 const styles = require('./styles.scss');
+const classNames = require('classnames/bind');
+const cx = classNames.bind(styles);
 
 interface NumericInputState {
     currentValue;
@@ -15,6 +17,7 @@ export interface NumericInputProps {
     min?: number;
     max?: number;
     disabled?: boolean;
+    inline?: boolean;
     onChange?(e);
     onBlur?(value: number);
 }
@@ -49,10 +52,10 @@ export default class NumericInput extends React.Component<NumericInputProps, Num
 
     render() {
 
-        const { className, onChange, value, onBlur, ...otherProps } = this.props;
+        const { className, onChange, value, onBlur, inline, ...otherProps } = this.props;
         const theme = this.props.theme || 'light';
 
-        return <TextField type='number' className={className} value={this.state.currentValue} onBlur={this.onBlur} onChange={this.onChange} {...otherProps}
+        return <TextField type='number' className={cx({ inline: inline }, className)} value={this.state.currentValue} onBlur={this.onBlur} onChange={this.onChange} {...otherProps}
             classes={theme === 'light' ?
                 {
                     root: styles.whiteText

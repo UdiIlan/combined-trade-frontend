@@ -76,8 +76,8 @@ export interface OrderAction {
     crypto_type: SupportedCurrencies;
     price_fiat: number;
     fiat_type: SupportedFiatCurrencies;
-    duration_sec: number;
-    max_order_size: number;
+    duration_sec?: number;
+    max_order_size?: number;
     exchanges: string[];
 }
 
