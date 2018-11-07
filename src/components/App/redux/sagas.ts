@@ -13,7 +13,7 @@ function* doLoginAsync(action) {
     const { userName, password } = action.payload;
     if (userName === 'admin' && password === 'admin') {
         yield put(setLoggedInUser(userName));
-        yield setLoggedInTime(new Date());
+        yield put(setLoggedInTime(new Date()));
         yield put(push('/'));
     }
     else {

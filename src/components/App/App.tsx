@@ -23,7 +23,7 @@ export interface AppProps {
     currentCurrency: SupportedCurrencies;
     toast?: ToastProps;
     theme: AppTheme;
-    userName: String;
+    userName: string;
     loggedInTime: Date;
     wrongUserDetails?: boolean;
     sesLanguage(newLang: SupportedLanguages);
