@@ -9,7 +9,16 @@ import { DateUtils } from 'businessLogic/utils';
 function* getOrdersReportAsync(action) {
     try {
         const res = yield getOrdersReport(action.payload);
-        const normalizedData = _.map(res, item => { return { ...item, orderTime: DateUtils.parseUTtcToLocalTime(item.orderTime) }; });
+        const normalizedData = _.map(res, item => {
+
+            let actionType = item.actionType;
+
+            // The current API return just sell/buy for timed TAKING orders - we need to reverse it ti the original user action type.
+            if (item.timedOrder && (actionType === 'sell' || actionType === 'buy')) {
+                actionType = actionType === 'sell' ? 'timed_sell' : 'timed_buy';
+            }
+            return { ...item, actionType: actionType, orderTime: DateUtils.parseUTtcToLocalTime(item.orderTime) };
+        });
         _.forEach(normalizedData, item => {
             if (!_.isEmpty(item.childOrders))
                 item.childOrders = _.map(item.childOrders, (child) => { return { ...child, orderTime: DateUtils.parseUTtcToLocalTime(child.orderTime) }; });

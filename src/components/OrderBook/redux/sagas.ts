@@ -5,7 +5,7 @@ import {
     setLogOutFromExchangeResult, getExchanges, setExchangesStatus, setUserSentOrders,
     setTimedOrderStatus, getTimedOrderStatus as getTimedOrderStatusAction, setAccountBalance
 } from './actions';
-import { showToast } from 'components/App/redux/actions';
+import { showToast, AppActions } from 'components/App/redux/actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import {
     getExchangesSignedInInfo, getExchangesAccountBalance, getActiveOrderBook,
@@ -305,5 +305,6 @@ export function* OrderBookSagas() {
         takeEvery(OrderBookActions.GET_USER_SENT_ORDERS, getUserOrdersStatusAsync),
         takeEvery(OrderBookActions.GET_TIMED_ORDER_STATUS, getTimedOrderStatusAsync),
         takeEvery(OrderBookActions.CANCEL_TIMED_ORDER, cancelTimedOrderAsync),
+        takeEvery(AppActions.SET_CURRENCY, updateAccountBalance)
     ]);
 }
