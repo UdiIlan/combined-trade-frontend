@@ -13,7 +13,7 @@ export interface NumericInputProps {
     theme?: 'default' | 'light' | 'dark';
     label?: string;
     name?: string;
-    value?: any;
+    value?: number;
     min?: number;
     max?: number;
     disabled?: boolean;

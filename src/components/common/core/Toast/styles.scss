@@ -2,6 +2,8 @@
 
 .toast {
   .content {
+    max-width: 40vw;
+
     .message {
       display: flex;
       align-items: center;

@@ -11,7 +11,7 @@ const REPORT_COLUMNS: GridColumn[] = [
     { id: 'actionType', title: 'Action Type', render: item => getLocalizedText(item.actionType) },
     { id: 'assetPair', title: 'Crypto Type' },
     { id: 'size', title: 'Size', render: item => parseFloat(item.size).toFixed(4) },
-    { id: 'price', title: 'Price', render: item => MathUtils.toFixed(item.fiat) },
+    { id: 'price', title: 'Price', render: item => MathUtils.toFixed(item.price) },
     { id: 'orderTime', title: 'Date', render: item => DateUtils.defaultFormat(item.orderTime) },
     { id: 'status', title: 'Status' },
     { id: 'exchange', title: 'Exchange' },
@@ -38,11 +38,12 @@ export default class ReportData extends React.Component<ReportDataProps, any> {
         return (
             <Card className={cx(styles.reportData, { blurring: this.props.loading })}>
                 <Grid
-                    sortBy='order_time'
+                    sortBy='orderTime'
                     sortDirection='desc'
                     className={styles.grid}
                     data={this.props.data}
                     columns={REPORT_COLUMNS}
+                    nestedDataPropertyName='childOrders'
                     renderNestedItems={(item) => this.renderOrderChildren(item)}
                 />
             </Card>
@@ -53,7 +54,7 @@ export default class ReportData extends React.Component<ReportDataProps, any> {
         return (
             <div className={styles.orderNestedContainer}>
                 <Grid
-                    sortBy='order_time'
+                    sortBy='orderTime'
                     sortDirection='desc'
                     nested
                     data={item.childOrders}

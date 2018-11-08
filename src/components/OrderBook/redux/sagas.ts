@@ -245,17 +245,13 @@ function* getUserOrdersStatusAsync(action) {
     try {
         let res = yield getUserOrdersStatus(100);
 
-        // remove duplications (same order id with different status)
-        // res = _.uniqWith(res,  (x , y) => x.exchange_id === y.exchange_id && x.order_date === y.order_date);
-
-        const normalizedData: OrderActionStatus[] = _.map(res, item => {
+        const normalizedData: OrderActionStatus[] = _.orderBy(_.map(res, item => {
             return {
                 ...item,
                 order_time: DateUtils.parseUTtcToLocalTime(item.order_time),
                 status: item.status.toLowerCase()
             };
-        });
-
+        }), ['trade_order_id', 'order_time'], 'desc');
 
         const yesterdayDate = DateUtils.yesterday();
         const lastOrders = _.filter(normalizedData, (order: OrderActionStatus) => order.order_time > yesterdayDate);
@@ -278,7 +274,7 @@ function* updateAccountBalance() {
 function* getTimedOrderStatusAsync(action) {
     try {
         const res = yield getTimedOrderStatus();
-        const timedOrderStatus = res.timed_order_running === 'False' ? undefined : res;
+        const timedOrderStatus = { ...res, timed_order_running: res.timed_order_running === 'True' };
         yield put(setTimedOrderStatus(timedOrderStatus));
     }
     catch (err) {
