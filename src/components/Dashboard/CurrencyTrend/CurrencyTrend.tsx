@@ -1,7 +1,6 @@
 
 import * as React from 'react';
 import IconButton from 'components/common/core/IconButton';
-const graph = require('assets/images/btcGraph.png');
 const styles = require('./styles.scss');
 import * as _ from 'lodash';
 
