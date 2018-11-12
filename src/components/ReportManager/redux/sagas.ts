@@ -13,7 +13,7 @@ function* getOrdersReportAsync(action) {
 
             let actionType = item.actionType;
 
-            // The current API return just sell/buy for timed TAKING orders - we need to reverse it ti the original user action type.
+            // The current API return just sell/buy for timed TAKING orders - we need to reverse it to the original user action type.
             if (item.timedOrder && (actionType === 'sell' || actionType === 'buy')) {
                 actionType = actionType === 'sell' ? 'timed_sell' : 'timed_buy';
             }
