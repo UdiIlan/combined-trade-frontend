@@ -20,12 +20,24 @@ export const getExchangesAccountBalance = async (): Promise<any> => {
 };
 
 export const getTotalUserBalance =  () => {
-    return {usd: '200', btc: '100'};
+    return {usd: '2000.44', btc: '100.21', eth: '500.34', bch: '235.75', ins: '155.10'};
 };
 
 
 export const getExchangeRates =  () => {
-    return {BTC: '200', BCH: '100', ETH: '300'};
+    return {BTC: '6308.23', BCH: '1000.15', ETH: '3003.90', AST: '2500.25', BDL: '455.16'};
+};
+
+export const getTrendData =  (currency: string) => {
+    switch (currency) {
+        case 'BTC/USD':
+            return [{ x: 7, y: 0 }, { x: 8, y: 8 }, { x: 9, y: 14 }, { x: 10, y: 17 }];
+        case 'BCH/USD':
+            return [{ x: 2, y: 0 }, { x: 3, y: 4 }, { x: 6, y: 9 }, { x: 7, y: 8 }];
+        case 'ETH/USD':
+            return [{ x: 3, y: 1 }, { x: 5, y: 7 }, { x: 9, y: 3 }, { x: 6, y: 5 }];
+    }
+    return [{ x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 3 }, { x: 4, y: 4 }];
 };
 
 export const getActiveOrderBook = async (currency): Promise<any> => {

@@ -1,0 +1,34 @@
+@import "~styles/colors.scss";
+.graph {
+  
+  .currenciesContainer{
+    margin-left:40px;
+    margin-top: 30px;
+
+    .currency{
+      color: blue;
+      cursor:pointer; 
+      margin-right: 20px;
+
+      &:hover {
+        text-decoration:underline; 
+      }
+    }
+
+    .selectedCurrency{
+      color: blue;
+      cursor:pointer; 
+      margin-right: 20px;
+      text-decoration:underline; 
+    }
+  }
+
+  .graphImg {
+    height: 100%;
+    width: 100%;
+    margin-top: 30px;
+  }
+
+
+ 
+}

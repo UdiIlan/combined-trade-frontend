@@ -5,11 +5,13 @@ import { handleActions, Action } from 'redux-actions';
 export interface DashboardState {
     userBalance: object;
     exchangeRates: object;
+    trendData: object[];
 }
 
 const INITIAL_STATE: DashboardState = {
     userBalance: {},
-    exchangeRates: {}
+    exchangeRates: {},
+    trendData: []
 };
 
 let reducerMap = {};
@@ -20,6 +22,10 @@ reducerMap[DashboardActions.SET_USER_BALANCE] = (state: DashboardState, action: 
 
 reducerMap[DashboardActions.SET_EXCHANGE_RATES] = (state: DashboardState, action: Action<any>): DashboardState => {
     return { ...state, exchangeRates: action.payload };
+};
+
+reducerMap[DashboardActions.SET_CURRENCY_TREND] = (state: DashboardState, action: Action<any>): DashboardState => {
+    return { ...state, trendData: action.payload };
 };
 
 

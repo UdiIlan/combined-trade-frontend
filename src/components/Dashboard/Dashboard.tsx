@@ -5,9 +5,9 @@ import { OrderActionStatus } from 'businessLogic/model';
 import UserBalance from './UserBalance';
 import Rates from './Rates';
 import MyOrders from './MyOrders';
-import Graph from './Graph';
+import CurrencyTrend from './CurrencyTrend';
 import Card from 'components/common/containers/Card';
-import { getUserBalance, getExchangeRates } from './redux/actions';
+import { getUserBalance, getExchangeRates, getCurrencyTrend } from './redux/actions';
 import { getUserOrdersStatus } from '../OrderBook/redux/actions';
 import Widget from 'components/common/containers/Widget';
 const styles = require('./styles.scss');
@@ -18,12 +18,14 @@ interface DashboardStateProps {
   userOrders: OrderActionStatus[];
   userBalance: object;
   exchangeRates: object;
+  trendData: object[];
 }
 
 interface DashboardDispatchProps {
   getUserOrdersStatus();
   getUserBalance();
   getExchangeRates();
+  getCurrencyTrend(currency);
 }
 
 
@@ -39,6 +41,13 @@ class Dashboard extends React.Component<DashboardProps, any> {
     this.props.getUserOrdersStatus();
     this.props.getExchangeRates();
     this.props.getUserBalance();
+  }
+
+  componentDidMount () {
+    const timer = setInterval(
+      () => this.props.getExchangeRates(),
+      1000
+    );
   }
 
   render() {
@@ -69,8 +78,8 @@ class Dashboard extends React.Component<DashboardProps, any> {
             <Widget title={'test'} className={styles.widget} loading>
 
             </Widget>
-            <Widget title={'BTC Trend'} className={styles.widget}>
-              <Graph />
+            <Widget title={'Currency Trend'} className={styles.widget}>
+              <CurrencyTrend trendData={this.props.trendData} getCurrencyTrend={this.props.getCurrencyTrend} />
             </Widget>
           </div>
         </div>
@@ -84,7 +93,8 @@ const mapStateToProps = (state) => {
   return {
     userOrders: _.get(state, 'orderBook.userOrders'),
     userBalance: _.get(state, 'dashboard.userBalance'),
-    exchangeRates: _.get(state, 'dashboard.exchangeRates')
+    exchangeRates: _.get(state, 'dashboard.exchangeRates'),
+    trendData: _.get(state, 'dashboard.trendData')
   };
 };
 
@@ -92,7 +102,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getUserOrdersStatus: () => dispatch(getUserOrdersStatus()),
     getUserBalance: () => dispatch(getUserBalance()),
-    getExchangeRates: () => dispatch(getExchangeRates())
+    getExchangeRates: () => dispatch(getExchangeRates()),
+    getCurrencyTrend: (currency: string) => dispatch(getCurrencyTrend(currency))
   };
 };
 

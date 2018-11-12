@@ -1,5 +1,6 @@
 import * as React from 'react';
 const styles = require('./styles.scss');
+import * as _ from 'lodash';
 
 
 interface BalanceProps {
@@ -9,6 +10,10 @@ interface BalanceProps {
 export default class Balance extends React.Component<BalanceProps, any> {
     constructor(props) {
         super(props);
+    }
+
+    shouldComponentUpdate(nextProps: BalanceProps, nextState) {
+        return !_.isEqual(this.props, nextProps);
     }
 
     render() {

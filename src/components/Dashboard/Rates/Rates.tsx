@@ -1,6 +1,6 @@
 import * as React from 'react';
 const styles = require('./styles.scss');
-
+import * as _ from 'lodash';
 
 interface RatesProps {
     exchangeRates: object;
@@ -11,6 +11,9 @@ export default class Rates extends React.Component<RatesProps, any> {
         super(props);
     }
 
+    shouldComponentUpdate(nextProps: RatesProps, nextState) {
+        return !_.isEqual(this.props, nextProps);
+    }
 
     render() {
         return (
