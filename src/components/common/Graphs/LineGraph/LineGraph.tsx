@@ -29,6 +29,13 @@ export interface LineGraphProps {
 }
 
 export interface LineGraphState {
+    drawMode: number;
+    data: object[];
+    colorType: string;
+    strokeWidth: number | string;
+    showMarks: boolean;
+    value: boolean;
+    hideComponent: boolean;
 
 }
 
@@ -38,7 +45,7 @@ const colorRanges = {
     typeB: ['#EFC1E3', '#B52F93']
 };
 
-export default class LineGraph extends React.Component<LineGraphProps, any> {
+export default class LineGraph extends React.Component<LineGraphProps, LineGraphState> {
 
     constructor(props) {
         super(props);
@@ -52,7 +59,6 @@ export default class LineGraph extends React.Component<LineGraphProps, any> {
             hideComponent: false
         };
     }
-
 
     render() {
         const {
@@ -74,12 +80,14 @@ export default class LineGraph extends React.Component<LineGraphProps, any> {
             opacityType: 'literal',
             strokeWidth: '3px',
             data: this.props.data,
-            onNearestX: d => this.setState({ value: d }),
+            onNearestX: d => {
+                this.setState({ value: d });
+            },
             opacity: 0.3
         };
 
         const graph = (
-            <XYPlot width={800} height={300} onMouseLeave={() => this.setState({ value: false })}>
+            <XYPlot width={800} height={300} xType='time' onMouseLeave={() => this.setState({ value: false })}>
                 <HorizontalGridLines />
                 <VerticalGridLines />
                 <XAxis title={this.props.xTitle} style={{
@@ -91,8 +99,8 @@ export default class LineGraph extends React.Component<LineGraphProps, any> {
                 <AreaSeries
                     className='third-series'
                     {...lineSeriesProps}
-                    />
-                {value && <Crosshair values={[value]} />}
+                />
+                {value && <Crosshair values={[value]} titleFormat={(values) => { return { title: 'Date', value: values[0].x.toDateString()}; }} />}
             </XYPlot>
         );
 

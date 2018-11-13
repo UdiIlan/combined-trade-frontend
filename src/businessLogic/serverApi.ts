@@ -31,7 +31,7 @@ export const getExchangeRates =  () => {
 export const getTrendData =  (currency: string) => {
     switch (currency) {
         case 'BTC/USD':
-            return [{ x: 7, y: 0 }, { x: 8, y: 8 }, { x: 9, y: 14 }, { x: 10, y: 17 }];
+            return [{ x: new Date(2018, 6, 4), y: 0 }, { x: new Date(2018, 7, 4), y: 8 }, { x: new Date(2018, 8, 4), y: 14 }, { x: new Date(2018, 9, 4), y: 17 }];
         case 'BCH/USD':
             return [{ x: 2, y: 0 }, { x: 3, y: 4 }, { x: 6, y: 9 }, { x: 7, y: 8 }];
         case 'ETH/USD':
