@@ -28,6 +28,7 @@ interface DashboardDispatchProps {
   getCurrencyTrend(currency);
 }
 
+const btc = 'BTC/USD';
 
 type DashboardProps = DashboardStateProps & DashboardDispatchProps;
 
@@ -41,6 +42,7 @@ class Dashboard extends React.Component<DashboardProps, any> {
     this.props.getUserOrdersStatus();
     this.props.getExchangeRates();
     this.props.getUserBalance();
+    this.props.getCurrencyTrend(btc);
   }
 
   componentDidMount () {

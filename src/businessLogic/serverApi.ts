@@ -35,7 +35,7 @@ export const getTrendData =  (currency: string) => {
         case 'BCH/USD':
             return [{ x: 2, y: 0 }, { x: 3, y: 4 }, { x: 6, y: 9 }, { x: 7, y: 8 }];
         case 'ETH/USD':
-            return [{ x: 3, y: 1 }, { x: 5, y: 7 }, { x: 9, y: 3 }, { x: 6, y: 5 }];
+            return [{ x: 3, y: 1 }, { x: 5, y: 7 }, { x: 9, y: 3 }, { x: 10, y: 5 }];
     }
     return [{ x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 3 }, { x: 4, y: 4 }];
 };
