@@ -4,25 +4,17 @@ const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 import '../../../../../node_modules/react-vis/dist/style.css';
-import { curveCatmullRom } from 'd3-shape';
+import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, Crosshair, AreaSeries, LineSeriesCanvas, LineMarkSeriesCanvas } from 'react-vis';
 
-import {
-    XYPlot,
-    XAxis,
-    YAxis,
-    HorizontalGridLines,
-    VerticalGridLines,
-    AreaSeries,
-    LineSeriesCanvas,
-    Hint,
-    Crosshair,
-    CanvasComponent,
-    LineMarkSeriesCanvas
-} from 'react-vis';
+export type GraphType = 'area' | 'line';
+export type GraphDataType = ('linear'|'ordinal'|'category'|'time'|'time-utc'|'log'|'literal');
 
 export interface LineGraphProps {
-    type?: string;
+    type?: GraphType;
+    showPoints?: boolean;
     data: object[];
+    dataType?: GraphDataType;
+    numberOfTicks?: number;
     xTitle: string;
     yTitle: string;
     onClick(x: number, y: number);
@@ -30,56 +22,40 @@ export interface LineGraphProps {
 }
 
 export interface LineGraphState {
-    drawMode: number;
-    data: object[];
-    colorType: string;
-    strokeWidth: number | string;
-    showMarks: boolean;
     value: boolean;
-    hideComponent: boolean;
-
 }
 
-
-const colorRanges = {
-    typeA: ['#59E4EC', '#0D676C'],
-    typeB: ['#EFC1E3', '#B52F93']
-};
-
-export default class LineGraph extends React.Component<LineGraphProps, any> {
+export default class LineGraph extends React.Component<LineGraphProps, LineGraphState> {
 
     constructor(props) {
         super(props);
         this.state = {
-            drawMode: 0,
-            data: this.props.data,
-            colorType: 'typeA',
-            strokeWidth: '3px',
-            showMarks: true,
             value: false,
-            hideComponent: false
         };
     }
 
     render() {
         const {
-            drawMode,
-            colorType,
-            data,
-            hideComponent,
-            strokeWidth,
-            showMarks,
             value
         } = this.state;
 
+        const getComponent = (type: GraphType) => {
+            switch (type) {
+                case 'area':
+                    return AreaSeries;
+                case 'line':
+                    return this.props.showPoints ? LineMarkSeriesCanvas : LineSeriesCanvas;
+                default:
+                    return AreaSeries;
+            }
+        };
+
+        const Component = getComponent(this.props.type);
+
         const lineSeriesProps = {
             animation: true,
-            className: 'mark-series-example',
-            sizeRange: [5, 15],
-            color: colorType === 'typeA' ? '#0D676C' : '#B52F93',
-            colorRange: colorRanges[colorType],
+            color: '#0D676C',
             opacityType: 'literal',
-            strokeWidth: '3px',
             data: this.props.data,
             onNearestX: d => {
                 this.setState({ value: d });
@@ -88,21 +64,14 @@ export default class LineGraph extends React.Component<LineGraphProps, any> {
         };
 
         const graph = (
-            <XYPlot width={800} height={300} xType='time' onMouseLeave={() => this.setState({ value: false })}>
+            <XYPlot width={800} height={300} xType={this.props.dataType ? this.props.dataType : 'linear'} onMouseLeave={() => this.setState({ value: false })}>
                 <HorizontalGridLines />
                 <VerticalGridLines />
-                <XAxis title={this.props.xTitle} style={{
-                    line: { stroke: '#ADDDE1' },
-                    ticks: { stroke: '#ADDDE1' },
-                    text: { stroke: 'none', fontWeight: 600 }
-                }} />
+                <XAxis title={this.props.xTitle} tickTotal={this.props.numberOfTicks ? this.props.numberOfTicks : null} />
                 <YAxis title={this.props.yTitle} />
-                <AreaSeries
-                    className='third-series'
-                    {...lineSeriesProps}
-                />
+                <Component {...lineSeriesProps} />
                 {value && <Crosshair values={[value]} titleFormat={(values) => { return { title: 'Date', value: values[0].x.toDateString() }; }}
-                    itemsFormat={(values) => [ { title: 'Value', value: values[0].y } ]}
+                    itemsFormat={(values) => [{ title: 'Value', value: values[0].y }]}
                 />}
             </XYPlot>
         );
