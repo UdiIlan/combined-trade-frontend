@@ -14,6 +14,7 @@ import {
     VerticalGridLines,
     AreaSeries,
     LineSeriesCanvas,
+    Hint,
     Crosshair,
     CanvasComponent,
     LineMarkSeriesCanvas
@@ -45,7 +46,7 @@ const colorRanges = {
     typeB: ['#EFC1E3', '#B52F93']
 };
 
-export default class LineGraph extends React.Component<LineGraphProps, LineGraphState> {
+export default class LineGraph extends React.Component<LineGraphProps, any> {
 
     constructor(props) {
         super(props);
@@ -100,7 +101,9 @@ export default class LineGraph extends React.Component<LineGraphProps, LineGraph
                     className='third-series'
                     {...lineSeriesProps}
                 />
-                {value && <Crosshair values={[value]} titleFormat={(values) => { return { title: 'Date', value: values[0].x.toDateString()}; }} />}
+                {value && <Crosshair values={[value]} titleFormat={(values) => { return { title: 'Date', value: values[0].x.toDateString() }; }}
+                    itemsFormat={(values) => [ { title: 'Value', value: values[0].y } ]}
+                />}
             </XYPlot>
         );
 
