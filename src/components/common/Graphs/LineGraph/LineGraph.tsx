@@ -17,6 +17,7 @@ export interface LineGraphProps {
     numberOfTicks?: number;
     xTitle: string;
     yTitle: string;
+    className?: string;
     onClick?(x: number, y: number);
 }
 
@@ -33,10 +34,10 @@ export default class LineGraph extends React.Component<LineGraphProps, LineGraph
         };
     }
 
+    private graphDom;
+
     render() {
-        const {
-            value
-        } = this.state;
+        const { value } = this.state;
 
         const getComponent = (type: GraphType) => {
             switch (type) {
@@ -80,18 +81,22 @@ export default class LineGraph extends React.Component<LineGraphProps, LineGraph
         };
 
         const graph = (
-            <XYPlot width={800} height={300} xType={dataType} onMouseLeave={() => this.setState({ value: false })}>
-                <HorizontalGridLines />
-                <VerticalGridLines />
-                <XAxis title={this.props.xTitle} tickTotal={this.props.numberOfTicks ? this.props.numberOfTicks : null} />
-                <YAxis title={this.props.yTitle} />
-                <Component {...lineSeriesProps} />
-                {value && <Crosshair values={[value]} titleFormat={(values) => {
-                    return this.props.dataType === 'time' ? { title: 'Date', value: values[0].x.toDateString() } : { title: 'Value', value: values[0].x };
-                }}
-                    itemsFormat={(values) => [{ title: 'Value', value: values[0].y }]}
-                />}
-            </XYPlot>
+            <div className={cx(styles.graph, this.props.className)}>
+                <div ref={(graphDom) => this.graphDom = graphDom} className={styles.graphWrapper}>
+                    <XYPlot width={this.graphDom ? this.graphDom.offsetWidth : 800} height={this.graphDom ? this.graphDom.offsetHeight : 300} xType={dataType} onMouseLeave={() => this.setState({ value: false })}>
+                        <HorizontalGridLines />
+                        <VerticalGridLines />
+                        <XAxis title={this.props.xTitle} tickTotal={this.props.numberOfTicks ? this.props.numberOfTicks : null} />
+                        <YAxis title={this.props.yTitle} />
+                        <Component {...lineSeriesProps} />
+                        {value && <Crosshair values={[value]} titleFormat={(values) => {
+                            return this.props.dataType === 'time' ? { title: 'Date', value: values[0].x.toDateString() } : { title: 'Value', value: values[0].x };
+                        }}
+                            itemsFormat={(values) => [{ title: 'Value', value: values[0].y }]}
+                        />}
+                    </XYPlot>
+                </div>
+            </div>
         );
 
         return graph;

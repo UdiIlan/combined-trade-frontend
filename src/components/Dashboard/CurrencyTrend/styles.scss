@@ -1,34 +1,30 @@
 @import "~styles/colors.scss";
+
 .graph {
-  
-  .currenciesContainer{
-    margin-left:40px;
+  height: calc(100% - 20px);
+  .currenciesContainer {
+    margin-left: 40px;
     margin-top: 30px;
 
-    .currency{
+    .currency {
       color: blue;
-      cursor:pointer; 
+      cursor: pointer;
       margin-right: 20px;
 
       &:hover {
-        text-decoration:underline; 
+        text-decoration: underline;
       }
     }
 
-    .selectedCurrency{
+    .selectedCurrency {
       color: blue;
-      cursor:pointer; 
+      cursor: pointer;
       margin-right: 20px;
-      text-decoration:underline; 
+      text-decoration: underline;
     }
   }
 
-  .graphImg {
-    height: 100%;
-    width: 100%;
-    margin-top: 30px;
+  .innerGraph {
+    height: calc(100% - 30px);
   }
-
-
- 
 }
