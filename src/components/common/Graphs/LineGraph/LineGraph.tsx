@@ -7,7 +7,7 @@ import '../../../../../node_modules/react-vis/dist/style.css';
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, Crosshair, AreaSeries, LineSeriesCanvas, LineMarkSeriesCanvas } from 'react-vis';
 
 export type GraphType = 'area' | 'line';
-export type GraphDataType = ('linear'|'ordinal'|'category'|'time'|'time-utc'|'log'|'literal');
+export type GraphDataType = ('numeric' | 'alphanumeric' | 'category' | 'time');
 
 export interface LineGraphProps {
     type?: GraphType;
@@ -17,8 +17,7 @@ export interface LineGraphProps {
     numberOfTicks?: number;
     xTitle: string;
     yTitle: string;
-    onClick(x: number, y: number);
-
+    onClick?(x: number, y: number);
 }
 
 export interface LineGraphState {
@@ -50,7 +49,24 @@ export default class LineGraph extends React.Component<LineGraphProps, LineGraph
             }
         };
 
+        const getDataType = (type: GraphDataType) => {
+            switch (type) {
+                case 'numeric':
+                    return 'linear';
+                case 'alphanumeric':
+                    return 'ordinal';
+                case 'category':
+                    return 'category';
+                case 'time':
+                    return 'time';
+                default:
+                    return 'linear';
+            }
+        };
+
         const Component = getComponent(this.props.type);
+
+        const dataType = getDataType(this.props.dataType);
 
         const lineSeriesProps = {
             animation: true,
@@ -64,13 +80,15 @@ export default class LineGraph extends React.Component<LineGraphProps, LineGraph
         };
 
         const graph = (
-            <XYPlot width={800} height={300} xType={this.props.dataType ? this.props.dataType : 'linear'} onMouseLeave={() => this.setState({ value: false })}>
+            <XYPlot width={800} height={300} xType={dataType} onMouseLeave={() => this.setState({ value: false })}>
                 <HorizontalGridLines />
                 <VerticalGridLines />
                 <XAxis title={this.props.xTitle} tickTotal={this.props.numberOfTicks ? this.props.numberOfTicks : null} />
                 <YAxis title={this.props.yTitle} />
                 <Component {...lineSeriesProps} />
-                {value && <Crosshair values={[value]} titleFormat={(values) => { return { title: 'Date', value: values[0].x.toDateString() }; }}
+                {value && <Crosshair values={[value]} titleFormat={(values) => {
+                    return this.props.dataType === 'time' ? { title: 'Date', value: values[0].x.toDateString() } : { title: 'Value', value: values[0].x };
+                }}
                     itemsFormat={(values) => [{ title: 'Value', value: values[0].y }]}
                 />}
             </XYPlot>

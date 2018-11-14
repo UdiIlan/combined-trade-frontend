@@ -1,9 +1,10 @@
 
 import * as React from 'react';
-import IconButton from 'components/common/core/IconButton';
-const styles = require('./styles.scss');
 import * as _ from 'lodash';
 import LineGraph from 'components/common/Graphs/LineGraph';
+const styles = require('./styles.scss');
+const classNames = require('classnames/bind');
+const cx = classNames.bind(styles);
 
 
 interface CurrencyTrendProps {
