@@ -44,7 +44,7 @@ export default class CurrencyTrend extends React.Component<CurrencyTrendProps, C
                     <span onClick={(e) => this.selectTrend(bch)} className={(this.state.selectedTrend === bch) ? `${styles.selectedCurrency}` : `${styles.currency}`}>{bch}</span>
                     <span onClick={(e) => this.selectTrend(eth)} className={(this.state.selectedTrend === eth) ? `${styles.selectedCurrency}` : `${styles.currency}`}>{eth}</span>
                 </div>
-                <LineGraph data={this.props.trendData} xTitle='time' yTitle='rate' onClick = {this.callOnClick} dataType='time' />
+                <LineGraph className={styles.innerGraph} data={this.props.trendData} xTitle='time' yTitle='rate' onClick = {this.callOnClick} dataType='time' />
             </div>
         );
     }
