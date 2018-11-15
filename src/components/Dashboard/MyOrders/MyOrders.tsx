@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { OrderActionStatus } from 'businessLogic/model';
 import { default as Grid, GridColumn } from 'components/common/dataLayouts/Grid';
+const styles = require('./styles.scss');
 
 
 
@@ -16,7 +17,7 @@ export default class MyOrders extends React.Component<MyOrdersProps, any> {
 
     render() {
         return (
-            <div >
+            <div className={styles.ordersContainer}>
                 {
                     _.isEmpty(this.props.userLastOrders) ?
                         'N/A'
