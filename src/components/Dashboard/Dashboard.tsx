@@ -77,7 +77,7 @@ class Dashboard extends React.Component<DashboardProps, any> {
 
           <div className={styles.widgetColumn} >
 
-            <Widget title={'test'} className={styles.widget} loading>
+            <Widget title={'Work In Progress'} className={styles.widget}>
 
             </Widget>
             <Widget title={'Currency Trend'} className={styles.widget}>
