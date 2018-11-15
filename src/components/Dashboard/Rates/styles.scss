@@ -1,5 +1,7 @@
 .container{
     margin-top: 30px;
+    overflow-y: scroll;
+    max-height: calc(100% - 50px);
 }
 .head{
     font-size: 2rem;
@@ -9,7 +11,7 @@
 
 .icon{
     margin-right: 25px;
-    margin-left: 35px;
+    margin-left: 10%;
 }
 
 .ratesContainer{
@@ -21,8 +23,8 @@
     padding: 5px 15px
 }
 .rate{
-    font-size: 20px;
-    margin-left: 50px;
+    font-size: 1.2rem;
+    margin-left: 5%;
     padding: 3px; 
 }
 

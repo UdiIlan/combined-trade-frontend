@@ -1,9 +1,10 @@
 
 import * as React from 'react';
-import IconButton from 'components/common/core/IconButton';
-const styles = require('./styles.scss');
 import * as _ from 'lodash';
 import LineGraph from 'components/common/Graphs/LineGraph';
+const styles = require('./styles.scss');
+const classNames = require('classnames/bind');
+const cx = classNames.bind(styles);
 
 
 interface CurrencyTrendProps {
@@ -43,7 +44,7 @@ export default class CurrencyTrend extends React.Component<CurrencyTrendProps, C
                     <span onClick={(e) => this.selectTrend(bch)} className={(this.state.selectedTrend === bch) ? `${styles.selectedCurrency}` : `${styles.currency}`}>{bch}</span>
                     <span onClick={(e) => this.selectTrend(eth)} className={(this.state.selectedTrend === eth) ? `${styles.selectedCurrency}` : `${styles.currency}`}>{eth}</span>
                 </div>
-                <LineGraph data={this.props.trendData} xTitle='time' yTitle='rate' onClick = {this.callOnClick}/>
+                <LineGraph className={styles.innerGraph} data={this.props.trendData} xTitle='time' yTitle='rate' onClick = {this.callOnClick} dataType='time' />
             </div>
         );
     }
