@@ -8,6 +8,12 @@ import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, Crosshair
 
 export type GraphType = 'area' | 'line';
 export type GraphDataType = ('numeric' | 'alphanumeric' | 'category' | 'time');
+export type GraphOpacityType = ('literal');
+export interface GraphStyle {
+    opacity: number;
+    color: string;
+    opacityType?: GraphOpacityType;
+}
 
 export interface LineGraphProps {
     type?: GraphType;
@@ -18,6 +24,7 @@ export interface LineGraphProps {
     xTitle: string;
     yTitle: string;
     className?: string;
+    graphStyle?: GraphStyle;
     onClick?(x: number, y: number);
 }
 
@@ -71,13 +78,10 @@ export default class LineGraph extends React.Component<LineGraphProps, LineGraph
 
         const lineSeriesProps = {
             animation: true,
-            color: '#0D676C',
-            opacityType: 'literal',
             data: this.props.data,
             onNearestX: d => {
                 this.setState({ value: d });
-            },
-            opacity: 0.3
+            }
         };
 
         const graph = (
