@@ -8,8 +8,8 @@ const cx = classNames.bind(styles);
 
 
 interface CurrencyTrendProps {
-     trendData: object[];
-     getCurrencyTrend(currency: string);
+    trendData: object[];
+    getCurrencyTrend(currency: string);
 }
 
 export interface CurrencyTrendState {
@@ -40,19 +40,19 @@ export default class CurrencyTrend extends React.Component<CurrencyTrendProps, C
         return (
             <div className={styles.graph}>
                 <div className={styles.currenciesContainer}>
-                    <span onClick={(e) => this.selectTrend(btc)} className={(this.state.selectedTrend === btc) ? `${styles.selectedCurrency}` : `${styles.currency}`}>{btc}</span>
-                    <span onClick={(e) => this.selectTrend(bch)} className={(this.state.selectedTrend === bch) ? `${styles.selectedCurrency}` : `${styles.currency}`}>{bch}</span>
-                    <span onClick={(e) => this.selectTrend(eth)} className={(this.state.selectedTrend === eth) ? `${styles.selectedCurrency}` : `${styles.currency}`}>{eth}</span>
+                    <span onClick={(e) => this.selectTrend(btc)} className= {cx({selectedCurrency: this.state.selectedTrend === btc}, {currency: this.state.selectedTrend !== btc})}>{btc}</span>
+                    <span onClick={(e) => this.selectTrend(bch)} className= {cx({selectedCurrency: this.state.selectedTrend === bch}, {currency: this.state.selectedTrend !== bch})}>{bch}</span>
+                    <span onClick={(e) => this.selectTrend(eth)} className= {cx({selectedCurrency: this.state.selectedTrend === eth}, {currency: this.state.selectedTrend !== eth})}>{eth}</span>
                 </div>
-                <LineGraph className={styles.innerGraph} data={this.props.trendData} xTitle='time' yTitle='rate' onClick = {this.callOnClick} dataType='time' graphStyle={opacity: 0.3, color: '#e5e5e5', opacityType: 'literal'}/>
+                <LineGraph className={styles.innerGraph} data={this.props.trendData} xTitle='time' yTitle='rate' onClick={this.callOnClick} dataType='time' graphStyle={{ opacityLevel: 0.5, color: 'cadetblue' }} />
             </div>
         );
     }
 
 
     selectTrend(trend) {
-         this.props.getCurrencyTrend(trend);
-         this.setState({ selectedTrend: trend });
+        this.props.getCurrencyTrend(trend);
+        this.setState({ selectedTrend: trend });
     }
 
 

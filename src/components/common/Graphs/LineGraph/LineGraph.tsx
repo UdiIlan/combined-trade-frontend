@@ -7,12 +7,11 @@ import '../../../../../node_modules/react-vis/dist/style.css';
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, Crosshair, AreaSeries, LineSeriesCanvas, LineMarkSeriesCanvas } from 'react-vis';
 
 export type GraphType = 'area' | 'line';
-export type GraphDataType = ('numeric' | 'alphanumeric' | 'category' | 'time');
-export type GraphOpacityType = ('literal');
+export type GraphDataType = 'numeric' | 'alphanumeric' | 'category' | 'time';
+
 export interface GraphStyle {
-    opacity: number;
+    opacityLevel: number;
     color: string;
-    opacityType?: GraphOpacityType;
 }
 
 export interface LineGraphProps {
@@ -24,7 +23,7 @@ export interface LineGraphProps {
     xTitle: string;
     yTitle: string;
     className?: string;
-    graphStyle?: GraphStyle;
+    graphStyle: GraphStyle;
     onClick?(x: number, y: number);
 }
 
@@ -32,16 +31,30 @@ export interface LineGraphState {
     value: boolean;
 }
 
+
 export default class LineGraph extends React.Component<LineGraphProps, LineGraphState> {
 
     constructor(props) {
         super(props);
         this.state = {
-            value: false,
+            value: false
         };
     }
 
     private graphDom;
+
+    handleResize = () => {
+        this.forceUpdate();
+    }
+
+      componentDidMount() {
+        this.handleResize();
+        window.addEventListener('resize', this.handleResize);
+      }
+
+      componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
+      }
 
     render() {
         const { value } = this.state;
@@ -79,6 +92,9 @@ export default class LineGraph extends React.Component<LineGraphProps, LineGraph
         const lineSeriesProps = {
             animation: true,
             data: this.props.data,
+            opacity: this.props.graphStyle.opacityLevel,
+            color: this.props.graphStyle.color,
+            stroke: '#3C6266',
             onNearestX: d => {
                 this.setState({ value: d });
             }
