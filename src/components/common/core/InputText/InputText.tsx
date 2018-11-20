@@ -8,7 +8,7 @@ interface InputTextState {
 
 export interface InputTextProps {
     className?: string;
-    theme?: 'default' | 'white' | 'dark';
+    theme?: 'default' | 'light' | 'dark';
     label?: string;
     name?: string;
     value?: any;
@@ -43,12 +43,12 @@ export default class InputText extends React.Component<InputTextProps, InputText
         const { className, onChange, value, ...otherProps } = this.props;
 
         return <TextField className={className} value={this.state.currentValue} onChange={this.onChange} {...otherProps}
-            classes={this.props.theme === 'white' ?
+            classes={this.props.theme === 'light' ?
                 {
                     root: styles.whiteText
                 } :
                 undefined}
-            InputLabelProps={{ className: this.props.theme === 'white' ? styles.whiteInput : undefined, classes: this.props.theme === 'white' ? { root: styles.whiteInput, formControl: styles.whiteInput } : undefined }}
-            InputProps={{ classes: this.props.theme === 'white' ? { root: styles.whiteInput, underline: styles.whiteInput } : undefined }} />;
+            InputLabelProps={{ className: this.props.theme === 'light' ? styles.whiteInput : undefined, classes: this.props.theme === 'light' ? { root: styles.whiteInput, formControl: styles.whiteInput } : undefined }}
+            InputProps={{ classes: this.props.theme === 'light' ? { root: styles.whiteInput, underline: styles.whiteInput } : undefined }} />;
     }
 }

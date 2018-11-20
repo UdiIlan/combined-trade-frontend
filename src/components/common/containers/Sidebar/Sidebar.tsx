@@ -72,8 +72,7 @@ export default class Sidebar extends React.Component<SidebarProps, SidebarState>
 
                     <span onClick={this.toggle} className={cx(styles.header, { collapsed: isCollapsed })}>{header}</span>
 
-                    {!isCollapsed && <div className={styles.content}>{children}</div>}
-
+                    <div className={cx(styles.content, { hidden: isCollapsed })}>{children}</div>
 
                 </div>
 

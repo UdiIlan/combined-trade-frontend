@@ -19,6 +19,7 @@ export interface TradingPenProps {
     sendNewOrderCommand(command: OrderAction);
     cancelTimedOrder();
 }
+
 export interface TradingPenState {
     openDialog?: DialogProps;
     timedOrderCancelled?: boolean;
@@ -58,18 +59,18 @@ export default class TradingPen extends React.Component<TradingPenProps, Trading
     }
 
     componentWillReceiveProps(nextProps: TradingPenProps) {
-        if (!!this.props.runningTimedOrder && !nextProps.runningTimedOrder && !this.state.timedOrderCancelled) {
+        if (!!this.props.runningTimedOrder && this.props.runningTimedOrder.timed_order_running && !!nextProps.runningTimedOrder && !nextProps.runningTimedOrder.timed_order_running && !this.state.timedOrderCancelled ) {
             const dialog = {
                 title: getLocalizedText('timed_order_success'),
                 subTitle: [
-                    <span key='row1'>{`Action Type: ${getLocalizedText(this.props.runningTimedOrder.action_type)}`}</span>,
+                    <span key='row1'>{`Action Type: ${getLocalizedText(nextProps.runningTimedOrder.action_type)}`}</span>,
                     <br key='separator1' />,
-                    <span key='row2'>{`Done: ${this.props.runningTimedOrder.timed_order_done_size ? this.props.runningTimedOrder.timed_order_done_size.toFixed(4) : 0}`}</span>
+                    <span key='row2'>{`Done: ${nextProps.runningTimedOrder.timed_order_done_size ? nextProps.runningTimedOrder.timed_order_done_size.toFixed(4) : 0}`}</span>
                 ],
-                onCancelClick: () => this.setState({ openDialog: undefined }),
+                onCancelClick: () => this.setState({ openDialog: undefined }, () => { if (this.tb) this.tb.reset(); }),
                 okBtnHidden: true,
                 intent: 'success',
-                cancelBtnText: 'OK'
+                cancelBtnText: 'OK',
             } as DialogProps;
 
             this.setState({ openDialog: dialog });
@@ -85,9 +86,9 @@ export default class TradingPen extends React.Component<TradingPenProps, Trading
         const completed = runningTimedOrder && runningTimedOrder.timed_order_done_size ? runningTimedOrder.timed_order_done_size : 0;
         return (
             <Sidebar className={cx(styles.tradingPen, className)} header={getLocalizedText('trading_area')} align='left' collapsible open>
-                <TradingBox ref={tb => this.tb = tb} disabledTimedTrade={!!runningTimedOrder} sendNewOrderCommand={this.sendNewOrder} {...otherProps} />
+                <TradingBox ref={tb => this.tb = tb} disableTrade={!!runningTimedOrder && runningTimedOrder.timed_order_running} sendNewOrderCommand={this.sendNewOrder} {...otherProps} />
 
-                {!!runningTimedOrder && !this.state.timedOrderCancelled &&
+                {!!runningTimedOrder && runningTimedOrder.timed_order_running && !this.state.timedOrderCancelled &&
                     <div className={styles.timedOrder}>
                         <span className={styles.text}>{`${runningTimedOrder.action_type.indexOf('buy') < 0 ? getLocalizedText('sold') : getLocalizedText('bought')} ${completed > 0 ? completed.toFixed(4) : 0} ${getLocalizedText('out_of')} ${runningTimedOrder.timed_order_required_size} ${this.props.selectedCurrency}`}</span>
                         <ProgressBar className={styles.progress} value={(completed / runningTimedOrder.timed_order_required_size) * 100} />

@@ -5,7 +5,7 @@ import {
     setLogOutFromExchangeResult, getExchanges, setExchangesStatus, setUserSentOrders,
     setTimedOrderStatus, getTimedOrderStatus as getTimedOrderStatusAction, setAccountBalance
 } from './actions';
-import { showToast } from 'components/App/redux/actions';
+import { showToast, AppActions } from 'components/App/redux/actions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import {
     getExchangesSignedInInfo, getExchangesAccountBalance, getActiveOrderBook,
@@ -245,17 +245,13 @@ function* getUserOrdersStatusAsync(action) {
     try {
         const res = yield getUserOrdersStatus(action.payload);
 
-        // remove duplications (same order id with different status)
-        // res = _.uniqWith(res,  (x , y) => x.exchange_id === y.exchange_id && x.order_date === y.order_date);
-
-        const normalizedData: OrderActionStatus[] = _.map(res, item => {
+        const normalizedData: OrderActionStatus[] = _.orderBy(_.map(res, item => {
             return {
                 ...item,
                 order_time: DateUtils.parseUTtcToLocalTime(item.order_time),
                 status: item.status.toLowerCase()
             };
-        });
-
+        }), ['trade_order_id', 'order_time'], 'desc');
 
         const yesterdayDate = DateUtils.yesterday();
         const lastOrders = _.filter(normalizedData, (order: OrderActionStatus) => order.order_time > yesterdayDate);
@@ -278,7 +274,7 @@ function* updateAccountBalance() {
 function* getTimedOrderStatusAsync(action) {
     try {
         const res = yield getTimedOrderStatus();
-        const timedOrderStatus = res.timed_order_running === 'False' ? undefined : res;
+        const timedOrderStatus = { ...res, timed_order_running: res.timed_order_running === 'True' };
         yield put(setTimedOrderStatus(timedOrderStatus));
     }
     catch (err) {
@@ -309,5 +305,6 @@ export function* OrderBookSagas() {
         takeEvery(OrderBookActions.GET_USER_SENT_ORDERS, getUserOrdersStatusAsync),
         takeEvery(OrderBookActions.GET_TIMED_ORDER_STATUS, getTimedOrderStatusAsync),
         takeEvery(OrderBookActions.CANCEL_TIMED_ORDER, cancelTimedOrderAsync),
+        takeEvery(AppActions.SET_CURRENCY, updateAccountBalance)
     ]);
 }

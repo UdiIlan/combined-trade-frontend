@@ -74,7 +74,7 @@ class OrderBook extends React.Component<OrderBookProps, OrderBookState> {
             if (!this.props.loading) {
                 this.props.getActiveOrderBooks();
 
-                if (!!this.props.runningTimedOrder) {
+                if (!!this.props.runningTimedOrder && this.props.runningTimedOrder.timed_order_running) {
                     this.props.getTimedOrderStatus();
                     this.props.getUserOrdersStatus();
                 }
