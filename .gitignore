@@ -65,3 +65,6 @@ typings/
 
 # build folder
 dist
+
+# test report
+test_report
