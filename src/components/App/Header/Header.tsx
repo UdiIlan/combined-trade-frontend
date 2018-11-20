@@ -17,7 +17,7 @@ export interface HeaderProps {
     theme: AppTheme;
     sesLanguage(newLang: SupportedLanguages);
     setCurrency(newCurrency: SupportedCurrencies);
-    manageExchanges();
+    manageExchanges?();
     setTheme(theme: AppTheme);
     userLogout();
 }

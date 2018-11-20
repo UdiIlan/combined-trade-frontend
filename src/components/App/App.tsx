@@ -9,14 +9,11 @@ import Header from './Header';
 import { SupportedLanguages } from 'lang';
 import { SupportedCurrencies, AppTheme, UserDetails } from 'businessLogic/model';
 import { sesLanguage, setCurrency, resetToast, setTheme, login, logout } from './redux/actions';
-import Login from 'components/Login';
-import OrderBook from 'components/OrderBook';
+import Login from './Login';
 import Dashboard from 'components/Dashboard';
 import ReportManager from 'components/ReportManager';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
-import { isNull } from 'util';
 import EnsureLogin from './EnsureLogin';
-import { th } from 'date-fns/esm/locale';
 
 export interface AppProps {
     currentLang: SupportedLanguages;
@@ -46,8 +43,6 @@ class App extends React.Component<AppProps, AppState> {
         this.setNewCurrency = this.setNewCurrency.bind(this);
     }
 
-    private orderBook;
-
     componentWillMount() {
         this.props.setTheme(this.props.theme);
         this.props.sesLanguage(this.props.currentLang);
@@ -66,12 +61,6 @@ class App extends React.Component<AppProps, AppState> {
         this.props.setCurrency(newCurrency);
     }
 
-    componentWillUpdate() {
-        if (!!this.orderBook && isNull(this.orderBook.getWrappedInstance())) {
-            this.orderBook = undefined;
-        }
-    }
-
     render() {
 
         return (
@@ -86,32 +75,21 @@ class App extends React.Component<AppProps, AppState> {
                         setCurrency={this.setNewCurrency}
                         theme={this.props.theme}
                         setTheme={this.props.setTheme}
-                        manageExchanges={this.orderBook ? this.orderBook.getWrappedInstance().manageExchanges : undefined}
                         userLogout={this.props.doLogout}
                     />
 
                     <div className={styles.content}>
                         <Switch>
-                            <Route path='/login'  render={(props) => <Login userLogin={this.props.doLogin} wrongUserDetails={this.props.wrongUserDetails}/>} />
+                            <Route path='/login' render={(props) => <Login userLogin={this.props.doLogin} wrongUserDetails={this.props.wrongUserDetails} />} />
 
                             <EnsureLogin userDetails={this.props.userDetails}>
                                 <Switch>
-                                    <Route exact path='/' render={(props) => <Dashboard />} />
-                                    <Route path='/trades' render={(props) => {
-                                        return (
-                                            <OrderBook ref={(orderBook: any) => {
-                                                if (!orderBook || isNull(orderBook)) return;
-                                                if (!this.orderBook) {
-                                                    this.orderBook = orderBook;
-                                                    this.forceUpdate();
-                                                }
-                                            }} />
-                                        );
-                                    }}
-                                    />
+                                    <Route exact path='/' component={Dashboard} />
+                                    <Route path='/trades' component={Dashboard} />
+                                    <Route path='/withdrawals' component={Dashboard} />
                                     <Route path='/reports' component={ReportManager} />
 
-                                    <Route path='*' render={(props) => <div>NOT FOUND!</div>} />
+                                    <Route path='*' render={(props) => <div>PAGE NOT FOUND!</div>} />
                                 </Switch>
                             </EnsureLogin>
 
