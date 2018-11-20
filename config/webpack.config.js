@@ -30,7 +30,7 @@ const config = (env) => {
       historyApiFallback: true,
       openPage: '',
     },
-    entry: ['babel-polyfill', APP_DIR + '/index.tsx'],
+    entry: ['babel-polyfill', path.resolve(APP_DIR, 'index.tsx')],
     output: {
       path: BUILD_DIR,
       filename: 'bundle.js'
