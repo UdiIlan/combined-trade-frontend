@@ -49,8 +49,8 @@ export const ExchangeUtils = {
                 const fixedDecimalDigits = key === 'USD' ? 2 : 4;
                 return {
                     coin: key,
-                    amount: !!coinBalance.amount ? coinBalance.amount.toFixed(fixedDecimalDigits) : undefined,
-                    available: !!coinBalance.amount ? coinBalance.amount.toFixed(fixedDecimalDigits) : undefined,
+                    amount: !!coinBalance.amount ? coinBalance.amount.toFixed(fixedDecimalDigits) : 0,
+                    available: !!coinBalance.amount ? coinBalance.amount.toFixed(fixedDecimalDigits) : 0,
                     price: coinBalance.price
                 } as ExchangeCoinBalance;
             })

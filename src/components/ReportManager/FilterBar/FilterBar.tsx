@@ -93,7 +93,7 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
 
                 <div className={styles.filter}>
                     <span className={styles.label}>Date:</span>
-                    <Select selectedValue={timeRange} theme='white' onChange={(selection) => this.setState({ timeRange: selection }, () => this.updateTimeRange())}>
+                    <Select selectedValue={timeRange} onChange={(selection) => this.setState({ timeRange: selection }, () => this.updateTimeRange())}>
                         <option value='today'>Last Day</option>
                         <option value='lastWeek'>Last Week</option>
                         <option value='custom'>Date Range</option>
@@ -119,7 +119,7 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
                         onChange={(selection) => this.setState({ exchanges: selection })}
                         formLabelText='Exchange'
                         multiple
-                        theme='white' options={this.props.exchanges} />
+                        options={this.props.exchanges} />
                 </div>
 
                 <span className={styles.splitter}>|</span>
@@ -130,7 +130,6 @@ export default class FilterBar extends React.Component<ReportManagerProps, Repor
                         selectedValue={status}
                         multiple
                         onChange={(selection) => this.setState({ status: selection })}
-                        theme='white'
                         options={ORDER_STATUS_OPTIONS} />
                 </div>
 

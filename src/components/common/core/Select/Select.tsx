@@ -18,11 +18,12 @@ const SELECT_ALL_OPTION = 'All';
 export interface SelectProps {
     selectedValue?: any;
     className?: string;
-    theme?: 'default' | 'white' | 'dark';
+    theme?: 'default' | 'light' | 'dark';
     formControl?: boolean;
     formHelperText?: string;
     formLabelText?: string;
     disabled?: boolean;
+    inline?: boolean;
     multiple?: boolean;
     selectAll?: boolean;
     options?: string[];
@@ -113,13 +114,14 @@ export default class Select extends React.Component<SelectProps, SelectState> {
     }
 
     render() {
-        const selectClassName = this.props.theme === 'white' ? styles.whiteSelect : undefined;
-        const inputClassName = this.props.theme === 'white' ? styles.whiteInput : undefined;
+        const theme = this.props.theme || 'light';
+        const selectClassName = theme === 'light' ? styles.whiteSelect : undefined;
+        const inputClassName = theme === 'light' ? styles.whiteInput : undefined;
 
         const select = (
             <MISelect
                 native={!this.props.multiple}
-                className={cx(styles.select, this.props.className)}
+                className={cx(styles.select, this.props.className, { inline: this.props.inline })}
                 value={this.state.selectedValue}
                 onChange={(e) => this.updateSelection(e.target.value)}
                 disabled={this.props.disabled}

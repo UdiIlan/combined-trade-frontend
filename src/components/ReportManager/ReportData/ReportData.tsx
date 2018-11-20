@@ -8,16 +8,17 @@ import { default as Grid, GridColumn } from 'components/common/dataLayouts/Grid'
 import { DateUtils, MathUtils } from 'businessLogic/utils';
 
 const REPORT_COLUMNS: GridColumn[] = [
-    { id: 'action_type', title: 'Action Type', render: item => getLocalizedText(item.action_type) },
-    { id: 'crypto_type', title: 'Crypto Type' },
-    { id: 'crypto_size', title: 'Size', render: item => parseFloat(item.crypto_size).toFixed(4) },
-    { id: 'price_fiat', title: 'Price', render: item => MathUtils.toFixed(item.price_fiat) },
-    { id: 'order_time', title: 'Date', render: item => DateUtils.defaultFormat(item.order_time) },
+    { id: 'actionType', title: 'Action Type', render: item => getLocalizedText(item.actionType) },
+    { id: 'assetPair', title: 'Crypto Type' },
+    { id: 'size', title: 'Size', render: item => parseFloat(item.size).toFixed(4) },
+    { id: 'price', title: 'Price', render: item => MathUtils.toFixed(item.price) },
+    { id: 'orderTime', title: 'Date', render: item => DateUtils.defaultFormat(item.orderTime) },
     { id: 'status', title: 'Status' },
     { id: 'exchange', title: 'Exchange' },
-    { id: 'exchange_id', title: 'ID' },
-    { id: 'crypto_available', title: 'Crypto Balance', render: item => parseFloat(item.crypto_available).toFixed(4) },
-    { id: 'usd_balance', title: 'USD Balance', render: item => parseFloat(item.usd_balance).toFixed(4) },
+    { id: 'tradeOrderId', title: 'ID' },
+    { id: 'exchangeOrderId', title: 'Exchange Order ID' },
+    { id: 'currencyFromAvailable', title: 'Crypto Balance', render: item => parseFloat(item.currencyFromAvailable).toFixed(4) },
+    { id: 'currencyToAvailable', title: 'USD Balance', render: item => parseFloat(item.currencyToAvailable).toFixed(4) },
     { id: 'ask', title: 'Ask' },
     { id: 'bid', title: 'Bid' },
 ];
@@ -37,11 +38,12 @@ export default class ReportData extends React.Component<ReportDataProps, any> {
         return (
             <Card className={cx(styles.reportData, { blurring: this.props.loading })}>
                 <Grid
-                    sortBy='order_time'
+                    sortBy='orderTime'
                     sortDirection='desc'
                     className={styles.grid}
                     data={this.props.data}
                     columns={REPORT_COLUMNS}
+                    nestedDataPropertyName='childOrders'
                     renderNestedItems={(item) => this.renderOrderChildren(item)}
                 />
             </Card>
@@ -52,10 +54,10 @@ export default class ReportData extends React.Component<ReportDataProps, any> {
         return (
             <div className={styles.orderNestedContainer}>
                 <Grid
-                    sortBy='order_time'
+                    sortBy='orderTime'
                     sortDirection='desc'
                     nested
-                    data={item.children}
+                    data={item.childOrders}
                     columns={REPORT_COLUMNS}
                 />
             </div>

@@ -9,27 +9,22 @@ import { DateUtils } from 'businessLogic/utils';
 function* getOrdersReportAsync(action) {
     try {
         const res = yield getOrdersReport(action.payload);
-        const normalizedData = _.map(res, item => { return { ...item, order_time: DateUtils.parseUTtcToLocalTime(item.order_time) }; });
+        const normalizedData = _.map(res, item => {
 
-        // Those are commands that the user had manually triggered.
-        const userManualOrders = _.filter(normalizedData, order => order.status === 'Make Order' || order.status === 'Timed Take Order' ||  order.status === 'Timed Order' || !order.timed_order);
+            let actionType = item.actionType;
 
-        // Set children order for each command
-        _.forEach(userManualOrders, (command, index) => {
-
-            if (!command.timed_order) {
-                command.children = [];
-                return;
+            // The current API return just sell/buy for timed TAKING orders - we need to reverse it to the original user action type.
+            if (item.timedOrder && (actionType === 'sell' || actionType === 'buy')) {
+                actionType = actionType === 'sell' ? 'timed_sell' : 'timed_buy';
             }
-
-            // for each command take all the automated orders in between this order original index and the previous user command.
-            const cmdIndex = normalizedData.indexOf(command);
-            const prevCmdIndex = index - 1 >= 0 ? normalizedData.indexOf(userManualOrders[index - 1]) + 1 : 0;
-            command.children = _.slice(normalizedData, prevCmdIndex, cmdIndex);
-
+            return { ...item, actionType: actionType, orderTime: DateUtils.parseUTtcToLocalTime(item.orderTime) };
+        });
+        _.forEach(normalizedData, item => {
+            if (!_.isEmpty(item.childOrders))
+                item.childOrders = _.map(item.childOrders, (child) => { return { ...child, orderTime: DateUtils.parseUTtcToLocalTime(child.orderTime) }; });
         });
 
-        yield put(setOrdersReport(userManualOrders));
+        yield put(setOrdersReport(normalizedData));
     }
     catch (err) {
         console.error('Failed to fetch order report: ', err);

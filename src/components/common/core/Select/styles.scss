@@ -29,6 +29,10 @@
     }
     border-bottom: 2px solid !important;
 
+    &.inline {
+      margin-top: 14px !important;
+    }
+
     &::before {
       border-bottom: none !important;
     }

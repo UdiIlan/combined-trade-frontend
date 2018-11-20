@@ -75,6 +75,7 @@ export interface GridProps {
     sortBy?: string;
     nested?: boolean;
     disablePagination?: boolean;
+    nestedDataPropertyName?: string;
     renderNestedItems?(item: any);
 }
 
@@ -192,11 +193,12 @@ export default class Grid extends React.Component<GridProps, GridState> {
     private renderGridRow(index: number, item: any, columns: GridColumn[]) {
 
         const isExpanded = this.state.expandedRows.indexOf(index) >= 0;
+        const childrenColumnName = this.props.nestedDataPropertyName || 'children';
         const rowCells =
             _.map(columns, (col: GridColumn) => {
                 let colContent;
                 if (col.id === NESTING_CONTROL_COLUMN_ID) {
-                    colContent = !item.children || _.isEmpty(item.children) ? '' : <IconButton iconName={isExpanded ? 'expand_less' : 'chevron_right'} onClick={() => this.toggleRow(index)} />;
+                    colContent = !item[childrenColumnName] || _.isEmpty(item[childrenColumnName]) ? '' : <IconButton iconName={isExpanded ? 'expand_less' : 'chevron_right'} onClick={() => this.toggleRow(index)} />;
                 }
                 else {
                     colContent = !col.render ? item[col.id] : col.render(item);
