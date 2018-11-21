@@ -4,22 +4,11 @@ import { connect } from 'react-redux';
 const styles = require('./styles.scss');
 import AccountsNavigator from './AccountsNavigator';
 import { getAccounts } from './redux/actions';
+import { Account } from '../../businessLogic/model';
 
 export interface AccountManagerProps {
   accounts: Account[];
   getAccounts();
-  // currentCurrency: SupportedCurrencies;
-  // toast?: ToastProps;
-  // theme: AppTheme;
-  // userDetails: UserDetails;
-  // wrongUserDetails?: boolean;
-  // sesLanguage(newLang: SupportedLanguages);
-  // setCurrency(newCurrency: SupportedCurrencies);
-  // resetToast();
-  // setTheme(theme: AppTheme);
-  // doLogin(userName: string, password: string);
-  // doLogout();
-
 }
 
 class AccountManager extends React.Component<AccountManagerProps, any> {
