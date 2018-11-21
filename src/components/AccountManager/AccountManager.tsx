@@ -13,10 +13,14 @@ export interface AccountManagerProps {
 
 class AccountManager extends React.Component<AccountManagerProps, any> {
 
+  componentWillMount() {
+    this.props.getAccounts();
+  }
+
   render() {
     return (
       <div className={styles.accountManager}>
-        <AccountsNavigator accounts={[{ name: 'BTC.COM' }, { name: 'Miners' }]} />
+        <AccountsNavigator accounts={this.props.accounts} />
       </div>
 
     );

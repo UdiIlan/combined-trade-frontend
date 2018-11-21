@@ -3,10 +3,12 @@ import appReducer from 'components/App/redux/reducer';
 // import orderBookReducer from 'components/OrderBook/redux/reducer';
 // import dashboardReducer from 'components/Dashboard/redux/reducer';
 import reportManagerReducer from 'components/ReportManager/redux/reducer';
+import accountReducer from 'components/AccountManager/redux/reducer';
 
 
 const rootReducer = combineReducers({
     app: appReducer,
+    account: accountReducer,
     // orderBook: orderBookReducer,
     reportManager: reportManagerReducer,
     // dashboard: dashboardReducer,
