@@ -7,7 +7,8 @@
     "start": "webpack-dev-server --config ./config/webpack.config.js  --colors",
     "build": "webpack --config ./config/webpack.config.js --env.prod --progress --colors",
     "analyze": "webpack --config ./config/webpack.config.js --env.prod --progress --colors --env.analyze",
-    "postinstall": "node ./config/postinstall.js"
+    "postinstall": "node ./config/postinstall.js",
+    "test": "mocha-webpack --require ./config/test/setup_tests.js  --reporter mochawesome --reporter-options reportDir=test_report,reportFilename=testReport --webpack-config ./config/webpack.config.js ./config/test/setup.spec.ts ./src/**/*.spec.ts*"
   },
   "repository": {
     "type": "git",
@@ -54,14 +55,22 @@
     "rest-fetcher": "^1.0.11"
   },
   "devDependencies": {
+    "@types/mocha": "^5.2.5",
     "babel-core": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "chai": "^4.2.0",
     "colors": "^1.1.2",
     "css-loader": "^0.28.4",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.7.0",
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.29.0",
+    "jsdom": "^11.0.0",
     "json-loader": "^0.5.7",
+    "mocha": "^5.2.0",
+    "mocha-webpack": "^1.1.0",
+    "mochawesome": "^3.1.1",
     "node-sass": "^4.7.2",
     "postcss-loader": "^2.0.6",
     "sass-loader": "^6.0.6",
