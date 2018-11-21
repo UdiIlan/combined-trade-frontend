@@ -8,7 +8,7 @@
     "build": "webpack --config ./config/webpack.config.js --env.prod --progress --colors",
     "analyze": "webpack --config ./config/webpack.config.js --env.prod --progress --colors --env.analyze",
     "postinstall": "node ./config/postinstall.js",
-    "test": "mocha-webpack --require babel-polyfill --require ./config/setup_tests.js --reporter mochawesome --reporter-options reportDir=test_report,reportFilename=testReport --webpack-config ./config/webpack.config.js ./src/**/*.spec.ts*"
+    "test": "mocha-webpack --require ./config/test/setup_tests.js  --reporter mochawesome --reporter-options reportDir=test_report,reportFilename=testReport --webpack-config ./config/webpack.config.js ./config/test/setup.spec.ts ./src/**/*.spec.ts*"
   },
   "repository": {
     "type": "git",
