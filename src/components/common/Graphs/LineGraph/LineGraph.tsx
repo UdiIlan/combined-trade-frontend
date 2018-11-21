@@ -56,38 +56,38 @@ export default class LineGraph extends React.Component<LineGraphProps, LineGraph
         window.removeEventListener('resize', this.handleResize);
     }
 
+    getComponent = (type: GraphType) => {
+        switch (type) {
+            case 'area':
+                return AreaSeries;
+            case 'line':
+                return this.props.showPoints ? LineMarkSeriesCanvas : LineSeriesCanvas;
+            default:
+                return AreaSeries;
+        }
+    }
+
+    getDataType = (type: GraphDataType) => {
+        switch (type) {
+            case 'numeric':
+                return 'linear';
+            case 'alphanumeric':
+                return 'ordinal';
+            case 'category':
+                return 'category';
+            case 'time':
+                return 'time';
+            default:
+                return 'linear';
+        }
+    }
+
     render() {
         const { value } = this.state;
 
-        const getComponent = (type: GraphType) => {
-            switch (type) {
-                case 'area':
-                    return AreaSeries;
-                case 'line':
-                    return this.props.showPoints ? LineMarkSeriesCanvas : LineSeriesCanvas;
-                default:
-                    return AreaSeries;
-            }
-        };
+        const Component = this.getComponent(this.props.type);
 
-        const getDataType = (type: GraphDataType) => {
-            switch (type) {
-                case 'numeric':
-                    return 'linear';
-                case 'alphanumeric':
-                    return 'ordinal';
-                case 'category':
-                    return 'category';
-                case 'time':
-                    return 'time';
-                default:
-                    return 'linear';
-            }
-        };
-
-        const Component = getComponent(this.props.type);
-
-        const dataType = getDataType(this.props.dataType);
+        const dataType = this.getDataType(this.props.dataType);
 
         const lineSeriesProps = {
             animation: true,
