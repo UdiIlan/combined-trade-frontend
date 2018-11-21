@@ -1,2 +1,12 @@
 .tradeManager {
+  .tradesData {
+    &.blurring {
+      filter: blur(0.1rem);
+    }
+
+    .grid {
+      height: 100%;
+
+    }
+  }
 }
