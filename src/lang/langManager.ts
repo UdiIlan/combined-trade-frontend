@@ -86,7 +86,7 @@ export type localizedKeys =
     'buy_limit' |
     'sell_limit' |
     'selected_currency' |
-    'back_to_orders_book' |
+    'back' |
     'reports' |
     'choose_exchanges' |
     'choose_language' |
@@ -121,5 +121,6 @@ export type localizedKeys =
     'login' |
     'timed_order_success' |
     'start' |
-    'go'
+    'go' |
+    'accounts'
     ;

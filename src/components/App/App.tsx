@@ -10,7 +10,7 @@ import { SupportedLanguages } from 'lang';
 import { SupportedCurrencies, AppTheme, UserDetails } from 'businessLogic/model';
 import { sesLanguage, setCurrency, resetToast, setTheme, login, logout } from './redux/actions';
 import Login from './Login';
-import Dashboard from 'components/Dashboard';
+import AccountManager from 'components/AccountManager';
 import ReportManager from 'components/ReportManager';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
 import EnsureLogin from './EnsureLogin';
@@ -84,9 +84,9 @@ class App extends React.Component<AppProps, AppState> {
 
                             <EnsureLogin userDetails={this.props.userDetails}>
                                 <Switch>
-                                    <Route exact path='/' component={Dashboard} />
-                                    <Route path='/trades' component={Dashboard} />
-                                    <Route path='/withdrawals' component={Dashboard} />
+                                    <Route exact path='/' component={AccountManager} />
+ {/*                                    <Route path='/trades' component={Dashboard} />
+                                    <Route path='/withdrawals' component={Dashboard} /> */}
                                     <Route path='/reports' component={ReportManager} />
 
                                     <Route path='*' render={(props) => <div>PAGE NOT FOUND!</div>} />

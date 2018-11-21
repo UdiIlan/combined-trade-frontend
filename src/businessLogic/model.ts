@@ -96,7 +96,7 @@ export interface OrderActionStatus {
     exchange_id?: string;
     order_time: Date;
     price_fiat: number;
-    status?: 'finished' | 'error' | 'pending' | 'in-progress' | 'cancelled' | 'open'| 'make order executed' | 'make order sent' | 'timed take order';
+    status?: 'finished' | 'error' | 'pending' | 'in-progress' | 'cancelled' | 'open' | 'make order executed' | 'make order sent' | 'timed take order';
     timed_order?: number;
     usd_balance?: number;
 }
@@ -112,4 +112,10 @@ export interface TimedOrderActionStatus {
     timed_order_required_size: number;
     timed_order_running: boolean;
     timed_order_sent_time: Date;
+}
+
+/*****************************************  Accounts  ************************************************* */
+export interface Account {
+    name: string;
+    description?: string;
 }

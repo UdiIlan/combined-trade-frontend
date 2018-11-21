@@ -82,14 +82,13 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                 <Route exact path='/' render={(props) => {
                     return (
                         [
-                            <Button key='reports' iconName='assessment' type='contained' aria-label='Reports' linkTo='/reports' tooltip={getLocalizedText('reports')} className={styles.actionsBtn} />,
-                            <Button key='trades' aria-label='Trades' iconName='swap_vertical_circle' linkTo='/trades' className={styles.actionsBtn} tooltip='Trades' />
+                            <Button key='reports' iconName='assessment' type='contained' aria-label='Reports' linkTo='/reports' tooltip={getLocalizedText('reports')} className={styles.actionsBtn} />
                         ]
                     );
                 }}
                 />
 
-                <Route path='/trades' render={(props) => {
+                {/* <Route path='/trades' render={(props) => {
                     return (
                         [
                             this.renderCurrencyMenu(),
@@ -98,10 +97,10 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
                         ]
                     );
                 }}
+                /> */}
 
-                />
                 <Route path='/reports' render={(props) =>
-                    <Button aria-label='Reports' iconName='keyboard_backspace' linkTo='/trades' className={styles.actionsBtn}>{getLocalizedText('back_to_orders_book')}</Button>}
+                    <Button aria-label='Reports' iconName='keyboard_backspace' linkTo='/' className={styles.actionsBtn}>{getLocalizedText('back')}</Button>}
                 />
             </RSwitch>
         );

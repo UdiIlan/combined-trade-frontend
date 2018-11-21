@@ -1,8 +1,6 @@
 import * as React from 'react';
-import InputText from '../common/core/InputText';
+import InputText from 'components/common/core/InputText';
 import Dialog from 'components/common/modals/Dialog';
-import Button from '../common/core/Button';
-import { FormLabel } from '@material-ui/core';
 const styles = require('./styles.scss');
 
 interface LoginProps {
