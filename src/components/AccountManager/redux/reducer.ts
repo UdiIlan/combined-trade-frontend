@@ -1,6 +1,6 @@
 import { AccountActions } from './actions';
 import { handleActions, Action } from 'redux-actions';
-import { Account } from '../../../businessLogic/model';
+import { Account } from 'businessLogic/model';
 
 
 export interface AccountState {

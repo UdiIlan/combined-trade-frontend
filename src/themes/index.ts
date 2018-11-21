@@ -4,7 +4,7 @@ export default createMuiTheme(
     {
         palette: {
             primary: {
-                main: '#2196f3'
+                main: '#5c7ef3' // '#2196f3'
             }
         }
     }

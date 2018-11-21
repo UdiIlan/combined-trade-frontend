@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { Account } from '../../../businessLogic/model';
+import { Account } from 'businessLogic/model';
 
 
 export const AccountActions = {

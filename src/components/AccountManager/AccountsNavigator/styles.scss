@@ -50,7 +50,7 @@
 
       .addBtn {
         @include themify($themes) {
-          background-color: themed('sectionBackground');
+          // background-color: themed('sectionBackground');
         }
       }
     }
