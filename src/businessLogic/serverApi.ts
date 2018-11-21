@@ -1,6 +1,7 @@
+import * as _ from 'lodash';
 const config = require('config');
 import { Fetcher } from 'rest-fetcher';
-import { AccountCredentials, OrderAction } from './model';
+import { AccountCredentials, OrderAction, Account } from './model';
 
 const fetcher = new Fetcher({ baseUrl: config.baseUrl });
 
@@ -19,16 +20,16 @@ export const getExchangesAccountBalance = async (): Promise<any> => {
     return textToJson(res);
 };
 
-export const getTotalUserBalance =  () => {
-    return {usd: '2000.44', btc: '100.21', eth: '500.34', bch: '235.75', ins: '155.10'};
+export const getTotalUserBalance = () => {
+    return { usd: '2000.44', btc: '100.21', eth: '500.34', bch: '235.75', ins: '155.10' };
 };
 
 
-export const getExchangeRates =  () => {
-    return {BTC: '6308.23', BCH: '1000.15', ETH: '3003.90', AST: '2500.25', BDL: '455.16'};
+export const getExchangeRates = () => {
+    return { BTC: '6308.23', BCH: '1000.15', ETH: '3003.90', AST: '2500.25', BDL: '455.16' };
 };
 
-export const getTrendData =  (currency: string) => {
+export const getTrendData = (currency: string) => {
     switch (currency) {
         case 'BTC/USD':
             return [{ x: new Date(2018, 6, 4), y: 0 }, { x: new Date(2018, 7, 4), y: 8 }, { x: new Date(2018, 8, 4), y: 14 }, { x: new Date(2018, 9, 4), y: 17 }];
@@ -88,4 +89,28 @@ export const cancelTimedOrder = async (): Promise<any> => {
 export const getOrdersReport = async (filters: any, limit = 1000): Promise<any> => {
     const res = await fetcher.post('/reports/sentOrders', { limit, filter: filters });
     return textToJson(res);
+};
+
+
+
+/****************************************** Payment system APIs ********************************************* */
+
+export const getAccounts = async (): Promise<Account[]> => {
+    const res = await fetcher.get('/accounts/');
+    return res ? _.values(res)(res) : [];
+};
+
+export const createAccount = async (account: Account): Promise<Account> => {
+    const res = await fetcher.post('/accounts/', account);
+    return res;
+};
+
+export const updateAccount = async (account: Account): Promise<Account> => {
+    const res = await fetcher.put(`/accounts/${account.name}`, account);
+    return res;
+};
+
+export const deleteAccount = async (account: Account): Promise<any> => {
+    const res = await fetcher.delete(`/accounts/${account.name}`);
+    return res;
 };

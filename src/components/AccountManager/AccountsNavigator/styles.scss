@@ -49,7 +49,9 @@
       padding-left: 10px;
 
       .addBtn {
-        // color: blue;
+        @include themify($themes) {
+          background-color: themed('sectionBackground');
+        }
       }
     }
   }
