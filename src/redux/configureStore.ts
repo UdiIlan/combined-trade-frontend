@@ -16,12 +16,13 @@ const middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history));
 
 const appReducer = createFilter('app', ['language', 'currency', 'theme', 'userDetails']);
 const dashboardReducer = createFilter('dashboard', [ 'userBalance']);
+const accountReducer = createFilter('account', [ 'accounts']);
 const orderBookReducer = createFilter('orderBook', ['exchangesStatus']);
 const persistConfig = {
     key: 'app',
     storage: storage,
-    whitelist: ['app', 'orderBook', 'dashboard'],
-    transforms: [appReducer, orderBookReducer, dashboardReducer]
+    whitelist: ['app', 'orderBook', 'dashboard', 'account'],
+    transforms: [appReducer, orderBookReducer, dashboardReducer, accountReducer]
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
