@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import LineGraph from './LineGraph';
-import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, Crosshair, AreaSeries, LineSeriesCanvas, LineMarkSeriesCanvas } from 'react-vis';
+import { XAxis, YAxis, AreaSeries, LineSeriesCanvas, LineMarkSeriesCanvas } from 'react-vis';
 
 
 
@@ -19,18 +19,6 @@ describe('LineGraph Component', () => {
     );
     const yAxis = <YAxis title='rate' />;
     const xAxis = <XAxis title='time' tickTotal={5} />;
-
-    const lineSeriesProps = {
-      animation: true,
-      data: graphData,
-      opacity: 0.5,
-      color: 'cadetblue',
-      stroke: '#3C6266',
-      onNearestX: d => {
-        this.setState({ value: d });
-      }
-    };
-
     const Component = <AreaSeries />;
     expect(wrapper.contains(yAxis)).to.equal(true);
     expect(wrapper.contains(xAxis)).to.equal(true);
