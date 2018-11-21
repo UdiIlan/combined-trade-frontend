@@ -97,7 +97,7 @@ export const getOrdersReport = async (filters: any, limit = 1000): Promise<any> 
 
 export const getAccounts = async (): Promise<Account[]> => {
     const res = await fetcher.get('/accounts/');
-    return res ? _.values(res)(res) : [];
+    return res ? _.values(res) : [];
 };
 
 export const createAccount = async (account: Account): Promise<Account> => {
