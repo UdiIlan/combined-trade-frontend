@@ -4,14 +4,26 @@ import { connect } from 'react-redux';
 const styles = require('./styles.scss');
 import AccountsNavigator from './AccountsNavigator';
 import { getAccounts } from './redux/actions';
-import { Account } from '../../businessLogic/model';
+import { Account } from 'businessLogic/model';
+import { Route, Switch, Link } from 'react-router-dom';
+import TradeManager from './TradeManager';
 
-export interface AccountManagerProps {
+interface AccountManagerProps {
   accounts: Account[];
   getAccounts();
 }
 
-class AccountManager extends React.Component<AccountManagerProps, any> {
+interface AccountManagerState {
+  selectedAccount?: Account;
+}
+
+
+class AccountManager extends React.Component<AccountManagerProps, AccountManagerState> {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   componentWillMount() {
     this.props.getAccounts();
@@ -20,7 +32,16 @@ class AccountManager extends React.Component<AccountManagerProps, any> {
   render() {
     return (
       <div className={styles.accountManager}>
-        <AccountsNavigator accounts={this.props.accounts} />
+        <AccountsNavigator selectAccount={(account) => this.setState({ selectedAccount: account })} accounts={this.props.accounts} />
+
+        <div className={styles.accountContent}>
+          <Switch>
+            <Route exact path='/' /* component= TO-DO (Shirley) */ />
+            <Route path='/trades' render={(props) => <TradeManager account={this.state.selectedAccount} />} />
+            <Route path='/funds' /*  component= TO-DO */ />
+          </Switch>
+        </div>
+
       </div>
 
     );

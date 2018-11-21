@@ -118,4 +118,5 @@ export interface TimedOrderActionStatus {
 export interface Account {
     name: string;
     description?: string;
+    trades?: any[];
 }

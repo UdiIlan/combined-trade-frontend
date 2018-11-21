@@ -1,4 +1,8 @@
 .accountManager {
   display: flex;
   flex: 1;
+
+  .accountContent {
+    flex: 1
+  }
 }

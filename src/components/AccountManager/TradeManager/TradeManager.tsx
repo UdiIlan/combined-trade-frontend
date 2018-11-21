@@ -4,23 +4,49 @@ import Grid from 'components/common/dataLayouts/Grid';
 const styles = require('./styles.scss');
 import * as classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
+import { Account } from 'businessLogic/model';
 
-export default class TradeManager extends React.Component<any, any> {
+
+interface TradeManagerProps {
+  account: Account;
+}
+
+interface TradeManagerState {
+  loading: boolean;
+}
+
+export default class TradeManager extends React.Component<TradeManagerProps, TradeManagerState> {
+
+  constructor(props) {
+    super(props);
+    this.state = { loading: false };
+  }
+
   render() {
+    const { account } = this.props;
 
     const columns = [];
     return (
       <div className={styles.tradeManager}>
-        <Card className={cx(styles.tradesData, { blurring: this.props.loading })}>
-          <Grid
-            sortBy='orderTime'
-            sortDirection='desc'
-            className={styles.grid}
-            data={this.props.data}
-            columns={columns}
-          />
-        </Card>
+
+        {!account ? 'No Data' :
+          <Card className={cx(styles.tradesData, { blurring: this.state.loading })}>
+
+            <h2>{account.name}</h2>
+
+            <Grid
+              sortBy='orderTime'
+              sortDirection='desc'
+              className={styles.grid}
+              data={this.props.account.trades}
+              columns={columns}
+            />
+
+          </Card>
+        }
+
       </div>
+
     );
   }
 }

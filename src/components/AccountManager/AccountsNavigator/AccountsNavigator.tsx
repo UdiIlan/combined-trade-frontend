@@ -11,6 +11,7 @@ import Button from 'components/common/core/Button';
 interface AccountsNavigatorProps {
   className?: string;
   accounts?: Account[];
+  selectAccount(account);
 }
 
 export default class AccountsNavigator extends React.Component<AccountsNavigatorProps, any> {
@@ -42,7 +43,7 @@ export default class AccountsNavigator extends React.Component<AccountsNavigator
   renderAccounts(accounts: Account[]) {
     return _.map(accounts, (account: Account) => {
       return (
-        <div key={account.name} className={styles.accountNavItem}>
+        <div key={account.name} className={styles.accountNavItem} onClick={(e) => this.props.selectAccount(account)}>
           <span className={styles.name}>{account.name}</span>
         </div>
       );
