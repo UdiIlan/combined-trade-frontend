@@ -47,14 +47,14 @@ export default class LineGraph extends React.Component<LineGraphProps, LineGraph
         this.forceUpdate();
     }
 
-      componentDidMount() {
+    componentDidMount() {
         this.handleResize();
         window.addEventListener('resize', this.handleResize);
-      }
+    }
 
-      componentWillUnmount() {
+    componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize);
-      }
+    }
 
     render() {
         const { value } = this.state;
