@@ -28,6 +28,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
     super(props);
     this.state = { createAccountPressed: false };
     this.createAccountPressed = this.createAccountPressed.bind(this);
+    this.createAccount = this.createAccount.bind(this);
   }
 
   createAccountPressed() {
@@ -35,6 +36,12 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
   }
 
   componentWillMount() {
+    this.props.getAccounts();
+  }
+
+  createAccount() {
+    this.props.createNewAccount(this.accountName.value, this.accountDescription.value);
+    this.setState({ createAccountPressed: false });
     this.props.getAccounts();
   }
 
@@ -47,7 +54,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
         <AccountsNavigator selectAccount={(account) => this.setState({ selectedAccount: account })} accounts={this.props.accounts} createAccountPressed={this.createAccountPressed} />
         {this.state.createAccountPressed ?
           <div className={styles.dialogContainer}>
-            <Dialog title='Create New Account' open={true} onOkClick={() => this.props.createNewAccount(this.accountName.value, this.accountDescription.value)} onCancelClick={() => this.setState({ createAccountPressed: false })}>
+            <Dialog title='Create New Account' open={true} onOkClick={this.createAccount} onCancelClick={() => this.setState({ createAccountPressed: false })}>
               <div className={styles.accountDialogContent} >
                 <InputText className={styles.userInput} ref={(input) => this.accountName = input} label='account name' type='text' name='name' />
                 <InputText className={styles.userInput} ref={(input) => this.accountDescription = input} label='description' type='text' name='description' />
