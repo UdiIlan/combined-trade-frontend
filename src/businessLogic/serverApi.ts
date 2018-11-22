@@ -106,7 +106,7 @@ export const getAccounts = async (): Promise<Account[]> => {
 };
 
 export const createNewAccount = async (account: Account): Promise<Account> => {
-    const res = await fetcher.post('/accounts/', { account }, undefined, { userid: 3 });
+    const res = await fetcher.post('/accounts/', account, undefined, { userid: 3 });
     return res;
 };
 

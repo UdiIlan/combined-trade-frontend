@@ -3,14 +3,15 @@ import { takeEvery, all, put } from 'redux-saga/effects';
 import { getAccounts, createNewAccount, getAccountTrades } from 'businessLogic/serverApi';
 
 
-function* getAccountsAsync(action) {
+function* getAccountsAsync() {
     const accounts = yield getAccounts();
     yield put(setAccounts(accounts));
 }
 
 function* createAccountAsync(action) {
-    const accounts = yield createNewAccount(action.payload);
-
+    const account = action.payload;
+    yield createNewAccount(account);
+    getAccountsAsync();
 }
 
 function* fetchAccountTradesAsync(action) {
