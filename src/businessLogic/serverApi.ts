@@ -121,6 +121,83 @@ export const deleteAccount = async (account: Account): Promise<any> => {
 };
 
 export const getAccountTrades = async (account: Account, index = 0, size = 100): Promise<OrderStatus[]> => {
-    const res = await fetcher.get(`/accounts/${account.name}/trades/?index=${index}&size=${size}`);
-    return res;
+    // const res = await fetcher.get(`/accounts/${account.name}/trades/?index=${index}&size=${size}`);
+    // return res;
+
+    const orders: OrderStatus[] =
+        [
+            {
+                account: 'BTC.com',
+                startTime: new Date('2017-03-20T23:39:05.651638+00:00'),
+                elapsedTimeMinutes: 15.42,
+                assetPair: 'BTC-USD',
+                actionType: 'sell',
+                status: 'Done',
+                requestedSize: 1500,
+                requestedPrice: 6300,
+                executionSize: 1001,
+                executedTargetSize: 850000,
+                tradeOrderId: 'ABC2D',
+                walletPlan: [
+                    {
+                        walletAddress: 'bc1qdp9q0lae7vz9vn4drw4e48kqkk44sccp34008s',
+                        size: 750
+                    },
+                    {
+                        walletAddress: 'rj5qdp9q0lae7vz9vn4drw4e48kqkk44sccp34118s',
+                        size: 251
+                    }
+                ]
+            },
+            {
+                account: 'BTC.com',
+                startTime: new Date('2017-03-20T23:39:05.651638+00:00'),
+                elapsedTimeMinutes: 15.42,
+                assetPair: 'BTC-USD',
+                actionType: 'sell',
+                status: 'Done',
+                requestedSize: 1500,
+                requestedPrice: 6300,
+                executionSize: 1001,
+                executedTargetSize: 850000,
+                tradeOrderId: 'FASDF87',
+                walletPlan: [
+                    {
+                        walletAddress: 'bc1qdp9q0lae7vz9vn4drw4e48kqkk44sccp34008s',
+                        size: 750
+                    },
+                    {
+                        walletAddress: 'rj5qdp9q0lae7vz9vn4drw4e48kqkk44sccp34118s',
+                        size: 251
+                    }
+                ]
+            },
+            {
+                account: 'BTC.com',
+                startTime: new Date('2017-03-20T23:39:05.651638+00:00'),
+                elapsedTimeMinutes: 15.42,
+                assetPair: 'BTC-USD',
+                actionType: 'sell',
+                status: 'Done',
+                requestedSize: 1500,
+                requestedPrice: 6300,
+                executionSize: 1001,
+                executedTargetSize: 850000,
+                tradeOrderId: 'FSADFS5',
+                walletPlan: [
+                    {
+                        walletAddress: 'bc1qdp9q0lae7vz9vn4drw4e48kqkk44sccp34008s',
+                        size: 750
+                    },
+                    {
+                        walletAddress: 'rj5qdp9q0lae7vz9vn4drw4e48kqkk44sccp34118s',
+                        size: 251
+                    }
+                ]
+            }
+        ];
+
+    return new Promise<OrderStatus[]>((resolve, reject) => {
+        return resolve(orders);
+    });
 };

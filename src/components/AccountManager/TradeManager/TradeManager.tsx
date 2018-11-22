@@ -9,7 +9,7 @@ import { Account } from 'businessLogic/model';
 
 interface TradeManagerProps {
   account: Account;
-  getTrades?(accountName: string);
+  getTrades(account: Account);
   submitTrades?(order: any);
 }
 
@@ -40,7 +40,7 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
   }
 
   private updateTradeInfo(props: TradeManagerProps) {
-    this.setState({ loading: true }, () => props.getTrades(props.account.name));
+    this.setState({ loading: true }, () => props.getTrades(props.account));
   }
 
   render() {
@@ -52,8 +52,6 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
 
         {!account ? 'No Data' :
           <Card className={cx(styles.tradesData, { blurring: this.state.loading })}>
-
-            <h2>{account.name}</h2>
 
             {this.state.loading ? 'Loading'
               :
