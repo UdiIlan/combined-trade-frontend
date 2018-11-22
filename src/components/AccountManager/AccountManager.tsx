@@ -47,7 +47,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
         <AccountsNavigator selectAccount={(account) => this.setState({ selectedAccount: account })} accounts={this.props.accounts} createAccountPressed={this.createAccountPressed} />
         {this.state.createAccountPressed ?
           <div className={styles.dialogContainer}>
-            <Dialog title='Create New Account' open={true} onOkClick={() => this.props.createNewAccount(this.accountName.value, this.accountDescription.value)}>
+            <Dialog title='Create New Account' open={true} onOkClick={() => this.props.createNewAccount(this.accountName.value, this.accountDescription.value)} onCancelClick={() => this.setState({ createAccountPressed: false })}>
               <div className={styles.accountDialogContent} >
                 <InputText className={styles.userInput} ref={(input) => this.accountName = input} label='account name' type='text' name='name' />
                 <InputText className={styles.userInput} ref={(input) => this.accountDescription = input} label='description' type='text' name='description' />
