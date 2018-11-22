@@ -9,6 +9,7 @@ import { Route, Switch, Link } from 'react-router-dom';
 import TradeManager from './TradeManager';
 import Dialog from 'components/common/modals/Dialog';
 import InputText from 'components/common/core/InputText';
+import AccountDashboard from './AccountDashboard';
 
 interface AccountManagerProps {
   accounts: Account[];
@@ -64,7 +65,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
         }
         <div className={styles.accountContent}>
           <Switch>
-            <Route exact path='/' /* component= TO-DO (Shirley) */ />
+            <Route exact path='/' render= {(props) => <AccountDashboard account={this.state.selectedAccount} />} />
             <Route path='/trades' render={(props) => <TradeManager account={this.state.selectedAccount} />} />
             <Route path='/funds' /*  component= TO-DO */ />
           </Switch>
