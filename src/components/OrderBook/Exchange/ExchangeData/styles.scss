@@ -63,9 +63,7 @@
         }
 
         .valueNeg {
-          @include themify($themes) {
-            color: themed('redWarn');
-          }
+          color: $redWarn;
         }
       }
     }

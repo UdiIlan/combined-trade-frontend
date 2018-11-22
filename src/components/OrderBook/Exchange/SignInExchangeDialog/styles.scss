@@ -39,8 +39,6 @@
 
   .invalidLogin {
     @extend .footerItem;
-    @include themify($themes) {
-      color: themed('redError');
-    }
+    color: $redError;
   }
 }

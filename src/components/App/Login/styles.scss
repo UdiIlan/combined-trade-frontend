@@ -1,29 +1,27 @@
 @import '~styles/colors.scss';
 
-.backgroundLogin{
-    background-image: url('assets/images/login.png');
-      /* Full height */
-    flex: 1;
-    display: inline;
+.backgroundLogin {
+  background-image: url('assets/images/login.png');
+  /* Full height */
+  flex: 1;
+  display: inline;
 
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .loginDialogContent {
   width: 15vw;
-  
-.userInput{
+
+  .userInput {
     width: 100%;
     margin: 20px;
-}
-  
-.invalidLogin {
-    @include themify($themes) {
-      color: themed('redError');
-    }
+  }
+
+  .invalidLogin {
+    color: $redError;
     width: 300px;
     margin-top: 25px;
     font-weight: 500;

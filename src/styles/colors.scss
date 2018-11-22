@@ -1,5 +1,7 @@
 
 $MainBlue: #50a6c2;
+$redWarn: crimson;
+$redError: #d32f2f;
 
 $themes: (
     light: (
@@ -19,8 +21,6 @@ $themes: (
     // colors
     successBackground:#00b508,
     successText:#43a047,
-    redWarn: crimson,
-    redError: #d32f2f,
     whiteText: white,
     orangeText: #c76114,
     whiteBackground: white,
@@ -53,7 +53,6 @@ $themes: (
     // colors
     successBackground:#00b508,
     successText:#43a047,
-    redWarn: crimson,
     whiteText: white,
     orangeText: #c76114,
     whiteBackground: white,

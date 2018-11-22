@@ -87,7 +87,7 @@ class App extends React.Component<AppProps, AppState> {
                                     <Route exact path={['/', '/trades', '/funds'] as any} component={AccountManager} />
                                     <Route path='/reports' component={ReportManager} />
 
-                                    <Route path='*' render={(props) => <div>PAGE NOT FOUND!</div>} />
+                                    <Route path='*' render={(props) => <div className={styles.pageNotFound}>PAGE NOT FOUND!</div>} />
                                 </Switch>
                             </EnsureLogin>
 

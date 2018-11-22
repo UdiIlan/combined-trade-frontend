@@ -28,9 +28,7 @@
 
   .error {
     @extend .content;
-    @include themify($themes) {
-      background-color: themed('redError');
-    }
+      background-color: $redError;
   }
 
   .info {
