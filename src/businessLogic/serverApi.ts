@@ -3,7 +3,12 @@ const config = require('config');
 import { Fetcher } from 'rest-fetcher';
 import { AccountCredentials, OrderAction, Account, OrderStatus } from './model';
 
-const fetcher = new Fetcher({ baseUrl: config.baseUrl });
+const fetcher = new Fetcher({
+    baseUrl: config.baseUrl,
+    defaultHeaders: {
+        'Content-Type': 'application/json'
+    }
+});
 
 const textToJson = (text: string) => {
     if (!text || !text.replace) return text;
@@ -101,7 +106,7 @@ export const getAccounts = async (): Promise<Account[]> => {
 };
 
 export const createNewAccount = async (account: Account): Promise<Account> => {
-    const res = await fetcher.post('/accounts/', {account}, undefined,  { userid: 3 });
+    const res = await fetcher.post('/accounts/', { account }, undefined, { userid: 3 });
     return res;
 };
 
