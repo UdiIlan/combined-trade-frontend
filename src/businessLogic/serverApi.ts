@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 const config = require('config');
 import { Fetcher } from 'rest-fetcher';
-import { AccountCredentials, OrderAction, Account } from './model';
+import { AccountCredentials, OrderAction, Account, OrderStatus } from './model';
 
 const fetcher = new Fetcher({ baseUrl: config.baseUrl });
 
@@ -112,5 +112,10 @@ export const updateAccount = async (account: Account): Promise<Account> => {
 
 export const deleteAccount = async (account: Account): Promise<any> => {
     const res = await fetcher.delete(`/accounts/${account.name}`);
+    return res;
+};
+
+export const getAccountTrades = async (account: Account, index = 0, size = 100): Promise<OrderStatus[]> => {
+    const res = await fetcher.get(`/accounts/${account.name}/trades/?index=${index}&size=${size}`);
     return res;
 };

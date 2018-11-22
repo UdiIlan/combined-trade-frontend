@@ -120,3 +120,29 @@ export interface Account {
     description?: string;
     trades?: any[];
 }
+
+/********************************************* Trades *************************************************** */
+
+export type OrderStatusMode = 'Done' | 'Failed' | 'In-Progress' | 'Canceled';
+
+export interface DepositRequest {
+    walletAddress: string;
+    size: number;
+    assetType?: string;
+}
+
+export interface OrderStatus {
+    account: string;
+    startTime: Date;
+    elapsedTimeMinutes: number;
+    assetPair: string;
+    actionType: OrderActionType;
+    status: OrderStatusMode;
+    requestedSize: number;
+    requestedPrice: number;
+    executionSize: number;
+    executedTargetSize: number;
+    executionMessage?: string;
+    tradeOrderId: string;
+    walletPlan: DepositRequest[];
+}
