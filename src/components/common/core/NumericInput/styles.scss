@@ -1,26 +1,18 @@
 @import "~styles/colors.scss";
 
 .whiteText {
-  @include themify($themes) {
-    color: themed('whiteText') !important;
-  }
+  color: $whiteText !important;
 }
 
 .whiteInput {
-  @include themify($themes) {
-    color: themed('whiteText') !important;
-  }
+  color: $whiteText !important;
 
   &::before {
-    @include themify($themes) {
-      border-bottom-color: themed('whiteText') !important;
-    }
+    border-bottom-color: $whiteText !important;
   }
 
   &:hover {
-    @include themify($themes) {
-      border-bottom-color: themed('whiteText') !important;
-    }
+    border-bottom-color: $whiteText !important;
     border-bottom: 2px solid !important;
 
     &::before {

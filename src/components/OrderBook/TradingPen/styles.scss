@@ -7,9 +7,7 @@
     flex-direction: column;
 
     .text {
-      @include themify($themes) {
-        color: themed('whiteText');
-      }
+      color: $whiteText;
     }
 
     .progress {
@@ -17,9 +15,7 @@
     }
 
     .cancelBtn {
-      @include themify($themes) {
-        color: themed('whiteText');
-      }
+      color: $whiteText;
     }
   }
 }

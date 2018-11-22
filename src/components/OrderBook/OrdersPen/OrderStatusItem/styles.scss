@@ -35,9 +35,9 @@
   }
 
   &.highlighted {
+    color: $blackText;
     @include themify($themes) {
       background-color: themed('listItemHoverBackground');
-      color: themed('blackText');
     }
   }
 

@@ -28,7 +28,7 @@
 
   .error {
     @extend .content;
-      background-color: $redError;
+    background-color: $redError;
   }
 
   .info {
@@ -46,8 +46,6 @@
   }
 
   .closeIco {
-    @include themify($themes) {
-      color: themed('whiteText');
-    }
+    color: $whiteText;
   }
 }

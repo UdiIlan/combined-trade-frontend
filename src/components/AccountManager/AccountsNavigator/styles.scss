@@ -22,8 +22,13 @@
 
       &:hover {
         // @include themify($themes) {
-        background-color: dimgray;
+        background-color: #bdbdbd;
         // }
+      }
+
+      &.selected {
+        background-color: dimgray;
+        // border-color: $whiteText;
       }
 
       &:first-child {
@@ -33,9 +38,7 @@
       .name {
         font-size: 1.2rem;
         font-weight: 500;
-        @include themify($themes) {
-          color: themed('whiteText');
-        }
+        color: $whiteText;
       }
     }
 
@@ -49,9 +52,6 @@
       padding-left: 10px;
 
       .addBtn {
-        @include themify($themes) {
-          // background-color: themed('sectionBackground');
-        }
       }
     }
   }
