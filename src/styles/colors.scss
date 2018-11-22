@@ -2,6 +2,8 @@
 $MainBlue: #50a6c2;
 $redWarn: crimson;
 $redError: #d32f2f;
+$whiteText: white;
+$blackText: black;
 
 $themes: (
     light: (
@@ -21,13 +23,11 @@ $themes: (
     // colors
     successBackground:#00b508,
     successText:#43a047,
-    whiteText: white,
     orangeText: #c76114,
     whiteBackground: white,
     warningBackground: #ffa000,
     errBackground: #e66161,
     infoBackground: #1976d2,
-    blackText: black,
     lightGrayBackground: lightgray,
     disabled: gray,
 
@@ -53,13 +53,11 @@ $themes: (
     // colors
     successBackground:#00b508,
     successText:#43a047,
-    whiteText: white,
     orangeText: #c76114,
     whiteBackground: white,
     warningBackground: #ffa000,
     errBackground: #e66161,
     infoBackground: #1976d2,
-    blackText: black,
     lightGrayBackground: lightgray,
     disabled: gray,
 

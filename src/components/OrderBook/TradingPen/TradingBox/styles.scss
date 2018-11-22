@@ -10,9 +10,7 @@
   }
 
   .colorInput {
-    @include themify($themes) {
-      color: themed('whiteText');
-    }
+    color: $whiteText;
 
     &:disabled {
       @include themify($themes) {

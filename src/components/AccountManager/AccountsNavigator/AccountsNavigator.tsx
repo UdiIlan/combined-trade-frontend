@@ -16,10 +16,15 @@ interface AccountsNavigatorProps {
   createAccountPressed();
 }
 
+interface AccountsNavigatorState {
+  selectedAccount?: Account;
+}
 
-export default class AccountsNavigator extends React.Component<AccountsNavigatorProps, any> {
+export default class AccountsNavigator extends React.Component<AccountsNavigatorProps, AccountsNavigatorState> {
+
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   render() {
@@ -44,12 +49,14 @@ export default class AccountsNavigator extends React.Component<AccountsNavigator
     );
   }
 
-
+  selectAccount(account) {
+    this.setState({ selectedAccount: account }, () => this.props.selectAccount(account));
+  }
 
   renderAccounts(accounts: Account[]) {
     return _.map(accounts, (account: Account) => {
       return (
-        <div key={account.name} className={styles.accountNavItem} onClick={(e) => this.props.selectAccount(account)}>
+        <div key={account.name} className={cx(styles.accountNavItem, { selected: account.name === _.get(this.state, 'selectedAccount.name', '') })} onClick={(e) => this.selectAccount(account)}>
           <span className={styles.name}>{account.name}</span>
         </div>
       );

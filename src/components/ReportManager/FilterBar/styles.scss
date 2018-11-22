@@ -9,9 +9,7 @@ $controlMargin: 20px;
   padding: 0px 30px;
   align-items: center;
   margin: 15px 0px;
-  @include themify($themes) {
-    color: themed('whiteText');
-  }
+  color: $whiteText;
 
   .filter {
     display: flex;
@@ -32,14 +30,10 @@ $controlMargin: 20px;
       .dateControl {
         label,
         div:first-of-type {
-          @include themify($themes) {
-            color: themed('whiteText');
-          }
+          color: $whiteText;
 
           &::before {
-            @include themify($themes) {
-              border-bottom-color: themed('whiteText');
-            }
+            border-bottom-color: $whiteText;
           }
         }
 
@@ -53,9 +47,7 @@ $controlMargin: 20px;
   .splitter {
     display: inline-block;
     margin-right: $filterMargin;
-    @include themify($themes) {
-      color: themed('whiteText');
-    }
+    color: $whiteText;
   }
 
   .btn {
@@ -74,9 +66,7 @@ $controlMargin: 20px;
 
   .loading {
     @extend .btn;
-    @include themify($themes) {
-      color: themed('whiteText');
-    }
+    color: $whiteText;
   }
 
   .exportBtn {

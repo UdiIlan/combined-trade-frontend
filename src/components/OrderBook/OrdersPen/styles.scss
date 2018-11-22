@@ -8,9 +8,7 @@
     right: 2px;
 
     .badgeIco {
-      @include themify($themes) {
-        color: themed('whiteText');
-      }
+      color: $whiteText;
     }
   }
 

@@ -9,6 +9,8 @@ import { Account } from 'businessLogic/model';
 
 interface TradeManagerProps {
   account: Account;
+  getTrades?(accountName: string);
+  submitTrades?(order: any);
 }
 
 interface TradeManagerState {
@@ -20,6 +22,25 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
   constructor(props) {
     super(props);
     this.state = { loading: false };
+  }
+
+  componentWillMount() {
+    this.updateTradeInfo(this.props);
+  }
+
+  componentWillReceiveProps(newProps: TradeManagerProps) {
+    if (newProps.account.name !== this.props.account.name) {
+      this.updateTradeInfo(newProps);
+      return;
+    }
+
+    if (this.state.loading) {
+      this.setState({ loading: false });
+    }
+  }
+
+  private updateTradeInfo(props: TradeManagerProps) {
+    this.setState({ loading: true }, () => props.getTrades(props.account.name));
   }
 
   render() {
@@ -34,13 +55,16 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
 
             <h2>{account.name}</h2>
 
-            <Grid
-              sortBy='orderTime'
-              sortDirection='desc'
-              className={styles.grid}
-              data={this.props.account.trades}
-              columns={columns}
-            />
+            {this.state.loading ? 'Loading'
+              :
+              <Grid
+                sortBy='orderTime'
+                sortDirection='desc'
+                className={styles.grid}
+                data={this.props.account.trades}
+                columns={columns}
+              />
+            }
 
           </Card>
         }
