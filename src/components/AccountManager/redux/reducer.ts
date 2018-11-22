@@ -19,7 +19,7 @@ reducerMap[AccountActions.SET_ACCOUNTS] = (state: AccountState, action: Action<a
     return { ...state, accounts: action.payload };
 };
 
-reducerMap[AccountActions.FETCH_ACCOUNT_TRADES] = (state: AccountState, action: Action<{ accountName: string, trades: OrderStatus[] }>): AccountState => {
+reducerMap[AccountActions.UPDATE_FETCHED_ACCOUNT_TRADES] = (state: AccountState, action: Action<{ accountName: string, trades: OrderStatus[] }>): AccountState => {
     if (_.isEmpty(state.accounts)) return state;
 
     const { accountName, trades } = action.payload;
@@ -30,6 +30,7 @@ reducerMap[AccountActions.FETCH_ACCOUNT_TRADES] = (state: AccountState, action: 
     const newAccounts = [...state.accounts];
     const account = { ...newAccounts[accountIndex] };
     account.trades = trades;
+    newAccounts[accountIndex] = account;
 
     return { ...state, accounts: newAccounts };
 };
