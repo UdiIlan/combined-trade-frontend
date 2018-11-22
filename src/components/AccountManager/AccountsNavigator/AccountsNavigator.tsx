@@ -8,14 +8,19 @@ import Sidebar from 'components/common/containers/Sidebar';
 import { Account } from 'businessLogic/model';
 import Button from 'components/common/core/Button';
 
+
 interface AccountsNavigatorProps {
   className?: string;
   accounts?: Account[];
   selectAccount(account);
+  createAccountPressed();
 }
 
-export default class AccountsNavigator extends React.Component<AccountsNavigatorProps, any> {
 
+export default class AccountsNavigator extends React.Component<AccountsNavigatorProps, any> {
+  constructor(props) {
+    super(props);
+  }
 
   render() {
 
@@ -31,14 +36,15 @@ export default class AccountsNavigator extends React.Component<AccountsNavigator
           {this.renderAccounts(accounts)}
 
           <div className={styles.footer}>
-            <Button intent='primary' className={styles.addBtn} type='floating' iconName='add' />
+            <Button intent='primary' className={styles.addBtn} type='floating' iconName='add' onClick={this.props.createAccountPressed} />
           </div>
 
         </div>
       </Sidebar>
-
     );
   }
+
+
 
   renderAccounts(accounts: Account[]) {
     return _.map(accounts, (account: Account) => {

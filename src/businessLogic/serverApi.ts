@@ -100,8 +100,8 @@ export const getAccounts = async (): Promise<Account[]> => {
     return res ? _.values(res) : [];
 };
 
-export const createAccount = async (account: Account): Promise<Account> => {
-    const res = await fetcher.post('/accounts/', account);
+export const createNewAccount = async (account: Account): Promise<Account> => {
+    const res = await fetcher.post('/accounts/', {account}, undefined,  { userid: 3 });
     return res;
 };
 

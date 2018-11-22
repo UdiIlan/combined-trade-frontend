@@ -1,8 +1,24 @@
+@import '~styles/colors.scss';
+
 .accountManager {
   display: flex;
   flex: 1;
+}
+
+.dialogContainer{
+  flex: 1;
+  display: inline;
+}
+
+.accountDialogContent {
+  width: 15vw;
+
+  .userInput {
+    width: 100%;
+    margin: 20px;
+  }
+}
 
   .accountContent {
     flex: 1
   }
-}

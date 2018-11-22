@@ -3,18 +3,22 @@ import * as _ from 'lodash';
 import { connect } from 'react-redux';
 const styles = require('./styles.scss');
 import AccountsNavigator from './AccountsNavigator';
-import { getAccounts } from './redux/actions';
+import { getAccounts, createAccount } from './redux/actions';
 import { Account } from 'businessLogic/model';
 import { Route, Switch, Link } from 'react-router-dom';
 import TradeManager from './TradeManager';
+import Dialog from 'components/common/modals/Dialog';
+import InputText from 'components/common/core/InputText';
 
 interface AccountManagerProps {
   accounts: Account[];
   getAccounts();
+  createNewAccount(name: string, description: string);
 }
 
 interface AccountManagerState {
   selectedAccount?: Account;
+  createAccountPressed: boolean;
 }
 
 
@@ -22,18 +26,35 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { createAccountPressed: false };
+    this.createAccountPressed = this.createAccountPressed.bind(this);
+  }
+
+  createAccountPressed() {
+    this.setState({ createAccountPressed: true });
   }
 
   componentWillMount() {
     this.props.getAccounts();
   }
 
+  private accountName;
+  private accountDescription;
+
   render() {
     return (
       <div className={styles.accountManager}>
-        <AccountsNavigator selectAccount={(account) => this.setState({ selectedAccount: account })} accounts={this.props.accounts} />
-
+        <AccountsNavigator selectAccount={(account) => this.setState({ selectedAccount: account })} accounts={this.props.accounts} createAccountPressed={this.createAccountPressed} />
+        {this.state.createAccountPressed ?
+          <div className={styles.dialogContainer}>
+            <Dialog title='Create New Account' open={true} onOkClick={() => this.props.createNewAccount(this.accountName.value, this.accountDescription.value)}>
+              <div className={styles.accountDialogContent} >
+                <InputText className={styles.userInput} ref={(input) => this.accountName = input} label='account name' type='text' name='name' />
+                <InputText className={styles.userInput} ref={(input) => this.accountDescription = input} label='description' type='text' name='description' />
+              </div>
+            </Dialog>
+          </div> : ''
+        }
         <div className={styles.accountContent}>
           <Switch>
             <Route exact path='/' /* component= TO-DO (Shirley) */ />
@@ -56,7 +77,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAccounts: () => dispatch(getAccounts())
+    getAccounts: () => dispatch(getAccounts()),
+    createNewAccount: (name, description) => dispatch(createAccount({ name, description }))
   };
 };
 
