@@ -2,7 +2,7 @@
 import { AppSagas } from 'components/App/redux/sagas';
 // import { OrderBookSagas } from 'components/OrderBook/redux/sagas';
 import { AccountSagas } from 'components/AccountManager/redux/sagas';
-// import { ReportManagerSagas } from 'components/ReportManager/redux/sagas';
+import { ReportManagerSagas } from 'components/ReportManager/redux/sagas';
 // import { DashboardSagas } from 'components/Dashboard/redux/sagas';
 
 import { actionChannel, fork, take, call, all } from 'redux-saga/effects';
@@ -32,7 +32,8 @@ export function* takeFirst(pattern, saga, ...args) {
 export default function* rootSaga(): any {
     yield all([
         AppSagas(),
-        AccountSagas()
+        AccountSagas(),
+        ReportManagerSagas()
     ]);
 
 }
