@@ -9,6 +9,7 @@ import { Route, Switch, Link } from 'react-router-dom';
 import TradeManager from './TradeManager';
 import Dialog from 'components/common/modals/Dialog';
 import InputText from 'components/common/core/InputText';
+import AccountDashboard from './AccountDashboard';
 
 interface AccountManagerProps {
   accounts: Account[];
@@ -63,21 +64,22 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
           createAccountPressed={this.createAccountPressed} />
 
         {this.state.createAccountPressed ?
-          <div className={styles.dialogContainer}>
-            <Dialog title='Create New Account' open={true} onOkClick={this.createAccount} onCancelClick={() => this.setState({ createAccountPressed: false })}>
-              <div className={styles.accountDialogContent} >
-                <InputText className={styles.userInput} ref={(input) => this.accountName = input} label='account name' type='text' name='name' />
-                <InputText className={styles.userInput} ref={(input) => this.accountDescription = input} label='description' type='text' name='description' />
-              </div>
-            </Dialog>
-          </div> : ''
+
+          <Dialog title='Create New Account' open={true} onOkClick={this.createAccount} onCancelClick={() => this.setState({ createAccountPressed: false })}>
+            <div className={styles.accountDialogContent} >
+              <InputText className={styles.userInput} ref={(input) => this.accountName = input} label='account name' type='text' name='name' />
+              <InputText className={styles.userInput} ref={(input) => this.accountDescription = input} label='description' type='text' name='description' />
+            </div>
+          </Dialog>
+          : ''
         }
         {this.state.selectedAccountName ?
+
           <div className={styles.accountContent}>
             <h2 className={styles.title}>{pathName ? `${this.state.selectedAccountName} -> ${pathName}` : this.state.selectedAccountName}</h2>
 
             <Switch>
-              <Route exact path='/' /* component= TO-DO (Shirley) */ />
+              <Route exact path='/' render={(props) => <AccountDashboard account={selectedAccount} />} />
               <Route path='/trades' render={(props) => <TradeManager account={selectedAccount} getTrades={this.props.getTrades} />} />
               <Route path='/funds' /*  component= TO-DO */ />
             </Switch>
