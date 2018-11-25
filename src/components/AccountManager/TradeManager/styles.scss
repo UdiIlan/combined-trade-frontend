@@ -5,12 +5,19 @@
 
   .tradesData {
     flex: 1;
+
     &.blurring {
       filter: blur(0.1rem);
     }
 
     .grid {
       height: 100%;
+
+      .orderNestedContainer {
+        padding: 20px;
+        display: flex;
+        justify-content: space-evenly;
+      }
     }
   }
 }

@@ -14,6 +14,7 @@ export interface InputTextProps {
     value?: any;
     type?: any;
     disabled?: boolean;
+    outlined?: boolean;
     onChange?(e);
 }
 
@@ -34,15 +35,15 @@ export default class InputText extends React.Component<InputTextProps, InputText
 
     onChange(e) {
         const ne = { ...e };
-        this.value = e.target.value ;
+        this.value = e.target.value;
         this.setState({ currentValue: e.target.value }, () => this.props.onChange && this.props.onChange(ne));
     }
 
     render() {
 
-        const { className, onChange, value, ...otherProps } = this.props;
+        const { className, onChange, value, outlined, ...otherProps } = this.props;
 
-        return <TextField className={className} value={this.state.currentValue} onChange={this.onChange} {...otherProps}
+        return <TextField className={className} value={this.state.currentValue} onChange={this.onChange} variant={(outlined ? 'outlined' : 'standard') as any} {...otherProps}
             classes={this.props.theme === 'light' ?
                 {
                     root: styles.whiteText

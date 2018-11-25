@@ -120,7 +120,7 @@ export const deleteAccount = async (account: Account): Promise<any> => {
     return res;
 };
 
-export const getAccountTrades = async (account: Account, index = 0, size = 100): Promise<OrderStatus[]> => {
+export const getAccountTrades = async (account: Account, index = 0, size = 1000): Promise<OrderStatus[]> => {
     // const res = await fetcher.get(`/accounts/${account.name}/trades/?index=${index}&size=${size}`);
     // return res;
 

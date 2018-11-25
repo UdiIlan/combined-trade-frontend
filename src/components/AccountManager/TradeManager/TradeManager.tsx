@@ -7,6 +7,7 @@ const cx = classNames.bind(styles);
 import { Account, OrderStatus } from 'businessLogic/model';
 import { DateUtils, MathUtils } from 'businessLogic/utils';
 import { getLocalizedText } from 'lang';
+import { InputText } from 'components/common/core';
 
 
 const TRADES_COLUMNS = [
@@ -71,6 +72,8 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
                 className={styles.grid}
                 data={this.props.account.trades}
                 columns={TRADES_COLUMNS}
+                forceNestedRendering
+                renderNestedItems={(item) => this.renderOrderChildren(item)}
               />
             }
 
@@ -79,6 +82,20 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
 
       </div>
 
+    );
+  }
+
+
+  renderOrderChildren(item: OrderStatus) {
+    return (
+      <div className={styles.orderNestedContainer}>
+        <InputText outlined disabled value={item.executionSize} label={'Executed so far'} />
+        <InputText outlined disabled value={item.elapsedTimeMinutes} label={'Elapsed Time (in minutes)'} />
+        <InputText outlined disabled value={item.actionType} label={'Action Type'} />
+        <InputText outlined disabled value={item.executedTargetSize} label={'Target asset executed so far'} />
+        <InputText outlined disabled value={item.tradeOrderId} label={'Order Id'} />
+        {item.executionMessage && <InputText outlined disabled value={item.executionMessage} label={'Execution Message'} />}
+      </div>
     );
   }
 }

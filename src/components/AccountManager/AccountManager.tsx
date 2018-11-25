@@ -24,7 +24,6 @@ interface AccountManagerState {
   createAccountPressed: boolean;
 }
 
-
 class AccountManager extends React.Component<AccountManagerProps, AccountManagerState> {
 
   constructor(props) {

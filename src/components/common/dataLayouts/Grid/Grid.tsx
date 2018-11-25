@@ -77,6 +77,7 @@ export interface GridProps {
     disablePagination?: boolean;
     nestedDataPropertyName?: string;
     renderNestedItems?(item: any);
+    forceNestedRendering?: boolean;
 }
 
 export interface GridState {
@@ -198,7 +199,9 @@ export default class Grid extends React.Component<GridProps, GridState> {
             _.map(columns, (col: GridColumn) => {
                 let colContent;
                 if (col.id === NESTING_CONTROL_COLUMN_ID) {
-                    colContent = !item[childrenColumnName] || _.isEmpty(item[childrenColumnName]) ? '' : <IconButton iconName={isExpanded ? 'expand_less' : 'chevron_right'} onClick={() => this.toggleRow(index)} />;
+                    colContent = !this.props.forceNestedRendering && (!item[childrenColumnName] || _.isEmpty(item[childrenColumnName])) ?
+                        '' :
+                        <IconButton iconName={isExpanded ? 'expand_less' : 'chevron_right'} onClick={() => this.toggleRow(index)} />;
                 }
                 else {
                     colContent = !col.render ? item[col.id] : col.render(item);
