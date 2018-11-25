@@ -19,7 +19,7 @@ interface AccountManagerProps {
 }
 
 interface AccountManagerState {
-  selectedAccount?: Account;
+  selectedAccountName?: string;
   createAccountPressed: boolean;
 }
 
@@ -50,11 +50,18 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
   private accountName;
   private accountDescription;
 
+
   render() {
     const pathName = this.props.location.pathname.substr(1);
+    const selectedAccount = _.find(this.props.accounts, { name: this.state.selectedAccountName });
     return (
       <div className={styles.accountManager}>
-        <AccountsNavigator selectAccount={(account) => this.setState({ selectedAccount: account })} accounts={this.props.accounts} createAccountPressed={this.createAccountPressed} />
+        <AccountsNavigator
+          selectAccount={(account) => this.setState({ selectedAccountName: account.name })}
+          accounts={this.props.accounts}
+          selectedAccount={selectedAccount}
+          createAccountPressed={this.createAccountPressed} />
+
         {this.state.createAccountPressed ?
           <div className={styles.dialogContainer}>
             <Dialog title='Create New Account' open={true} onOkClick={this.createAccount} onCancelClick={() => this.setState({ createAccountPressed: false })}>
@@ -65,13 +72,13 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
             </Dialog>
           </div> : ''
         }
-        {this.state.selectedAccount ?
+        {this.state.selectedAccountName ?
           <div className={styles.accountContent}>
-            <h2 className={styles.title}>{pathName ? `${this.state.selectedAccount.name} -> ${pathName}` : this.state.selectedAccount.name}</h2>
+            <h2 className={styles.title}>{pathName ? `${this.state.selectedAccountName} -> ${pathName}` : this.state.selectedAccountName}</h2>
 
             <Switch>
               <Route exact path='/' /* component= TO-DO (Shirley) */ />
-              <Route path='/trades' render={(props) => <TradeManager account={this.state.selectedAccount} getTrades={this.props.getTrades} />} />
+              <Route path='/trades' render={(props) => <TradeManager account={selectedAccount} getTrades={this.props.getTrades} />} />
               <Route path='/funds' /*  component= TO-DO */ />
             </Switch>
           </div>

@@ -4,8 +4,19 @@ import Grid from 'components/common/dataLayouts/Grid';
 const styles = require('./styles.scss');
 import * as classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
-import { Account } from 'businessLogic/model';
+import { Account, OrderStatus } from 'businessLogic/model';
+import { DateUtils, MathUtils } from 'businessLogic/utils';
+import { getLocalizedText } from 'lang';
 
+
+const TRADES_COLUMNS = [
+  { id: 'startTime', title: 'Start Time', render: item => DateUtils.defaultFormat(item.startTime) },
+  { id: 'assetPair', title: 'Asset Pair' },
+  { id: 'actionType', title: 'Action Type', render: item => getLocalizedText(item.actionType) },
+  { id: 'status', title: 'Status' },
+  { id: 'requestedSize', title: 'Requested Size', render: item => parseFloat(item.requestedSize).toFixed(4) },
+  { id: 'requestedPrice', title: 'Requested Price', render: item => MathUtils.toFixed(item.requestedPrice) },
+];
 
 interface TradeManagerProps {
   account: Account;
@@ -46,7 +57,6 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
   render() {
     const { account } = this.props;
 
-    const columns = [];
     return (
       <div className={styles.tradeManager}>
 
@@ -56,11 +66,11 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
             {this.state.loading ? 'Loading'
               :
               <Grid
-                sortBy='orderTime'
+                sortBy='startTime'
                 sortDirection='desc'
                 className={styles.grid}
                 data={this.props.account.trades}
-                columns={columns}
+                columns={TRADES_COLUMNS}
               />
             }
 

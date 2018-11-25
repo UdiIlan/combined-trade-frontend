@@ -128,7 +128,7 @@ export const getAccountTrades = async (account: Account, index = 0, size = 100):
         [
             {
                 account: 'BTC.com',
-                startTime: new Date('2017-03-20T23:39:05.651638+00:00'),
+                startTime: new Date('2017-03-05T23:39:05.651638+00:00'),
                 elapsedTimeMinutes: 15.42,
                 assetPair: 'BTC-USD',
                 actionType: 'sell',
@@ -151,12 +151,12 @@ export const getAccountTrades = async (account: Account, index = 0, size = 100):
             },
             {
                 account: 'BTC.com',
-                startTime: new Date('2017-03-20T23:39:05.651638+00:00'),
+                startTime: new Date('2018-11-18T23:44:13.651638+00:00'),
                 elapsedTimeMinutes: 15.42,
                 assetPair: 'BTC-USD',
                 actionType: 'sell',
                 status: 'Done',
-                requestedSize: 1500,
+                requestedSize: 8300,
                 requestedPrice: 6300,
                 executionSize: 1001,
                 executedTargetSize: 850000,
@@ -174,12 +174,12 @@ export const getAccountTrades = async (account: Account, index = 0, size = 100):
             },
             {
                 account: 'BTC.com',
-                startTime: new Date('2017-03-20T23:39:05.651638+00:00'),
+                startTime: new Date('2017-04-20T21:25:52.651638+00:00'),
                 elapsedTimeMinutes: 15.42,
                 assetPair: 'BTC-USD',
                 actionType: 'sell',
                 status: 'Done',
-                requestedSize: 1500,
+                requestedSize: 720,
                 requestedPrice: 6300,
                 executionSize: 1001,
                 executedTargetSize: 850000,
