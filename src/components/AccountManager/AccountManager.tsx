@@ -21,10 +21,9 @@ interface AccountManagerProps {
 }
 
 interface AccountManagerState {
-  selectedAccount?: Account;
+  selectedAccountName?: string;
   createAccountPressed: boolean;
 }
-
 
 class AccountManager extends React.Component<AccountManagerProps, AccountManagerState> {
 
@@ -52,29 +51,36 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
   private accountName;
   private accountDescription;
 
+
   render() {
     const pathName = this.props.location.pathname.substr(1);
+    const selectedAccount = _.find(this.props.accounts, { name: this.state.selectedAccountName });
     return (
       <div className={styles.accountManager}>
-        <AccountsNavigator selectAccount={(account) => this.setState({ selectedAccount: account })} accounts={this.props.accounts} createAccountPressed={this.createAccountPressed} />
-        {this.state.createAccountPressed ?
-          <div className={styles.dialogContainer}>
-            <Dialog title='Create New Account' open={true} onOkClick={this.createAccount} onCancelClick={() => this.setState({ createAccountPressed: false })}>
-              <div className={styles.accountDialogContent} >
-                <InputText className={styles.userInput} ref={(input) => this.accountName = input} label='account name' type='text' name='name' />
-                <InputText className={styles.userInput} ref={(input) => this.accountDescription = input} label='description' type='text' name='description' />
-              </div>
-            </Dialog>
-          </div> : ''
-        }
+        <AccountsNavigator
+          selectAccount={(account) => this.setState({ selectedAccountName: account.name })}
+          accounts={this.props.accounts}
+          selectedAccount={selectedAccount}
+          createAccountPressed={this.createAccountPressed} />
 
-        {this.state.selectedAccount ?
+        {this.state.createAccountPressed ?
+
+          <Dialog title='Create New Account' open={true} onOkClick={this.createAccount} onCancelClick={() => this.setState({ createAccountPressed: false })}>
+            <div className={styles.accountDialogContent} >
+              <InputText className={styles.userInput} ref={(input) => this.accountName = input} label='account name' type='text' name='name' />
+              <InputText className={styles.userInput} ref={(input) => this.accountDescription = input} label='description' type='text' name='description' />
+            </div>
+          </Dialog>
+          : ''
+        }
+        {this.state.selectedAccountName ?
+
           <div className={styles.accountContent}>
             {this.renderHeader(pathName)}
 
             <Switch>
-              <Route exact path='/' render={(props) => <AccountDashboard account={this.state.selectedAccount} />} />
-              <Route path='/trades' render={(props) => <TradeManager account={this.state.selectedAccount} getTrades={this.props.getTrades} />} />
+              <Route exact path='/' render={(props) => <AccountDashboard account={selectedAccount} />} />
+              <Route path='/trades' render={(props) => <TradeManager account={selectedAccount} getTrades={this.props.getTrades} />} />
               <Route path='/funds' /*  component= TO-DO */ />
             </Switch>
 
@@ -94,13 +100,13 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
         <Switch>
           <Route exact path='/' render={(props) =>
             <div>
-              <span className={styles.title}>{this.state.selectedAccount.name}</span>
+              <span className={styles.title}>{this.state.selectedAccountName}</span>
               <Button className={styles.btn} intent='primary' type='contained' iconName='edit' /*onClick={this.props.createAccountPressed}*/ />
               <Button className={styles.btn} intent='primary' type='contained' iconName='delete' /*onClick={this.props.createAccountPressed}*/ />
             </div>
           } />
           <Route path='/trades' render={(props) =>
-            <span className={styles.title}>{this.state.selectedAccount.name} -> {pathName}</span> /*{this.state.selectedAccount.name} -> {pathName}*/
+            <span className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span> /*{this.state.selectedAccount.name} -> {pathName}*/
           } />
           <Route path='/funds' render={(props) => { }}/*  component= TO-DO */ />
         </Switch>
