@@ -1,9 +1,9 @@
 @import '~styles/colors.scss';
 
 .order {
-  @include themify($themes) {
-    border-color: themed('borderColor');
-  }
+
+    border-color: $borderColor;
+
   border-bottom: 1px solid;
   padding: 5px 15px;
   min-height: 15px;
@@ -93,17 +93,17 @@ $total-items: 8;
 
 // Keyframe animation
 @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      top: 100px;
-    }
-  
-    75% {
-      opacity: 0.5;
-      top: 0px;
-    }
-  
-    100% {
-      opacity: 1;
-    }
+  0% {
+    opacity: 0;
+    top: 100px;
   }
+
+  75% {
+    opacity: 0.5;
+    top: 0px;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

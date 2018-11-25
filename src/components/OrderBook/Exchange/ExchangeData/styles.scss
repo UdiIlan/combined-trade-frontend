@@ -40,9 +40,7 @@
       justify-content: space-between;
       padding: 0px 5px;
       border-bottom: 1px solid;
-      @include themify($themes) {
-        border-color: themed('borderColor');
-      }
+      border-color: $borderColor;
 
       .spreadHeader {
         padding: 10px 0px;
@@ -78,9 +76,7 @@
         padding: 10px 5px;
         margin: 0px;
         border-bottom: 1px solid;
-        @include themify($themes) {
-          border-color: themed('borderColor');
-        }
+        border-color: $borderColor;
       }
     }
 

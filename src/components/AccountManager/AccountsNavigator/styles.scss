@@ -16,9 +16,7 @@
       border-bottom: 1px groove;
       align-items: center;
       cursor: pointer;
-      @include themify($themes) {
-        border-color: themed('borderColor');
-      }
+      border-color: $borderColor;
 
       &:hover {
         // @include themify($themes) {
