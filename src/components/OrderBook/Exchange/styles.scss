@@ -22,10 +22,10 @@
   .exchangeHeader {
     padding: 5px;
     border-bottom: 1px solid;
+    border-bottom-color: $borderColor;;
     @include themify($themes) {
       color: themed('textColor');
       background: themed('listHeaderBackground');
-      border-bottom-color: themed('borderColor');
     }
   }
 }

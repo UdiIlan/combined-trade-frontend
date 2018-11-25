@@ -14,9 +14,7 @@
       width: 15vw;
       // padding: 0px 5px;
       border-right: 1px solid;
-      @include themify($themes) {
-        border-right-color: themed('borderColor');
-      }
+      border-right-color: $borderColor;
     }
 
     .exchangesMain {
@@ -66,8 +64,6 @@
   .orderStatus {
     width: 15vw;
     border-left: 1px solid;
-    @include themify($themes) {
-      border-left-color: themed('borderColor');
-    }
+    border-left-color: $borderColor;
   }
 }
