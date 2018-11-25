@@ -10,6 +10,7 @@ import TradeManager from './TradeManager';
 import Dialog from 'components/common/modals/Dialog';
 import InputText from 'components/common/core/InputText';
 import AccountDashboard from './AccountDashboard';
+import Button from 'components/common/core/Button';
 
 interface AccountManagerProps {
   accounts: Account[];
@@ -69,19 +70,42 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
 
         {this.state.selectedAccount ?
           <div className={styles.accountContent}>
-            <h2 className={styles.title}>{pathName ? `${this.state.selectedAccount.name} -> ${pathName}` : this.state.selectedAccount.name}</h2>
+            {this.renderHeader(pathName)}
 
             <Switch>
               <Route exact path='/' render={(props) => <AccountDashboard account={this.state.selectedAccount} />} />
               <Route path='/trades' render={(props) => <TradeManager account={this.state.selectedAccount} getTrades={this.props.getTrades} />} />
               <Route path='/funds' /*  component= TO-DO */ />
             </Switch>
+
           </div>
           :
           <div className={styles.selectAccount} />
         }
 
       </div>
+
+    );
+  }
+
+  renderHeader(pathName) {
+    return (
+      <h2>
+        <Switch>
+          <Route exact path='/' render={(props) =>
+            <div>
+              <span className={styles.title}>{this.state.selectedAccount.name}</span>
+              <Button className={styles.btn} intent='primary' type='contained' iconName='edit' /*onClick={this.props.createAccountPressed}*/ />
+              <Button className={styles.btn} intent='primary' type='contained' iconName='delete' /*onClick={this.props.createAccountPressed}*/ />
+            </div>
+          } />
+          <Route path='/trades' render={(props) =>
+            <span className={styles.title}>{this.state.selectedAccount.name} -> {pathName}</span> /*{this.state.selectedAccount.name} -> {pathName}*/
+          } />
+          <Route path='/funds' render={(props) => { }}/*  component= TO-DO */ />
+        </Switch>
+
+      </h2>
 
     );
   }

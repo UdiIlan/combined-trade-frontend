@@ -22,9 +22,14 @@
 .accountContent {
   flex: 1;
   padding: 20px;
+}
 
-  .title {
-    font-size: 2.5rem;
-    // color: $MainBlue;
-  }
+.title {
+  font-size: 2.5rem;
+  margin-right: 84%;
+  // color: $MainBlue;
+}
+
+.btn{
+  margin-right: 5px !important;
 }

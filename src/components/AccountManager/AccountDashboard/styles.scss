@@ -1,0 +1,33 @@
+.dashboard {
+    display: flex;
+    flex: 1;
+    //padding: 20px;
+    height: 100%;
+   
+
+.dashboardContent {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex: 1;
+    height: 70%;
+    
+
+    .description{
+        font-size: 2rem;
+    
+    }
+
+    .widgetColumn {
+      display: flex;
+      flex: 2;
+      margin-top: 3%;
+
+      .widget {
+        margin-right: 10px;
+        flex: 1;
+        padding: 20px;
+      }
+    }
+  }
+}

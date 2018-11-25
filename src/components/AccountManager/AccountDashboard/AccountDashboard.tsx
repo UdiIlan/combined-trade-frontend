@@ -37,14 +37,14 @@ export default class AccountDashboard extends React.Component<AccountDashboardPr
             <div className={styles.dashboard}>
 
                 <div className={styles.dashboardContent}>
-                    <div> {this.props.account ? this.props.account.description : 'default account description'}</div>
+                    <div className={styles.description}> {this.props.account ? this.props.account.description : 'default account description'}</div>
                     <div className={styles.widgetColumn} >
 
                         <Widget title={'Balance'} className={styles.widget} loading={!this.props.accountBalance}>
                             <p> balance </p>
                         </Widget>
 
-                        <Widget title={'Trades'} className={cx(styles.widget, styles.orders)} loading={!this.props.accountTrades}>
+                        <Widget title={'Trades'} className={styles.widget} loading={!this.props.accountTrades}>
                             <p> trades </p>
                         </Widget>
 
