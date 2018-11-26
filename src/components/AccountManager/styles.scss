@@ -22,16 +22,25 @@
 .accountContent {
   flex: 1;
   padding: 20px;
-}
-
-.headerContainer{
   display: flex;
-  justify-content: space-between;
-  .title {
-    font-size: 2.5rem;
+  flex-direction: column;
+
+  .headerContainer {
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      font-size: 2.5rem;
+    }
+
+    .btn {
+      margin-right: 5px !important;
+    }
+  }
+
+  .curRoute {
+    flex: 1;
   }
 }
 
-.btn{
-  margin-right: 5px !important;
-}
+

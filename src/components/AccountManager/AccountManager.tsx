@@ -117,12 +117,13 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
 
           <div className={styles.accountContent}>
             {this.renderHeader(pathName)}
-
-            <Switch>
-              <Route exact path='/' render={(props) => <AccountDashboard account={selectedAccount} />} />
-              <Route path='/trades' render={(props) => <TradeManager account={selectedAccount} getTrades={this.props.getTrades} />} />
-              <Route path='/funds' /*  component= TO-DO */ />
-            </Switch>
+            <div className={styles.curRoute}>
+              <Switch >
+                <Route exact path='/' render={(props) => <AccountDashboard account={selectedAccount} />} />
+                <Route path='/trades' render={(props) => <TradeManager account={selectedAccount} getTrades={this.props.getTrades} />} />
+                <Route path='/funds' /*  component= TO-DO */ />
+              </Switch>
+            </div>
 
           </div>
           :
@@ -150,36 +151,38 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
 
   renderHeader(pathName) {
     return (
-      <h2>
+      <h2 className={styles.headerContainer}>
         <Switch>
           <Route exact path='/' render={(props) =>
-            <div className={styles.headerContainer}>
-              <span className={styles.title}>{this.state.selectedAccountName}</span>
-              <div>
+            [
+              <span key='title' className={styles.title}>{this.state.selectedAccountName}</span>,
+              <div key='actions'>
                 <Button className={styles.btn} intent='primary' type='contained' iconName='edit' onClick={this.editAccountPressed} />
                 <Button className={styles.btn} intent='primary' type='contained' iconName='delete' onClick={this.deleteAccountPressed} />
               </div>
-            </div>
+            ]
+
           } />
           <Route path='/trades' render={(props) =>
-            <div className={styles.headerContainer}>
-              <span className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>
-              <div>
+            [
+              <span key='title' className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>,
+              <div key='actions'>
                 <Button className={styles.btn} intent='primary' type='contained' iconName='open_in_new' /*onClick={this.editAccountPressed}*/ />
                 <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' /*onClick={this.deleteAccountPressed}*/ />
                 <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' /*onClick={this.deleteAccountPressed}*/ />
               </div>
-            </div>
+            ]
+
           } />
           <Route path='/funds' render={(props) =>
-            <div className={styles.headerContainer}>
-              <span className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>
-              <div>
-                <Button className={styles.btn} intent='primary' type='contained' iconName='open_in_new' /*onClick={this.editAccountPressed}*/ />
-                <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' /*onClick={this.deleteAccountPressed}*/ />
-                <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' /*onClick={this.deleteAccountPressed}*/ />
-              </div>
-            </div>} />
+            [<span key='title' className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>,
+            <div key='actions'>
+              <Button className={styles.btn} intent='primary' type='contained' iconName='open_in_new' /*onClick={this.editAccountPressed}*/ />
+              <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' /*onClick={this.deleteAccountPressed}*/ />
+              <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' /*onClick={this.deleteAccountPressed}*/ />
+            </div>
+            ]
+          } />
         </Switch>
 
       </h2>
