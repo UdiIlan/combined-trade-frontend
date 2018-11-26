@@ -17,8 +17,8 @@ const REPORT_COLUMNS: GridColumn[] = [
     { id: 'exchange', title: 'Exchange' },
     { id: 'tradeOrderId', title: 'ID' },
     { id: 'exchangeOrderId', title: 'Exchange Order ID' },
-    { id: 'currencyFromAvailable', title: 'Crypto Balance', render: item => parseFloat(item.currencyFromAvailable).toFixed(4) },
-    { id: 'currencyToAvailable', title: 'USD Balance', render: item => parseFloat(item.currencyToAvailable).toFixed(4) },
+    { id: 'currencyToAvailable', title: 'Crypto Balance', render: item => parseFloat(item.currencyToAvailable).toFixed(4) },
+    { id: 'currencyFromAvailable', title: 'USD Balance', render: item => parseFloat(item.currencyFromAvailable).toFixed(4) },
     { id: 'ask', title: 'Ask' },
     { id: 'bid', title: 'Bid' },
 ];
