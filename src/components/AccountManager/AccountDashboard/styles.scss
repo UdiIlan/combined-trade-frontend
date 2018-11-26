@@ -4,6 +4,7 @@
     flex: 1;
     //padding: 20px;
     height: 100%;
+    flex-direction: column;
    
 
 .dashboardContent {
@@ -55,5 +56,17 @@
       right: 45px;   
     }
    
+  }
+
+  .grid {
+    height: 100%;
+
+    .orderNestedContainer {
+      padding: 20px;
+      display: flex;
+      justify-content: space-evenly;
+      border-bottom: 1px dotted;
+      border-color: $borderColor;
+    }
   }
 }
