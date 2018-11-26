@@ -20,7 +20,7 @@ export interface AccountDashboardProps {
 }
 
 
-class AccountDashboard extends React.Component<AccountDashboardProps, any> {
+export default class AccountDashboard extends React.Component<AccountDashboardProps, any> {
 
     constructor(props) {
         super(props);
@@ -57,21 +57,3 @@ class AccountDashboard extends React.Component<AccountDashboardProps, any> {
         );
     }
 }
-
-const mapStateToProps = (state) => {
-    return {
-        accounts: _.get(state, 'account.accounts'),
-    };
-};
-
-const mapDispatchToProps = (dispatch) => {
-    // return {
-    //   getAccounts: () => dispatch(getAccounts()),
-    //   createNewAccount: (name, description) => dispatch(createAccount({ name, description })),
-    //   editAccount: (name, description) => dispatch(editAccount({ name, description })),
-    //   deleteAccount: (name) => dispatch(deleteAccount(name)),
-    //   getTrades: (account: Account) => dispatch(fetchAccountTrades(account))
-    // };
-};
-
-export default connect(mapStateToProps, {})(AccountDashboard);
