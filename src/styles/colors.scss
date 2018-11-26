@@ -32,15 +32,19 @@ $themes: (
     // List
     listHeaderBackground: lightslategray,
     listItemHoverBackground: aliceblue,
+
+    // logo
+    logo: url('assets/images/logo.png')
+
     ),
 
     dark: (
     // App pallet
-    appBackground: #383838,
-    sectionBackground: #b9b9b9,
-    sidebarBackground: #29566b,
+    appBackground: #253551, // #383838,
+    sectionBackground: #0a1130, // #b9b9b9,
+    sidebarBackground: #0a1130, // #29566b,
     // navigationItemBackground :#b9b9b9,
-    textColor: wheat,
+    textColor: white,
     secondaryTextColor: black,
     paperBoxShadow:( 0px 1px 3px 0px rgba(240, 240, 240, 0.12), 0px 1px 1px 0px rgba(240, 240, 240, 0.14), 0px 2px 1px -1px rgba(240, 240, 240, 0.12)),
     highlightedPaperBoxShadow: (0px 1px 15px 0px rgba(240, 240, 240, 0.2), 7px 8px 1px 0px rgba(240, 240, 240, 0.14), 5px 5px 1px -1px rgba(240, 240, 240, 0.12)),
@@ -59,7 +63,10 @@ $themes: (
     // List
     listHeaderBackground: white,
     listItemHoverBackground: aliceblue,
-    ),
+ 
+    // logo
+    logo: url('assets/images/logo_dark.png')
+    )
 );
 
 /*

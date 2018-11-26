@@ -10,7 +10,9 @@
   }
 
   .logo {
-    background-image: url('assets/images/logo.png');
+    @include themify($themes) {
+      background-image: themed('logo');
+    }
     background-repeat: no-repeat;
     height: 65px;
     width: 200px;
@@ -26,9 +28,7 @@
   }
 
   .mainHeader {
-    @include themify($themes) {
-      color: themed('secondaryTextColor');
-    }
+    color: $whiteText;
     font-size: 2rem;
     margin-top: 0px;
     margin-bottom: 0px;
