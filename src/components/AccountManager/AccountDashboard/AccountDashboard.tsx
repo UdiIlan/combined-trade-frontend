@@ -27,10 +27,6 @@ export default class AccountDashboard extends React.Component<AccountDashboardPr
     }
 
     componentWillMount() {
-        // this.props.getUserOrdersStatus();
-        // this.props.getExchangeRates();
-        // this.props.getUserBalance();
-        // this.props.getCurrencyTrend(btc);
     }
 
     render() {
@@ -39,7 +35,7 @@ export default class AccountDashboard extends React.Component<AccountDashboardPr
             <div className={styles.dashboard}>
 
                 <div className={styles.dashboardContent}>
-                    <InputText className={styles.description} outlined label='description' value={this.props.account ? this.props.account.description : 'default account description'}> </InputText>
+                    <InputText className={styles.description} disabled= {true} outlined label='description' value={this.props.account ? this.props.account.description : 'default account description'}> </InputText>
                     <div className={styles.widgetColumn} >
 
                         <Widget title={'Balance'} className={styles.widget} loading={!this.props.accountBalance}>
@@ -58,24 +54,3 @@ export default class AccountDashboard extends React.Component<AccountDashboardPr
         );
     }
 }
-
-// const mapStateToProps = (state) => {
-//     return {
-//         // account: _.get(state, 'account.trendData')
-//         // userOrders: _.get(state, 'orderBook.userOrders'),
-//         // userBalance: _.get(state, 'dashboard.userBalance'),
-//         // exchangeRates: _.get(state, 'dashboard.exchangeRates'),
-//         // trendData: _.get(state, 'dashboard.trendData')
-//     };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         // getUserOrdersStatus: () => dispatch(getUserOrdersStatus()),
-//         // getUserBalance: () => dispatch(getUserBalance()),
-//         // getExchangeRates: () => dispatch(getExchangeRates()),
-//         // getCurrencyTrend: (currency: string) => dispatch(getCurrencyTrend(currency))
-//     };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(AccountDashboard);

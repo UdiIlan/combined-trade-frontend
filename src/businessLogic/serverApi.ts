@@ -112,12 +112,13 @@ export const createNewAccount = async (account: Account): Promise<Account> => {
 
 
 export const updateAccount = async (account: Account): Promise<Account> => {
-    const res = await fetcher.put(`/accounts/${account.name}`, account, undefined, { userid: 4 });
+    // const res = await fetcher.put(`/accounts/${account.name}`, account, undefined, { userid: 4 });
+    const res = { name: 'mock', description: 'mock' };
     return res;
 };
 
-export const deleteAccount = async (account: Account): Promise<any> => {
-    const res = await fetcher.delete(`/accounts/${account.name}`);
+export const deleteAccount = async (accountName: string): Promise<any> => {
+    const res = await fetcher.delete(`/accounts/${accountName}`, undefined, undefined, { userid: 5 });
     return res;
 };
 

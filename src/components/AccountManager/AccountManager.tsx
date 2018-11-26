@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { connect } from 'react-redux';
 const styles = require('./styles.scss');
 import AccountsNavigator from './AccountsNavigator';
-import { getAccounts, createAccount, fetchAccountTrades, editAccount } from './redux/actions';
+import { getAccounts, createAccount, fetchAccountTrades, editAccount, deleteAccount } from './redux/actions';
 import { Account } from 'businessLogic/model';
 import { Route, Switch, Link } from 'react-router-dom';
 import TradeManager from './TradeManager';
@@ -19,6 +19,7 @@ interface AccountManagerProps {
   getTrades(account: Account);
   createNewAccount(name: string, description: string);
   editAccount(name: string, description: string);
+  deleteAccount(name: string);
 
 }
 
@@ -26,26 +27,32 @@ interface AccountManagerState {
   selectedAccountName?: string;
   createAccountPressed: boolean;
   editAccountPressed: boolean;
+  deleteAccountPressed: boolean;
 }
 
 class AccountManager extends React.Component<AccountManagerProps, AccountManagerState> {
 
   constructor(props) {
     super(props);
-    this.state = { createAccountPressed: false, editAccountPressed: false };
+    this.state = { createAccountPressed: false, editAccountPressed: false, deleteAccountPressed: false };
     this.createAccountPressed = this.createAccountPressed.bind(this);
     this.createAccount = this.createAccount.bind(this);
-    this.editAccountPress = this.editAccountPress.bind(this);
+    this.editAccountPressed = this.editAccountPressed.bind(this);
     this.editAccount = this.editAccount.bind(this);
+    this.deleteAccountPressed = this.deleteAccountPressed.bind(this);
+    this.deleteAccount = this.deleteAccount.bind(this);
   }
 
   createAccountPressed() {
     this.setState({ createAccountPressed: true });
   }
 
-  editAccountPress() {
+  editAccountPressed() {
     this.setState({ editAccountPressed: true });
-    this.forceUpdate();
+  }
+
+  deleteAccountPressed() {
+    this.setState({ deleteAccountPressed: true });
   }
 
   componentWillMount() {
@@ -53,16 +60,28 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
   }
 
   createAccount() {
-    this.props.createNewAccount(this.accountName.value, this.accountDescription.value);
-    this.setState({ createAccountPressed: false });
-    this.props.getAccounts();
+    const name = this.accountName.value;
+    const description = this.accountDescription.value;
+
+    this.setState({ createAccountPressed: false }, () => {
+      this.props.createNewAccount(name, description);
+    });
   }
 
   editAccount() {
-    this.props.editAccount(this.state.selectedAccountName, this.accountDescription.value);
-    this.setState({ editAccountPressed: false });
-    this.props.getAccounts();
+    const name = this.state.selectedAccountName;
+    const description = this.accountDescription.value;
 
+    this.setState({ editAccountPressed: false }, () => {
+      this.props.editAccount(name, description);
+    });
+  }
+
+  deleteAccount() {
+    const name = this.state.selectedAccountName;
+    this.setState({ deleteAccountPressed: false, selectedAccountName: null }, () => {
+      this.props.deleteAccount(name);
+    });
   }
 
   private accountName;
@@ -114,6 +133,12 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
           </Dialog>
           : ''
         }
+
+        {this.state.deleteAccountPressed ?
+          <Dialog title={`Delete Account ${this.state.selectedAccountName}?`} open={true} onOkClick={this.deleteAccount} onCancelClick={() => this.setState({ deleteAccountPressed: false })}>
+          </Dialog>
+          : ''
+        }
       </div>
 
     );
@@ -124,10 +149,12 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
       <h2>
         <Switch>
           <Route exact path='/' render={(props) =>
-            <div>
+            <div className={styles.headerContainer}>
               <span className={styles.title}>{this.state.selectedAccountName}</span>
-              <Button className={styles.btn} intent='primary' type='contained' iconName='edit' onClick={this.editAccountPress} />
-              <Button className={styles.btn} intent='primary' type='contained' iconName='delete' /*onClick={this.props.createAccountPressed}*/ />
+              <div className={styles.btnContainer}>
+                <Button className={styles.btn} intent='primary' type='contained' iconName='edit' onClick={this.editAccountPressed} />
+                <Button className={styles.btn} intent='primary' type='contained' iconName='delete' onClick={this.deleteAccountPressed} />
+              </div>
             </div>
           } />
           <Route path='/trades' render={(props) =>
@@ -155,6 +182,7 @@ const mapDispatchToProps = (dispatch) => {
     getAccounts: () => dispatch(getAccounts()),
     createNewAccount: (name, description) => dispatch(createAccount({ name, description })),
     editAccount: (name, description) => dispatch(editAccount({ name, description })),
+    deleteAccount: (name) => dispatch(deleteAccount(name)),
     getTrades: (account: Account) => dispatch(fetchAccountTrades(account))
   };
 };

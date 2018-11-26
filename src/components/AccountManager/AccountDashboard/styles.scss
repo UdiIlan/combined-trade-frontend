@@ -27,11 +27,10 @@
       .widget {
         flex: 1;
         padding: 20px;
+        margin-right: 20px;
+        text-decoration: underline;
         @include themify($themes) {
           color: blue;
-          cursor: pointer;
-          margin-right: 20px;
-          text-decoration: underline;
         }
       }
 
@@ -40,20 +39,21 @@
         padding: 20px;
         margin-left: 10px;
         margin-right: 10px;
+        margin-right: 20px;
+        text-decoration: underline;
         @include themify($themes) {
           color: blue;
-          cursor: pointer;
-          margin-right: 20px;
-          text-decoration: underline;
         }
       }
     }
 
     .link {
-      height: 100%;
-      width: 100%;
+      width: 100px;
+      height: 15px;
       display: inline-block;
-      background-color: red;
+      position: relative;
+      right: 45px;
+      cursor: pointer; 
     }
    
   }

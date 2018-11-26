@@ -24,10 +24,16 @@
   padding: 20px;
 }
 
-.title {
-  font-size: 2.5rem;
-  margin-right: 86%;
-  // color: $MainBlue;
+.headerContainer{
+  display: flex;
+  .title {
+    font-size: 2.5rem;
+    flex: 10;
+  }
+
+  .btnContainer{
+    flex: 1;
+  }
 }
 
 .btn{
