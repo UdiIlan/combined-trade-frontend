@@ -4,32 +4,57 @@ import { getAccounts, createNewAccount, getAccountTrades, updateAccount, deleteA
 
 
 function* getAccountsAsync() {
-    const accounts = yield getAccounts();
-    yield put(setAccounts(accounts));
+    try {
+        const accounts = yield getAccounts();
+        yield put(setAccounts(accounts));
+    }
+    catch (err) {
+        console.error('Failed to fetch accounts info: ', err);
+    }
 }
 
 function* createAccountAsync(action) {
-    const account = action.payload;
-    yield createNewAccount(account);
-    yield getAccountsAsync();
+    try {
+        const account = action.payload;
+        yield createNewAccount(account);
+        yield getAccountsAsync();
+    }
+    catch (err) {
+        console.error('Failed to create a new account: ', err);
+    }
 }
 
 function* editAccountAsync(action) {
-    const account = action.payload;
-    yield updateAccount(account);
-    yield getAccountsAsync();
+    try {
+        const account = action.payload;
+        yield updateAccount(account);
+        yield getAccountsAsync();
+    }
+    catch (err) {
+        console.error('Failed to edit an account: ', err);
+    }
 }
 
 function* deleteAccountAsync(action) {
-    const accountName = action.payload;
-    yield deleteAccount(accountName);
-    yield getAccountsAsync();
+    try {
+        const accountName = action.payload;
+        yield deleteAccount(accountName);
+        yield getAccountsAsync();
+    }
+    catch (err) {
+        console.error('Failed to delete an account: ', err);
+    }
 }
 
 function* fetchAccountTradesAsync(action) {
-    const account = action.payload;
-    const trades = yield getAccountTrades(account);
-    yield put(updateFetchedAccountTrades(account.name, trades));
+    try {
+        const account = action.payload;
+        const trades = yield getAccountTrades(account);
+        yield put(updateFetchedAccountTrades(account.name, trades));
+    }
+    catch (err) {
+        console.error('Failed to fetch account trades: ', err);
+    }
 }
 
 export function* AccountSagas() {
