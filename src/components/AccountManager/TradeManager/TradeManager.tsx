@@ -1,10 +1,11 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import Card from 'components/common/containers/Card';
 import Grid from 'components/common/dataLayouts/Grid';
 const styles = require('./styles.scss');
 import * as classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
-import { Account, OrderStatus } from 'businessLogic/model';
+import { Account, OrderStatus, DepositRequest } from 'businessLogic/model';
 import { DateUtils, MathUtils } from 'businessLogic/utils';
 import { getLocalizedText } from 'lang';
 import { InputText } from 'components/common/core';
@@ -95,6 +96,19 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
         <InputText outlined disabled value={item.executedTargetSize} label={'Target asset executed so far'} />
         <InputText outlined disabled value={item.tradeOrderId} label={'Order Id'} />
         {item.executionMessage && <InputText outlined disabled value={item.executionMessage} label={'Execution Message'} />}
+
+        <div className={styles.walletPlan}>
+          <span className={styles.title}>Wallet Plane:</span>
+          {_.map(item.walletPlan, (wallet: DepositRequest, index) => {
+            return (
+              <div className={styles.wallet} key={index}>
+                <span className={styles.address}>Address: {wallet.walletAddress}</span>
+                <span className={styles.size}>Size: {wallet.size}</span>
+              </div>
+            );
+          })}
+        </div>
+
       </div>
     );
   }

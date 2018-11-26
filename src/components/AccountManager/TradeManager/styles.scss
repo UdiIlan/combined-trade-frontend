@@ -21,6 +21,22 @@
         justify-content: space-evenly;
         border-bottom: 1px dotted;
         border-color: $borderColor;
+
+        .walletPlan {
+          border-left: 2px solid;
+          padding-left: 10px;
+          border-color: $borderColor;
+
+          .title {
+            text-decoration: underline;
+            font-size: 1.1rem;
+          }
+
+          .wallet {
+            display: flex;
+            justify-content: space-between;
+          }
+        }
       }
     }
   }
