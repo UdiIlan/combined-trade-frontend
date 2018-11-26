@@ -1,6 +1,6 @@
 import { AccountActions, setAccounts, updateFetchedAccountTrades } from './actions';
 import { takeEvery, all, put } from 'redux-saga/effects';
-import { getAccounts, createNewAccount, getAccountTrades } from 'businessLogic/serverApi';
+import { getAccounts, createNewAccount, getAccountTrades, updateAccount } from 'businessLogic/serverApi';
 
 
 function* getAccountsAsync() {
@@ -14,6 +14,12 @@ function* createAccountAsync(action) {
     getAccountsAsync();
 }
 
+function* editAccountAsync(action) {
+    const account = action.payload;
+    yield updateAccount(account);
+    getAccountsAsync();
+}
+
 function* fetchAccountTradesAsync(action) {
     const account = action.payload;
     const trades = yield getAccountTrades(account);
@@ -24,6 +30,7 @@ export function* AccountSagas() {
     return yield all([
         takeEvery(AccountActions.GET_ACCOUNTS, getAccountsAsync),
         takeEvery(AccountActions.CREATE_ACCOUNT, createAccountAsync),
+        takeEvery(AccountActions.EDIT_ACCOUNT, editAccountAsync),
         takeEvery(AccountActions.FETCH_ACCOUNT_TRADES, fetchAccountTradesAsync)
     ]);
 }

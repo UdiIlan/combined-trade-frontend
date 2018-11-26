@@ -6,7 +6,7 @@ const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 
 interface WidgetProps {
-  title: string;
+  title: string | JSX.Element;
   loading?: boolean;
   className?: string;
   children?: any;
