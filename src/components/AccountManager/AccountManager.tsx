@@ -151,7 +151,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
           <Route exact path='/' render={(props) =>
             <div className={styles.headerContainer}>
               <span className={styles.title}>{this.state.selectedAccountName}</span>
-              <div className={styles.btnContainer}>
+              <div>
                 <Button className={styles.btn} intent='primary' type='contained' iconName='edit' onClick={this.editAccountPressed} />
                 <Button className={styles.btn} intent='primary' type='contained' iconName='delete' onClick={this.deleteAccountPressed} />
               </div>
@@ -160,7 +160,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
           <Route path='/trades' render={(props) =>
             <div className={styles.headerContainer}>
               <span className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>
-              <div className={styles.btnContainer}>
+              <div>
                 <Button className={styles.btn} intent='primary' type='contained' iconName='open_in_new' /*onClick={this.editAccountPressed}*/ />
                 <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' /*onClick={this.deleteAccountPressed}*/ />
                 <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' /*onClick={this.deleteAccountPressed}*/ />
@@ -170,6 +170,11 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
           <Route path='/funds' render={(props) =>
             <div className={styles.headerContainer}>
               <span className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>
+              <div>
+                <Button className={styles.btn} intent='primary' type='contained' iconName='open_in_new' /*onClick={this.editAccountPressed}*/ />
+                <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' /*onClick={this.deleteAccountPressed}*/ />
+                <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' /*onClick={this.deleteAccountPressed}*/ />
+              </div>
             </div>} />
         </Switch>
 
