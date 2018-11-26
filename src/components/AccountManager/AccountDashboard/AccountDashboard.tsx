@@ -41,10 +41,10 @@ export default class AccountDashboard extends React.Component<AccountDashboardPr
                         <Widget title={'Balance'} className={styles.widget} loading={!this.props.accountBalance}>
                         </Widget>
 
-                        <Widget title={<div>Trades<Link className={styles.link} to={'/trades'} /></div>} className={styles.middleWidget} loading={!this.props.accountTrades}>
+                        <Widget title={<div className={styles.title}>Trades<Link className={styles.link} to={'/trades'} /></div>} className={styles.middleWidget} loading={!this.props.accountTrades}>
                         </Widget>
 
-                        <Widget title={<div>Funds<Link className={styles.link} to={'/funds'} /></div>} className={styles.widget} loading={!this.props.accountFunds}>
+                        <Widget title={<div className={styles.title}>Funds<Link className={styles.link} to={'/funds'} /></div>} className={styles.widget} loading={!this.props.accountFunds}>
                         </Widget>
 
                     </div>

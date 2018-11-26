@@ -158,9 +158,19 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
             </div>
           } />
           <Route path='/trades' render={(props) =>
-            <span className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span> /*{this.state.selectedAccount.name} -> {pathName}*/
+            <div className={styles.headerContainer}>
+              <span className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>
+              <div className={styles.btnContainer}>
+                <Button className={styles.btn} intent='primary' type='contained' iconName='open_in_new' /*onClick={this.editAccountPressed}*/ />
+                <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' /*onClick={this.deleteAccountPressed}*/ />
+                <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' /*onClick={this.deleteAccountPressed}*/ />
+              </div>
+            </div>
           } />
-          <Route path='/funds' render={(props) => { }}/*  component= TO-DO */ />
+          <Route path='/funds' render={(props) =>
+            <div className={styles.headerContainer}>
+              <span className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>
+            </div>} />
         </Switch>
 
       </h2>
