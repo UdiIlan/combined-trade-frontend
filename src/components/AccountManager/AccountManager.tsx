@@ -84,6 +84,10 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
     });
   }
 
+  changeAccount(account: Account) {
+    this.setState({ selectedAccountName: account.name }, () => this.props.getTrades(account));
+  }
+
   private accountName;
   private accountDescription;
 
@@ -94,7 +98,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
     return (
       <div className={styles.accountManager}>
         <AccountsNavigator
-          selectAccount={(account) => this.setState({ selectedAccountName: account.name })}
+          selectAccount={(account) => this.changeAccount(account)}
           accounts={this.props.accounts}
           selectedAccount={selectedAccount}
           createAccountPressed={this.createAccountPressed} />
