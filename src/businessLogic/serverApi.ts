@@ -110,8 +110,9 @@ export const createNewAccount = async (account: Account): Promise<Account> => {
     return res;
 };
 
+
 export const updateAccount = async (account: Account): Promise<Account> => {
-    const res = await fetcher.put(`/accounts/${account.name}`, account);
+    const res = await fetcher.put(`/accounts/${account.name}`, account, undefined, { userid: 4 });
     return res;
 };
 

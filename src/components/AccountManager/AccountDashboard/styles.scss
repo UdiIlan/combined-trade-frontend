@@ -1,3 +1,4 @@
+@import "~styles/colors.scss";
 .dashboard {
     display: flex;
     flex: 1;
@@ -24,10 +25,36 @@
       margin-top: 3%;
 
       .widget {
-        margin-right: 10px;
         flex: 1;
         padding: 20px;
+        @include themify($themes) {
+          color: blue;
+          cursor: pointer;
+          margin-right: 20px;
+          text-decoration: underline;
+        }
+      }
+
+      .middleWidget {
+        flex: 1;
+        padding: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+        @include themify($themes) {
+          color: blue;
+          cursor: pointer;
+          margin-right: 20px;
+          text-decoration: underline;
+        }
       }
     }
+
+    .link {
+      height: 100%;
+      width: 100%;
+      display: inline-block;
+      background-color: red;
+    }
+   
   }
 }

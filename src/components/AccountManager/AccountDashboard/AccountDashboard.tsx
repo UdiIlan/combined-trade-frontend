@@ -1,10 +1,12 @@
 import * as React from 'react';
 import * as _ from 'lodash';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { OrderActionStatus } from 'businessLogic/model';
 import Card from 'components/common/containers/Card';
 import { Account } from 'businessLogic/model';
 import Widget from 'components/common/containers/Widget';
+import { InputText } from 'components/common/core';
 const styles = require('./styles.scss');
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
@@ -37,19 +39,16 @@ export default class AccountDashboard extends React.Component<AccountDashboardPr
             <div className={styles.dashboard}>
 
                 <div className={styles.dashboardContent}>
-                    <div className={styles.description}> {this.props.account ? this.props.account.description : 'default account description'}</div>
+                    <InputText className={styles.description} outlined label='description' value={this.props.account ? this.props.account.description : 'default account description'}> </InputText>
                     <div className={styles.widgetColumn} >
 
                         <Widget title={'Balance'} className={styles.widget} loading={!this.props.accountBalance}>
-                            <p> balance </p>
                         </Widget>
 
-                        <Widget title={'Trades'} className={styles.widget} loading={!this.props.accountTrades}>
-                            <p> trades </p>
+                        <Widget title={<div>Trades<Link className={styles.link} to={'/trades'} /></div>} className={styles.middleWidget} loading={!this.props.accountTrades}>
                         </Widget>
 
-                        <Widget title={'Funds'} className={styles.widget} loading={!this.props.accountFunds}>
-                            <p> funds </p>
+                        <Widget title={<div>Funds<Link className={styles.link} to={'/funds'} /></div>} className={styles.widget} loading={!this.props.accountFunds}>
                         </Widget>
 
                     </div>

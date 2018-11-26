@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { connect } from 'react-redux';
 const styles = require('./styles.scss');
 import AccountsNavigator from './AccountsNavigator';
-import { getAccounts, createAccount, fetchAccountTrades } from './redux/actions';
+import { getAccounts, createAccount, fetchAccountTrades, editAccount } from './redux/actions';
 import { Account } from 'businessLogic/model';
 import { Route, Switch, Link } from 'react-router-dom';
 import TradeManager from './TradeManager';
@@ -18,24 +18,34 @@ interface AccountManagerProps {
   getAccounts();
   getTrades(account: Account);
   createNewAccount(name: string, description: string);
+  editAccount(name: string, description: string);
+
 }
 
 interface AccountManagerState {
   selectedAccountName?: string;
   createAccountPressed: boolean;
+  editAccountPressed: boolean;
 }
 
 class AccountManager extends React.Component<AccountManagerProps, AccountManagerState> {
 
   constructor(props) {
     super(props);
-    this.state = { createAccountPressed: false };
+    this.state = { createAccountPressed: false, editAccountPressed: false };
     this.createAccountPressed = this.createAccountPressed.bind(this);
     this.createAccount = this.createAccount.bind(this);
+    this.editAccountPress = this.editAccountPress.bind(this);
+    this.editAccount = this.editAccount.bind(this);
   }
 
   createAccountPressed() {
     this.setState({ createAccountPressed: true });
+  }
+
+  editAccountPress() {
+    this.setState({ editAccountPressed: true });
+    this.forceUpdate();
   }
 
   componentWillMount() {
@@ -46,6 +56,13 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
     this.props.createNewAccount(this.accountName.value, this.accountDescription.value);
     this.setState({ createAccountPressed: false });
     this.props.getAccounts();
+  }
+
+  editAccount() {
+    this.props.editAccount(this.state.selectedAccountName, this.accountDescription.value);
+    this.setState({ editAccountPressed: false });
+    this.props.getAccounts();
+
   }
 
   private accountName;
@@ -89,6 +106,14 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
           <div className={styles.selectAccount} />
         }
 
+        {this.state.editAccountPressed ?
+          <Dialog title={`Edit Account ${this.state.selectedAccountName}`} open={true} onOkClick={this.editAccount} onCancelClick={() => this.setState({ editAccountPressed: false })}>
+            <div className={styles.accountDialogContent} >
+              <InputText className={styles.userInput} ref={(input) => this.accountDescription = input} label='description' type='text' name='description' />
+            </div>
+          </Dialog>
+          : ''
+        }
       </div>
 
     );
@@ -101,7 +126,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
           <Route exact path='/' render={(props) =>
             <div>
               <span className={styles.title}>{this.state.selectedAccountName}</span>
-              <Button className={styles.btn} intent='primary' type='contained' iconName='edit' /*onClick={this.props.createAccountPressed}*/ />
+              <Button className={styles.btn} intent='primary' type='contained' iconName='edit' onClick={this.editAccountPress} />
               <Button className={styles.btn} intent='primary' type='contained' iconName='delete' /*onClick={this.props.createAccountPressed}*/ />
             </div>
           } />
@@ -115,6 +140,8 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
 
     );
   }
+
+
 }
 
 const mapStateToProps = (state) => {
@@ -127,6 +154,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getAccounts: () => dispatch(getAccounts()),
     createNewAccount: (name, description) => dispatch(createAccount({ name, description })),
+    editAccount: (name, description) => dispatch(editAccount({ name, description })),
     getTrades: (account: Account) => dispatch(fetchAccountTrades(account))
   };
 };
