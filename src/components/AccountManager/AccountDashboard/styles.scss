@@ -28,10 +28,7 @@
         flex: 1;
         padding: 20px;
         margin-right: 20px;
-        text-decoration: underline;
-        @include themify($themes) {
-          color: blue;
-        }
+
       }
 
       .middleWidget {
@@ -40,14 +37,14 @@
         margin-left: 10px;
         margin-right: 10px;
         margin-right: 20px;
-        text-decoration: underline;
-        @include themify($themes) {
-          color: blue;
-        }
+        
       }
     }
     .title{
       font-size: 1.2rem;
+      text-decoration: underline;
+      color: $linkColor;
+      cursor: pointer; 
     }
 
     .link {
@@ -55,8 +52,7 @@
       height: 15px;
       display: inline-block;
       position: relative;
-      right: 45px;
-      cursor: pointer; 
+      right: 45px;   
     }
    
   }
