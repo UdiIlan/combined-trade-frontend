@@ -46,7 +46,7 @@ export default class AccountDashboard extends React.Component<AccountDashboardPr
         const { account } = this.props;
         return (
             <div className={styles.dashboard}>
-                <InputText className={styles.description} disabled={true} outlined label='description' value={this.props.account ? this.props.account.description : 'default account description'}> </InputText>
+                <InputText className={styles.description} disabled={true} outlined label='Description' value={this.props.account ? this.props.account.description : 'default account description'}> </InputText>
                 <div className={styles.dashboardContent}>
 
                     <div className={styles.widgetColumn} >

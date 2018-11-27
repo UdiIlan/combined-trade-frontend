@@ -1,33 +1,28 @@
 @import "~styles/colors.scss";
-.dashboard {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-   
 
-.dashboardContent {
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .dashboardContent {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     flex: 1;
     height: 70%;
-    
 
-    .description{
-        font-size: 2rem;
-    
+    .description {
+      font-size: 2rem;
     }
 
     .widgetColumn {
       display: flex;
-      flex: 2;
       margin-top: 3%;
 
       .widget {
         flex: 1;
         padding: 20px;
         margin-right: 20px;
-
       }
 
       .middleWidget {
@@ -36,14 +31,14 @@
         margin-left: 10px;
         margin-right: 10px;
         margin-right: 20px;
-        
       }
     }
-    .title{
+
+    .title {
       font-size: 1.2rem;
       text-decoration: underline;
       color: $linkColor;
-      cursor: pointer; 
+      cursor: pointer;
     }
 
     .link {
@@ -51,9 +46,8 @@
       height: 15px;
       display: inline-block;
       position: relative;
-      right: 45px;   
+      right: 45px;
     }
-   
   }
 
   .grid {
