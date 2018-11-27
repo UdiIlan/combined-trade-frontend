@@ -5,82 +5,88 @@
   flex-direction: column;
   height: 100%;
 
-  .dashboardContainer {
-    overflow-y: scroll;
-    max-height: 60vh;
-    margin-top: 3%;
-
-    .dashboardContent {
-      display: flex;
+  @media all and (max-width: 1400px) and (min-width: 320px) {
+    .widgetColumn {
       flex-direction: column;
-      height: 70%;
+      margin-top: 3%;
+    }
+
+    .lastWidget {
+      padding: 20px;
+      margin-right: 20px;
+      margin-top: 3%;
+    }
+
+    .dashboardContainer {
       overflow-y: scroll;
-
-      @media all and (max-width: 1400px) and (min-width: 320px) {
-        .widgetColumn {
-          flex-direction: column;
-        }
-
-        .lastWidget {
-          padding: 20px;
-          margin-right: 20px;
-          margin-top: 3%;
-        }
-      }
-
-      .description {
-        font-size: 2rem;
-      }
-
-      .firstWidgetColumn {
-        margin-right: 20px;
-        flex: 1;
-
-        .firstWidget {
-          padding: 20px;
-       
-        }
-      }
-
-      .widgetColumn {
-        display: flex;
-
-        
-
-        .middleWidget {
-          padding: 20px;
-          margin-right: 20px;
-          flex: 1;
-          margin-top: 3%;
-        }
-
-        .lastWidget {
-          padding: 20px;
-          margin-right: 20px;
-          flex: 1;
-          margin-top: 3%;
-        }
-      }
-
-      .title {
-        font-size: 1.2rem;
-        text-decoration: underline;
-        color: $linkColor;
-        cursor: pointer;
-      }
-
-      .link {
-        width: 100px;
-        height: 15px;
-        display: inline-block;
-        position: relative;
-        right: 45px;
-      }
+      max-height: 55vh;
+      margin-top: 3%;
     }
   }
 
-  .grid {
-    height: 100%;
-    overflow-y: scroll;
+  @media all and (min-width: 1401px) {
+    .dashboardContainer {
+      overflow-y: scroll;
+      max-height: 60vh;
+      margin-top: 3%;
+
+      .dashboardContent {
+        display: flex;
+        flex-direction: column;
+        height: 70%;
+        overflow-y: scroll;
+
+        .description {
+          font-size: 2rem;
+        }
+
+        .firstWidgetColumn {
+          margin-right: 20px;
+          flex: 1;
+
+          .firstWidget {
+            padding: 20px;
+          }
+        }
+
+        .widgetColumn {
+          display: flex;
+
+          .middleWidget {
+            padding: 20px;
+            margin-right: 20px;
+            flex: 1;
+            margin-top: 3%;
+          }
+
+          .lastWidget {
+            padding: 20px;
+            margin-right: 20px;
+            flex: 1;
+            margin-top: 3%;
+          }
+        }
+
+        .title {
+          font-size: 1.2rem;
+          text-decoration: underline;
+          color: $linkColor;
+          cursor: pointer;
+        }
+
+        .link {
+          width: 100px;
+          height: 15px;
+          display: inline-block;
+          position: relative;
+          right: 45px;
+        }
+      }
+    }
+
+    .grid {
+      height: 100%;
+      overflow-y: scroll;
+    }
   }
 }
