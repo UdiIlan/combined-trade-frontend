@@ -5,48 +5,77 @@
   flex-direction: column;
   height: 100%;
 
-  .dashboardContent {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: 70%;
+  .dashboardContainer {
+    overflow-y: scroll;
+    max-height: 60vh;
+    margin-top: 3%;
 
-    .description {
-      font-size: 2rem;
-    }
-
-    .widgetColumn {
+    .dashboardContent {
       display: flex;
-      margin-top: 3%;
+      flex-direction: column;
+      height: 70%;
+      overflow-y: scroll;
 
-      .widget {
-        flex: 1;
-        padding: 20px;
-        margin-right: 20px;
+      @media all and (max-width: 1400px) and (min-width: 320px) {
+        .widgetColumn {
+          flex-direction: column;
+        }
+
+        .lastWidget {
+          padding: 20px;
+          margin-right: 20px;
+          margin-top: 3%;
+        }
       }
 
-      .middleWidget {
-        flex: 1;
-        padding: 20px;
-        margin-left: 10px;
-        margin-right: 10px;
-        margin-right: 20px;
+      .description {
+        font-size: 2rem;
       }
-    }
 
-    .title {
-      font-size: 1.2rem;
-      text-decoration: underline;
-      color: $linkColor;
-      cursor: pointer;
-    }
+      .firstWidgetColumn {
+        margin-right: 20px;
+        flex: 1;
 
-    .link {
-      width: 100px;
-      height: 15px;
-      display: inline-block;
-      position: relative;
-      right: 45px;
+        .firstWidget {
+          padding: 20px;
+       
+        }
+      }
+
+      .widgetColumn {
+        display: flex;
+
+        
+
+        .middleWidget {
+          padding: 20px;
+          margin-right: 20px;
+          flex: 1;
+          margin-top: 3%;
+        }
+
+        .lastWidget {
+          padding: 20px;
+          margin-right: 20px;
+          flex: 1;
+          margin-top: 3%;
+        }
+      }
+
+      .title {
+        font-size: 1.2rem;
+        text-decoration: underline;
+        color: $linkColor;
+        cursor: pointer;
+      }
+
+      .link {
+        width: 100px;
+        height: 15px;
+        display: inline-block;
+        position: relative;
+        right: 45px;
+      }
     }
   }
 

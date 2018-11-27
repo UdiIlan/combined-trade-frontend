@@ -152,41 +152,43 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
 
   renderHeader(pathName) {
     return (
-      <h2 className={styles.headerContainer}>
-        <Switch>
-          <Route exact path='/' render={(props) =>
-            [
-              <span key='title' className={styles.title}>{this.state.selectedAccountName}</span>,
+      <div>
+        <h2 className={styles.headerContainer}>
+          <Switch>
+            <Route exact path='/' render={(props) =>
+              [
+                <span key='title' className={styles.title}>{this.state.selectedAccountName}</span>,
+                <div key='actions'>
+                  <Button className={styles.btn} intent='primary' type='contained' iconName='edit' onClick={this.editAccountPressed} />
+                  <Button className={styles.btn} intent='primary' type='contained' iconName='delete' onClick={this.deleteAccountPressed} />
+                </div>
+              ]
+
+            } />
+            <Route path='/trades' render={(props) =>
+              [
+                <span key='title' className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>,
+                <div key='actions'>
+                  <Button className={styles.btn} intent='primary' type='contained' iconName='add' onClick={e => this.tardeManager.createNewTrade()} />
+                  <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' onClick={e => this.tardeManager.load()} />
+                  <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' linkTo='/' /*onClick={this.deleteAccountPressed}*/ />
+                </div>
+              ]
+
+            } />
+            <Route path='/funds' render={(props) =>
+              [<span key='title' className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>,
               <div key='actions'>
-                <Button className={styles.btn} intent='primary' type='contained' iconName='edit' onClick={this.editAccountPressed} />
-                <Button className={styles.btn} intent='primary' type='contained' iconName='delete' onClick={this.deleteAccountPressed} />
+                <Button className={styles.btn} intent='primary' type='contained' iconName='add' /*onClick={this.editAccountPressed}*/ />
+                <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' /*onClick={this.deleteAccountPressed}*/ />
+                <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' /*onClick={this.deleteAccountPressed}*/ />
               </div>
-            ]
+              ]
+            } />
+          </Switch>
 
-          } />
-          <Route path='/trades' render={(props) =>
-            [
-              <span key='title' className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>,
-              <div key='actions'>
-                <Button className={styles.btn} intent='primary' type='contained' iconName='add' onClick={e => this.tardeManager.createNewTrade()} />
-                <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' onClick={e => this.tardeManager.load()} />
-                <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' linkTo='/' /*onClick={this.deleteAccountPressed}*/ />
-              </div>
-            ]
-
-          } />
-          <Route path='/funds' render={(props) =>
-            [<span key='title' className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>,
-            <div key='actions'>
-              <Button className={styles.btn} intent='primary' type='contained' iconName='add' /*onClick={this.editAccountPressed}*/ />
-              <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' /*onClick={this.deleteAccountPressed}*/ />
-              <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' /*onClick={this.deleteAccountPressed}*/ />
-            </div>
-            ]
-          } />
-        </Switch>
-
-      </h2>
+        </h2>
+      </div>
     );
   }
 
