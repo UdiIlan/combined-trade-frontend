@@ -38,21 +38,25 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
   }
 
   componentWillMount() {
-    this.updateTradeInfo(this.props);
+    this.load(this.props);
   }
 
   componentWillReceiveProps(newProps: TradeManagerProps) {
-    if (newProps.account.name !== this.props.account.name) {
-      this.updateTradeInfo(newProps);
-      return;
-    }
+    // if (newProps.account.name !== this.props.account.name) {
+    //   this.updateTradeInfo(newProps);
+    //   return;
+    // }
 
     if (this.state.loading) {
       this.setState({ loading: false });
     }
   }
 
-  private updateTradeInfo(props: TradeManagerProps) {
+  createNewTrade() {
+
+  }
+
+  load(props = this.props) {
     this.setState({ loading: true }, () => props.getTrades(props.account));
   }
 
