@@ -60,36 +60,19 @@ export default class AccountDashboard extends React.Component<AccountDashboardPr
                                         data={this.props.account.trades.slice(0, 5)}
                                         columns={TRADES_COLUMNS}
                                         disablePagination={true}
-                                    // forceNestedRendering
-                                    // renderNestedItems={(item) => this.renderOrderChildren(item)}
                                     /> : ''
                                 }
                             </div>
+                        </Widget>
+
+                        <Widget title={<div className={styles.title}>Funds<Link className={styles.link} to={'/funds'} /></div>} className={styles.widget} loading={!this.props.accountFunds}>
                         </Widget>
                     </div>
                     <div className={styles.widgetColumn} >
                         <Widget title={<div className={styles.title}>Balance</div>} className={styles.widget} loading={!this.props.accountBalance}>
                         </Widget>
-
-                        <Widget title={<div className={styles.title}>Funds<Link className={styles.link} to={'/funds'} /></div>} className={styles.widget} loading={!this.props.accountFunds}>
-                        </Widget>
-
                     </div>
                 </div>
-
-            </div>
-        );
-    }
-
-    renderOrderChildren(item: OrderStatus) {
-        return (
-            <div className={styles.orderNestedContainer}>
-                <InputText outlined disabled value={item.executionSize} label={'Executed so far'} />
-                <InputText outlined disabled value={item.elapsedTimeMinutes} label={'Elapsed Time (in minutes)'} />
-                <InputText outlined disabled value={item.actionType} label={'Action Type'} />
-                <InputText outlined disabled value={item.executedTargetSize} label={'Target asset executed so far'} />
-                <InputText outlined disabled value={item.tradeOrderId} label={'Order Id'} />
-                {item.executionMessage && <InputText outlined disabled value={item.executionMessage} label={'Execution Message'} />}
 
             </div>
         );
