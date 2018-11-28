@@ -11,6 +11,7 @@ import { getLocalizedText } from 'lang';
 import { InputText } from 'components/common/core';
 import Dialog from 'components/common/modals/Dialog';
 import Button from 'components/common/core/Button/Button';
+import Select from 'components/common/core/Select/Select';
 
 
 const TRADES_COLUMNS = [
@@ -28,16 +29,22 @@ interface TradeManagerProps {
   submitTrades?(order: any);
 }
 
+export type AssetPairType = 'BTC-USD' | 'BCH-USD' | 'ETH-USD';
+export type TradingType = 'buy' | 'sell';
+
 interface TradeManagerState {
   loading: boolean;
   selectedTradeItem?: OrderStatus;
+  newTradePressed?: boolean;
+  assetPairOption?: AssetPairType;
+  tradingOption?: TradingType;
 }
 
 export default class TradeManager extends React.Component<TradeManagerProps, TradeManagerState> {
 
   constructor(props) {
     super(props);
-    this.state = { loading: false };
+    this.state = { loading: false, assetPairOption: 'BTC-USD' };
     this.openWalletPlanePressed = this.openWalletPlanePressed.bind(this);
     this.openWalletPlane = this.openWalletPlane.bind(this);
   }
@@ -58,7 +65,7 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
   }
 
   createNewTrade() {
-
+    this.setState({ newTradePressed: true });
   }
 
   load(props = this.props) {
@@ -92,6 +99,8 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
 
         {this.state.selectedTradeItem ? this.openWalletPlane(this.state.selectedTradeItem) : ''}
 
+        {this.state.newTradePressed ? this.openNewTradeDialog() : ''}
+
       </div>
 
     );
@@ -100,7 +109,7 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
 
   openWalletPlane(item) {
     return (
-      <Dialog title='Wallet Plane' open={true} cancelBtnHidden={true} onOkClick={() => this.setState({selectedTradeItem: undefined})}>
+      <Dialog title='Wallet Plane' open={true} cancelBtnHidden={true} onOkClick={() => this.setState({ selectedTradeItem: undefined })}>
         {_.map(item.walletPlan, (wallet: DepositRequest, index) => {
           return (
             <div className={styles.wallet} >
@@ -109,6 +118,31 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
             </div>
           );
         })}
+      </Dialog>
+    );
+  }
+
+  private tradeSize;
+  private tradePrice;
+  private tradeAssetPair;
+  private tradeAction;
+
+  openNewTradeDialog() {
+    return (
+      <Dialog title='Wallet Plane' open={true} onCancelClick={() => { }} onOkClick={() => { }}>
+        <div className={styles.newTrade} >
+          <InputText className={styles.newTradeProp} ref={(input) => this.tradeSize = input} label='Size' type='text' name='Size' />
+          <InputText className={styles.newTradeProp} ref={(input) => this.tradePrice = input} label='Price' type='text' name='Price' />
+          <Select  selectedValue={this.state.assetPairOption} className={styles.tradingOption} onChange={selection => this.tradeAssetPair = selection}>
+            <option value='BTC'>BTC-USD</option>
+            <option value='BCH'>BCH-USD</option>
+            <option value='ETH'>ETH-USD</option>
+          </Select>
+          <Select  selectedValue={this.state.tradingOption} className={styles.tradingOption} onChange={selection => this.tradeAction = selection}>
+            <option value='BTC'>sell</option>
+            <option value='BCH'>buy</option>
+          </Select>
+        </div>
       </Dialog>
     );
   }

@@ -55,3 +55,33 @@
     flex: 1;
   }
 }
+
+
+.accountDialogContent {
+  width: 15vw;
+
+  .userInput {
+    width: 100%;
+    margin: 20px;
+  }
+}
+
+
+.newTrade{
+  width: 15vw;
+  
+  .newTradeProp{
+    width: 100%;
+    margin: 10px;
+    margin-top: 5px;
+  }
+
+  .tradingOption {
+    margin: 10px;
+    width: 100%;
+    background-color: $MainBlue;
+  }
+}
+
+
+

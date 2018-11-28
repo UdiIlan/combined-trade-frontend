@@ -29,100 +29,100 @@
       overflow-y: scroll;
       max-height: 60vh;
       margin-top: 3%;
-
-      .dashboardContent {
-        display: flex;
-        flex-direction: column;
-        height: 70%;
-        overflow-y: scroll;
-
-        .description {
-          font-size: 2rem;
-        }
-
-        .firstWidgetColumn {
-          margin-right: 20px;
-          flex: 1;
-
-          .firstWidget {
-            padding: 20px;
-
-            .balance {
-              padding-left: 20px;
-              display: flex;
-              justify-content: space-evenly;
-              flex-wrap: wrap;
-
-              .balanceItem {
-                display: flex;
-                color: $whiteText;
-                width: 7%;
-                @include themify($themes) {
-                  background-color: themed('sectionBackground');
-                }
-                border-radius: 20px;
-                margin: 10px 0px;
-                padding: 20px 15px;
-                justify-content: center;
-
-                .detail {
-                  display: inline-block;
-                  font-size: inherit;
-                }
-
-                .asset {
-                  @extend .detail;
-                  margin-right: 10px;
-                  font-size: 1.2rem;
-                }
-
-                .value {
-                  @extend .detail;
-                  font-size: 1.2rem;
-                }
-              }
-            }
-          }
-        }
-
-        .widgetColumn {
-          display: flex;
-
-          .middleWidget {
-            padding: 20px;
-            margin-right: 20px;
-            flex: 1;
-            margin-top: 3%;
-          }
-
-          .lastWidget {
-            padding: 20px;
-            margin-right: 20px;
-            flex: 1;
-            margin-top: 3%;
-          }
-        }
-
-        .title {
-          font-size: 1.2rem;
-          text-decoration: underline;
-          color: $linkColor;
-          cursor: pointer;
-        }
-
-        .link {
-          width: 100px;
-          height: 15px;
-          display: inline-block;
-          position: relative;
-          right: 45px;
-        }
-      }
     }
 
-    .grid {
-      height: 100%;
-      overflow-y: scroll;
+    .widgetColumn {
+      display: flex;
+    }
+
+    .lastWidget {
+      padding: 20px;
+      margin-right: 20px;
+      flex: 1;
+      margin-top: 3%;
+    }
+  }
+
+  .dashboardContent {
+    display: flex;
+    flex-direction: column;
+    height: 70%;
+    overflow-y: scroll;
+
+    .description {
+      font-size: 2rem;
+    }
+
+    .middleWidget {
+      padding: 20px;
+      margin-right: 20px;
+      flex: 1;
+      margin-top: 3%;
+    }
+
+    .title {
+      font-size: 1.2rem;
+      text-decoration: underline;
+      color: $linkColor;
+      cursor: pointer;
+    }
+
+    .link {
+      width: 100px;
+      height: 15px;
+      display: inline-block;
+      position: relative;
+      right: 45px;
+    }
+  }
+
+  .grid {
+    height: 100%;
+    overflow-y: scroll;
+  }
+
+  .firstWidgetColumn {
+    margin-right: 20px;
+    flex: 1;
+
+    .firstWidget {
+      padding: 20px;
+
+      .balance {
+        padding-left: 20px;
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+
+        .balanceItem {
+          display: flex;
+          color: $whiteText;
+          width: 7%;
+          @include themify($themes) {
+            background-color: themed('sectionBackground');
+          }
+          border-radius: 20px;
+          margin: 10px 0px;
+          padding: 20px 15px;
+          justify-content: center;
+
+          .detail {
+            display: inline-block;
+            font-size: inherit;
+          }
+
+          .asset {
+            @extend .detail;
+            margin-right: 10px;
+            font-size: 1.2rem;
+          }
+
+          .value {
+            @extend .detail;
+            font-size: 1.2rem;
+          }
+        }
+      }
     }
   }
 }
