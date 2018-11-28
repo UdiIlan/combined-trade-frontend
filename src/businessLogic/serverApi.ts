@@ -203,3 +203,15 @@ export const getAccountTrades = async (account: Account, index = 0, size = 1000)
         return resolve(orders);
     });
 };
+
+
+export const getAccountBalance = async (account: Account, index = 0, size = 1000): Promise<object> => {
+    // const res = await fetcher.get(`/accounts/${account.name}/trades/?index=${index}&size=${size}`);
+    // return res;
+
+    const balance = {usd: 2000, btc: 500, bch: 350, eth: 1000};
+
+    return new Promise<object>((resolve, reject) => {
+        return resolve(balance);
+    });
+};

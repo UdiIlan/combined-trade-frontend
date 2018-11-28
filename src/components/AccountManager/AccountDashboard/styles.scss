@@ -46,6 +46,42 @@
 
           .firstWidget {
             padding: 20px;
+
+            .balance {
+              padding-left: 20px;
+              display: flex;
+              justify-content: space-evenly;
+              flex-wrap: wrap;
+
+              .balanceItem {
+                display: flex;
+                color: $whiteText;
+                width: 7%;
+                @include themify($themes) {
+                  background-color: themed('sectionBackground');
+                }
+                border-radius: 20px;
+                margin: 10px 0px;
+                padding: 20px 15px;
+                justify-content: center;
+
+                .detail {
+                  display: inline-block;
+                  font-size: inherit;
+                }
+
+                .asset {
+                  @extend .detail;
+                  margin-right: 10px;
+                  font-size: 1.2rem;
+                }
+
+                .value {
+                  @extend .detail;
+                  font-size: 1.2rem;
+                }
+              }
+            }
           }
         }
 

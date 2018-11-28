@@ -26,10 +26,6 @@ const TRADES_COLUMNS = [
 
 export interface AccountDashboardProps {
     account: Account;
-    accountBalance?: object;
-    accountTrades?: object;
-    accountFunds?: object;
-
 }
 
 
@@ -51,7 +47,19 @@ export default class AccountDashboard extends React.Component<AccountDashboardPr
                     <div className={styles.dashboardContent}>
 
                         <div className={styles.firstWidgetColumn}>
-                            <Widget title={<div className={styles.title}>Balance</div>} className={styles.firstWidget} loading={!this.props.accountBalance}>
+                            <Widget title={<div className={styles.title}>Balance</div>} className={styles.firstWidget} loading={!this.props.account.balance}>
+                                <div>
+                                    {this.props.account.balance ?
+                                        <div className={styles.balance}>
+                                            {Object.keys(this.props.account.balance).map(key => (
+                                                <div className={styles.balanceItem} key={key}>
+                                                    <span className={styles.asset}>{`${key.toUpperCase()}:`}</span>
+                                                    <span className={styles.value}>{this.props.account.balance[key]}</span>
+                                                </div>
+                                            ))}
+                                        </div> : ''
+                                    }
+                                </div>
                             </Widget>
                         </div>
                         <div className={styles.widgetColumn} >
@@ -70,7 +78,7 @@ export default class AccountDashboard extends React.Component<AccountDashboardPr
                                 </div>
                             </Widget>
 
-                            <Widget title={<div className={styles.title}>Funds<Link className={styles.link} to={'/funds'} /></div>} className={styles.lastWidget} loading={!this.props.accountFunds}>
+                            <Widget title={<div className={styles.title}>Funds<Link className={styles.link} to={'/funds'} /></div>} className={styles.lastWidget} loading={!this.props.account.funds}>
                             </Widget>
                         </div>
                     </div>

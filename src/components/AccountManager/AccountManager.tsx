@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { connect } from 'react-redux';
 const styles = require('./styles.scss');
 import AccountsNavigator from './AccountsNavigator';
-import { getAccounts, createAccount, fetchAccountTrades, editAccount, deleteAccount } from './redux/actions';
+import { getAccounts, createAccount, fetchAccountTrades, editAccount, deleteAccount, fetchAccountBalance } from './redux/actions';
 import { Account } from 'businessLogic/model';
 import { Route, Switch, Link } from 'react-router-dom';
 import TradeManager from './TradeManager';
@@ -17,6 +17,7 @@ interface AccountManagerProps {
   location: any;
   getAccounts();
   getTrades(account: Account);
+  getBalance(account: Account);
   createNewAccount(name: string, description: string);
   editAccount(name: string, description: string);
   deleteAccount(name: string);
@@ -85,7 +86,10 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
   }
 
   changeAccount(account: Account) {
-    this.setState({ selectedAccountName: account.name }, () => this.props.getTrades(account));
+    this.setState({ selectedAccountName: account.name }, () => {
+      this.props.getTrades(account);
+      this.props.getBalance(account);
+    });
   }
 
   private accountName;
@@ -207,7 +211,8 @@ const mapDispatchToProps = (dispatch) => {
     createNewAccount: (name, description) => dispatch(createAccount({ name, description })),
     editAccount: (name, description) => dispatch(editAccount({ name, description })),
     deleteAccount: (name) => dispatch(deleteAccount(name)),
-    getTrades: (account: Account) => dispatch(fetchAccountTrades(account))
+    getTrades: (account: Account) => dispatch(fetchAccountTrades(account)),
+    getBalance: (account: Account) => dispatch(fetchAccountBalance(account))
   };
 };
 

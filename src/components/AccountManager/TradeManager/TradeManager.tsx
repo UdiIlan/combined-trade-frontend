@@ -9,12 +9,14 @@ import { Account, OrderStatus, DepositRequest } from 'businessLogic/model';
 import { DateUtils, MathUtils } from 'businessLogic/utils';
 import { getLocalizedText } from 'lang';
 import { InputText } from 'components/common/core';
+import Dialog from 'components/common/modals/Dialog';
+import Button from 'components/common/core/Button/Button';
 
 
 const TRADES_COLUMNS = [
   { id: 'startTime', title: 'Start Time', render: item => DateUtils.defaultFormat(item.startTime) },
   { id: 'assetPair', title: 'Asset Pair' },
-  { id: 'actionType', title: 'Action Type', render: item => getLocalizedText(item.actionType) },
+  { id: 'actionType', title: 'Action Type' },
   { id: 'status', title: 'Status' },
   { id: 'requestedSize', title: 'Requested Size', render: item => parseFloat(item.requestedSize).toFixed(4) },
   { id: 'requestedPrice', title: 'Requested Price', render: item => MathUtils.toFixed(item.requestedPrice) },
@@ -28,13 +30,17 @@ interface TradeManagerProps {
 
 interface TradeManagerState {
   loading: boolean;
+  selectedTradeItem?: OrderStatus;
+  selectedTradeItemPressed?: boolean;
 }
 
 export default class TradeManager extends React.Component<TradeManagerProps, TradeManagerState> {
 
   constructor(props) {
     super(props);
-    this.state = { loading: false };
+    this.state = { loading: false, selectedTradeItemPressed: false };
+    this.openWalletPlanePressed = this.openWalletPlanePressed.bind(this);
+    this.openWalletPlane = this.openWalletPlane.bind(this);
   }
 
   componentWillMount() {
@@ -85,34 +91,43 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
           </Card>
         }
 
+        {this.state.selectedTradeItemPressed ? this.openWalletPlane(this.state.selectedTradeItem) : ''}
+
       </div>
 
     );
   }
 
 
+  openWalletPlane(item) {
+    return (
+      <Dialog title='Wallet Plane' open={true} cancelBtnHidden={true} onOkClick={() => this.setState({selectedTradeItemPressed: false})}>
+        {_.map(item.walletPlan, (wallet: DepositRequest, index) => {
+          return (
+            <div className={styles.wallet} >
+              <InputText className={styles.addressWalletItem} label='Address' type='text' name='Address' value={wallet.walletAddress} disabled={true} />
+              <InputText className={styles.sizeWalletItem} label='Size' type='text' name='Size' value={wallet.size} disabled={true} />
+            </div>
+          );
+        })}
+      </Dialog>
+    );
+  }
+
+  openWalletPlanePressed(item: OrderStatus) {
+    this.setState({ selectedTradeItemPressed: true});
+    this.setState({ selectedTradeItem: item });
+  }
+
   renderOrderChildren(item: OrderStatus) {
     return (
       <div className={styles.orderNestedContainer}>
-        <InputText outlined disabled value={item.executionSize} label={'Executed so far'} />
+        <InputText className={styles.InputText} outlined disabled value={item.executionSize} label={'Executed so far'} />
         <InputText outlined disabled value={item.elapsedTimeMinutes} label={'Elapsed Time (in minutes)'} />
-        <InputText outlined disabled value={item.actionType} label={'Action Type'} />
         <InputText outlined disabled value={item.executedTargetSize} label={'Target asset executed so far'} />
         <InputText outlined disabled value={item.tradeOrderId} label={'Order Id'} />
         {item.executionMessage && <InputText outlined disabled value={item.executionMessage} label={'Execution Message'} />}
-
-        <div className={styles.walletPlan}>
-          <span className={styles.title}>Wallet Plane:</span>
-          {_.map(item.walletPlan, (wallet: DepositRequest, index) => {
-            return (
-              <div className={styles.wallet} key={index}>
-                <span className={styles.address}>Address: {wallet.walletAddress}</span>
-                <span className={styles.size}>Size: {wallet.size}</span>
-              </div>
-            );
-          })}
-        </div>
-
+        <Button className={styles.btn} intent='primary' type='contained' onClick={(e) => this.openWalletPlanePressed(item)}> wallet Plane</Button>
       </div>
     );
   }

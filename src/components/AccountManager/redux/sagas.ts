@@ -1,6 +1,6 @@
-import { AccountActions, setAccounts, updateFetchedAccountTrades } from './actions';
+import { AccountActions, setAccounts, updateFetchedAccountTrades, updateFetchedAccountBalance } from './actions';
 import { takeEvery, all, put } from 'redux-saga/effects';
-import { getAccounts, createNewAccount, getAccountTrades, updateAccount, deleteAccount } from 'businessLogic/serverApi';
+import { getAccounts, createNewAccount, getAccountTrades, updateAccount, deleteAccount, getAccountBalance } from 'businessLogic/serverApi';
 
 
 function* getAccountsAsync() {
@@ -57,12 +57,24 @@ function* fetchAccountTradesAsync(action) {
     }
 }
 
+function* fetchAccountBalanceAsync(action) {
+    try {
+        const account = action.payload;
+        const balance = yield getAccountBalance(account);
+        yield put(updateFetchedAccountBalance(account.name, balance));
+    }
+    catch (err) {
+        console.error('Failed to fetch account trades: ', err);
+    }
+}
+
 export function* AccountSagas() {
     return yield all([
         takeEvery(AccountActions.GET_ACCOUNTS, getAccountsAsync),
         takeEvery(AccountActions.CREATE_ACCOUNT, createAccountAsync),
         takeEvery(AccountActions.EDIT_ACCOUNT, editAccountAsync),
         takeEvery(AccountActions.DELETE_ACCOUNT, deleteAccountAsync),
-        takeEvery(AccountActions.FETCH_ACCOUNT_TRADES, fetchAccountTradesAsync)
+        takeEvery(AccountActions.FETCH_ACCOUNT_TRADES, fetchAccountTradesAsync),
+        takeEvery(AccountActions.FETCH_ACCOUNT_BALANCE, fetchAccountBalanceAsync)
     ]);
 }

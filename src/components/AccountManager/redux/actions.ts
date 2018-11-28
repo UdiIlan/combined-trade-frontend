@@ -8,6 +8,8 @@ export const AccountActions = {
     CREATE_ACCOUNT: 'ACCOUNT/CREATE_ACCOUNT',
     EDIT_ACCOUNT: 'ACCOUNT/EDIT_ACCOUNT',
     DELETE_ACCOUNT: 'ACCOUNT/DELETE_ACCOUNT',
+    FETCH_ACCOUNT_BALANCE: 'ACCOUNT/FETCH_ACCOUNT_BALANCE',
+    UPDATE_FETCHED_ACCOUNT_BALANCE: 'ACCOUNT/UPDATE_FETCHED_ACCOUNT_BALANCE',
     FETCH_ACCOUNT_TRADES: 'ACCOUNT/TRADE/GET_ORDERS',
     UPDATE_FETCHED_ACCOUNT_TRADES: 'ACCOUNT/TRADE/UPDATE_FETCHED_ACCOUNT_TRADES'
 };
@@ -19,4 +21,6 @@ export const createAccount = createAction(AccountActions.CREATE_ACCOUNT, (accoun
 export const editAccount = createAction(AccountActions.EDIT_ACCOUNT, (account: Account) => { return account; });
 export const deleteAccount = createAction(AccountActions.DELETE_ACCOUNT, (accountName: string) => { return accountName; });
 export const fetchAccountTrades = createAction(AccountActions.FETCH_ACCOUNT_TRADES, (account: Account) => account);
+export const fetchAccountBalance = createAction(AccountActions.FETCH_ACCOUNT_BALANCE, (account: Account) => account);
 export const updateFetchedAccountTrades = createAction(AccountActions.UPDATE_FETCHED_ACCOUNT_TRADES, (accountName: string, trades: OrderStatus[]) => { return { accountName, trades }; });
+export const updateFetchedAccountBalance = createAction(AccountActions.UPDATE_FETCHED_ACCOUNT_BALANCE, (accountName: string, balance: object) => { return { accountName, balance }; });

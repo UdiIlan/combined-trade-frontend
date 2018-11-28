@@ -119,6 +119,8 @@ export interface Account {
     name: string;
     description?: string;
     trades?: any[];
+    funds?: any[];
+    balance?: object;
 }
 
 /********************************************* Trades *************************************************** */
