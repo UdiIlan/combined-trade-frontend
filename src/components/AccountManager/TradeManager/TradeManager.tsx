@@ -31,14 +31,13 @@ interface TradeManagerProps {
 interface TradeManagerState {
   loading: boolean;
   selectedTradeItem?: OrderStatus;
-  selectedTradeItemPressed?: boolean;
 }
 
 export default class TradeManager extends React.Component<TradeManagerProps, TradeManagerState> {
 
   constructor(props) {
     super(props);
-    this.state = { loading: false, selectedTradeItemPressed: false };
+    this.state = { loading: false };
     this.openWalletPlanePressed = this.openWalletPlanePressed.bind(this);
     this.openWalletPlane = this.openWalletPlane.bind(this);
   }
@@ -91,7 +90,7 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
           </Card>
         }
 
-        {this.state.selectedTradeItemPressed ? this.openWalletPlane(this.state.selectedTradeItem) : ''}
+        {this.state.selectedTradeItem ? this.openWalletPlane(this.state.selectedTradeItem) : ''}
 
       </div>
 
@@ -101,7 +100,7 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
 
   openWalletPlane(item) {
     return (
-      <Dialog title='Wallet Plane' open={true} cancelBtnHidden={true} onOkClick={() => this.setState({selectedTradeItemPressed: false})}>
+      <Dialog title='Wallet Plane' open={true} cancelBtnHidden={true} onOkClick={() => this.setState({selectedTradeItem: undefined})}>
         {_.map(item.walletPlan, (wallet: DepositRequest, index) => {
           return (
             <div className={styles.wallet} >
@@ -115,7 +114,6 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
   }
 
   openWalletPlanePressed(item: OrderStatus) {
-    this.setState({ selectedTradeItemPressed: true});
     this.setState({ selectedTradeItem: item });
   }
 
@@ -127,7 +125,7 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
         <InputText outlined disabled value={item.executedTargetSize} label={'Target asset executed so far'} />
         <InputText outlined disabled value={item.tradeOrderId} label={'Order Id'} />
         {item.executionMessage && <InputText outlined disabled value={item.executionMessage} label={'Execution Message'} />}
-        <Button className={styles.btn} intent='primary' type='contained' onClick={(e) => this.openWalletPlanePressed(item)}> wallet Plane</Button>
+        <Button className={styles.btn} intent='primary' type='contained' tooltip='Wallet Plane' onClick={(e) => this.openWalletPlanePressed(item)} iconName='account_balance_wallet'> </Button>
       </div>
     );
   }
