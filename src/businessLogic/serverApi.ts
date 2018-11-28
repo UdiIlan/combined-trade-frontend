@@ -142,7 +142,7 @@ export const getAccountTrades = async (account: Account, index = 0, size = 1000)
                 tradeOrderId: 'ABC2D',
                 walletPlan: [
                     {
-                        walletAddress: 'bc1qdp9q0lae7vz9vn4drw4e48kqkk44sccp34008s',
+                        walletAddress: 'bc1qdp9q0lae7vz9vn4drw4e48kqkk44sccp34007s',
                         size: 750
                     },
                     {
@@ -188,7 +188,7 @@ export const getAccountTrades = async (account: Account, index = 0, size = 1000)
                 tradeOrderId: 'FSADFS5',
                 walletPlan: [
                     {
-                        walletAddress: 'bc1qdp9q0lae7vz9vn4drw4e48kqkk44sccp34008s',
+                        walletAddress: 'bc1qdp9q0lae7vz9vn4drw4e48kqkk44sccp34009s',
                         size: 750
                     },
                     {
