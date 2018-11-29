@@ -70,6 +70,11 @@
 .newTrade{
   width: 15vw;
   
+  .walletPlanTitle{
+    font-size: 1rem;
+    padding: 5px;
+  }
+  
   .newTradeProp{
     width: 100%;
     margin: 10px;
@@ -79,7 +84,6 @@
   .tradingOption {
     margin: 10px;
     width: 100%;
-    background-color: $MainBlue;
   }
 }
 

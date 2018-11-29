@@ -3,8 +3,8 @@ import * as _ from 'lodash';
 import { connect } from 'react-redux';
 const styles = require('./styles.scss');
 import AccountsNavigator from './AccountsNavigator';
-import { getAccounts, createAccount, fetchAccountTrades, editAccount, deleteAccount, fetchAccountBalance } from './redux/actions';
-import { Account } from 'businessLogic/model';
+import { getAccounts, createAccount, fetchAccountTrades, editAccount, deleteAccount, fetchAccountBalance, createTrade, resetNewTrade } from './redux/actions';
+import { Account, TradeRequest } from 'businessLogic/model';
 import { Route, Switch, Link } from 'react-router-dom';
 import TradeManager from './TradeManager';
 import Dialog from 'components/common/modals/Dialog';
@@ -14,6 +14,7 @@ import Button from 'components/common/core/Button';
 
 interface AccountManagerProps {
   accounts: Account[];
+  newTradeWallet: object[];
   location: any;
   getAccounts();
   getTrades(account: Account);
@@ -21,7 +22,8 @@ interface AccountManagerProps {
   createNewAccount(name: string, description: string);
   editAccount(name: string, description: string);
   deleteAccount(name: string);
-
+  createTrade(account: Account, trade: TradeRequest);
+  resetNewTrade(accountName: string);
 }
 
 interface AccountManagerState {
@@ -42,6 +44,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
     this.editAccount = this.editAccount.bind(this);
     this.deleteAccountPressed = this.deleteAccountPressed.bind(this);
     this.deleteAccount = this.deleteAccount.bind(this);
+    this.createTrade = this.createTrade.bind(this);
   }
 
   createAccountPressed() {
@@ -85,6 +88,13 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
     });
   }
 
+  createTrade(account: Account, trade: TradeRequest) {
+    this.props.createTrade(account, trade);
+  }
+
+
+
+
   changeAccount(account: Account) {
     this.setState({ selectedAccountName: account.name }, () => {
       this.props.getTrades(account);
@@ -125,7 +135,11 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
             <div className={styles.curRoute}>
               <Switch >
                 <Route exact path='/' render={(props) => <AccountDashboard account={selectedAccount} />} />
-                <Route path='/trades' render={(props) => <TradeManager ref={(tardeManager) => this.tardeManager = tardeManager} account={selectedAccount} getTrades={this.props.getTrades} />} />
+                <Route path='/trades' render={(props) => <TradeManager ref={(tardeManager) => this.tardeManager = tardeManager}
+                  account={selectedAccount} getTrades={this.props.getTrades}
+                  createNewTrade={this.props.createTrade}
+                  resetNewTrade={this.props.resetNewTrade}
+                  newTradeWallet={this.props.newTradeWallet} />} />
                 <Route path='/funds' /*  component= TO-DO */ />
               </Switch>
             </div>
@@ -173,7 +187,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
               [
                 <span key='title' className={styles.title}>{this.state.selectedAccountName} -> {pathName}</span>,
                 <div key='actions'>
-                  <Button className={styles.btn} intent='primary' type='contained' iconName='add' onClick={e => this.tardeManager.createNewTrade()} />
+                  <Button className={styles.btn} intent='primary' type='contained' iconName='add' onClick={e => this.tardeManager.createNewTradePressed()} />
                   <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' onClick={e => this.tardeManager.load()} />
                   <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' linkTo='/' /*onClick={this.deleteAccountPressed}*/ />
                 </div>
@@ -202,6 +216,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
 const mapStateToProps = (state) => {
   return {
     accounts: _.get(state, 'account.accounts'),
+    newTradeWallet: _.get(state, 'account.newTradeWallet'),
   };
 };
 
@@ -212,6 +227,8 @@ const mapDispatchToProps = (dispatch) => {
     editAccount: (name, description) => dispatch(editAccount({ name, description })),
     deleteAccount: (name) => dispatch(deleteAccount(name)),
     getTrades: (account: Account) => dispatch(fetchAccountTrades(account)),
+    createTrade: (account: Account, trade: TradeRequest) => dispatch(createTrade(account, trade)),
+    resetNewTrade: (accountName: string) => dispatch(resetNewTrade()),
     getBalance: (account: Account) => dispatch(fetchAccountBalance(account))
   };
 };

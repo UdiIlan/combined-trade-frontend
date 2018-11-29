@@ -5,7 +5,7 @@ import Grid from 'components/common/dataLayouts/Grid';
 const styles = require('./styles.scss');
 import * as classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
-import { Account, OrderStatus, DepositRequest } from 'businessLogic/model';
+import { Account, OrderStatus, DepositRequest, TradeRequest } from 'businessLogic/model';
 import { DateUtils, MathUtils } from 'businessLogic/utils';
 import { getLocalizedText } from 'lang';
 import { InputText } from 'components/common/core';
@@ -25,8 +25,11 @@ const TRADES_COLUMNS = [
 
 interface TradeManagerProps {
   account: Account;
+  newTradeWallet?: object[];
   getTrades(account: Account);
   submitTrades?(order: any);
+  createNewTrade(account: Account, trade: TradeRequest);
+  resetNewTrade(accountName: string);
 }
 
 export type AssetPairType = 'BTC-USD' | 'BCH-USD' | 'ETH-USD';
@@ -64,7 +67,7 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
     }
   }
 
-  createNewTrade() {
+  createNewTradePressed() {
     this.setState({ newTradePressed: true });
   }
 
@@ -97,20 +100,25 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
           </Card>
         }
 
-        {this.state.selectedTradeItem ? this.openWalletPlane(this.state.selectedTradeItem) : ''}
+        {this.state.selectedTradeItem ? this.openWalletPlane(this.state.selectedTradeItem.walletPlan) : ''}
 
         {this.state.newTradePressed ? this.openNewTradeDialog() : ''}
+
+        {this.props.newTradeWallet ? this.openWalletPlane(this.props.newTradeWallet) : ''}
 
       </div>
 
     );
   }
 
+  walletPlaneDialogOk() {
+    this.setState({ selectedTradeItem: undefined }, () => this.props.resetNewTrade(this.props.account.name));
+  }
 
-  openWalletPlane(item) {
+  openWalletPlane(walletPlane) {
     return (
-      <Dialog title='Wallet Plane' open={true} cancelBtnHidden={true} onOkClick={() => this.setState({ selectedTradeItem: undefined })}>
-        {_.map(item.walletPlan, (wallet: DepositRequest, index) => {
+      <Dialog title='Wallet Plane' open={true} cancelBtnHidden={true} onOkClick={() => { this.walletPlaneDialogOk(); }}>
+        {_.map(walletPlane, (wallet: DepositRequest, index) => {
           return (
             <div className={styles.wallet} >
               <InputText className={styles.addressWalletItem} label='Address' type='text' name='Address' value={wallet.walletAddress} disabled={true} />
@@ -126,19 +134,40 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
   private tradePrice;
   private tradeAssetPair;
   private tradeAction;
+  private durationMinutes;
+
+  createTradeObject() {
+    return ({
+      assetPair: this.tradeAssetPair,
+      actionType: this.tradeAction,
+      size: this.tradeSize,
+      price: this.tradePrice,
+      durationMinutes: this.durationMinutes
+    });
+  }
+
+  createTrade() {
+    this.setState({ newTradePressed: false });
+    this.props.createNewTrade(this.props.account, this.createTradeObject());
+  }
+
 
   openNewTradeDialog() {
     return (
-      <Dialog title='Wallet Plane' open={true} onCancelClick={() => { }} onOkClick={() => { }}>
+      <Dialog title='New trade was successfully added!' open={true} onCancelClick={() => { }} onOkClick={() => { this.createTrade(); }}>
         <div className={styles.newTrade} >
+          <span className={styles.walletPlanTitle}> Wallet Plane: </span>
           <InputText className={styles.newTradeProp} ref={(input) => this.tradeSize = input} label='Size' type='text' name='Size' />
           <InputText className={styles.newTradeProp} ref={(input) => this.tradePrice = input} label='Price' type='text' name='Price' />
-          <Select  selectedValue={this.state.assetPairOption} className={styles.tradingOption} onChange={selection => this.tradeAssetPair = selection}>
+          <InputText className={styles.newTradeProp} ref={(input) => this.durationMinutes = input} label='Duration (minutes)' type='text' name='Duration' />
+          <Select theme='dark' selectedValue={this.state.assetPairOption} formLabelText='Asset Pair' className={styles.tradingOption} onChange={selection => this.tradeAssetPair = selection}>
+            <option value=''></option>
             <option value='BTC'>BTC-USD</option>
             <option value='BCH'>BCH-USD</option>
             <option value='ETH'>ETH-USD</option>
           </Select>
-          <Select  selectedValue={this.state.tradingOption} className={styles.tradingOption} onChange={selection => this.tradeAction = selection}>
+          <Select theme='dark' selectedValue={this.state.tradingOption} formLabelText='Action' className={styles.tradingOption} onChange={selection => this.tradeAction = selection}>
+            <option value=''></option>
             <option value='BTC'>sell</option>
             <option value='BCH'>buy</option>
           </Select>

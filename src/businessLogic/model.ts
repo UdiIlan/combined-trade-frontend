@@ -148,3 +148,11 @@ export interface OrderStatus {
     tradeOrderId: string;
     walletPlan: DepositRequest[];
 }
+
+export interface TradeRequest {
+    assetPair: string;
+    actionType: string;
+    size: number;
+    price: number;
+    durationMinutes: number;
+}

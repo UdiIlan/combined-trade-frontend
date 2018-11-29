@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 const config = require('config');
 import { Fetcher } from 'rest-fetcher';
-import { AccountCredentials, OrderAction, Account, OrderStatus } from './model';
+import { AccountCredentials, OrderAction, Account, OrderStatus, TradeRequest } from './model';
 
 const fetcher = new Fetcher({
     baseUrl: config.baseUrl,
@@ -119,6 +119,22 @@ export const updateAccount = async (account: Account): Promise<Account> => {
 
 export const deleteAccount = async (accountName: string): Promise<any> => {
     const res = await fetcher.delete(`/accounts/${accountName}`, undefined, undefined, { userid: 5 });
+    return res;
+};
+
+
+export const createTrade = async (account: Account, trade: TradeRequest): Promise<any> => {
+    // const res = await fetcher.delete(`/accounts/${accountName}`, undefined, undefined, { userid: 5 });
+    const res = [
+        {
+            walletAddress: 'bc1qdp9q0lae7vz9vn4drw4e48kqkk44sccp34001s',
+            size: 370
+        },
+        {
+            walletAddress: 'rj5qdp9q0lae7vz9vn4drw4e48kqkk44sccp34112s',
+            size: 285
+        }
+    ];
     return res;
 };
 

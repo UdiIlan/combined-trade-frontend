@@ -7,16 +7,26 @@ import { Account, OrderStatus } from 'businessLogic/model';
 
 export interface AccountState {
     accounts: Account[];
+    newTradeWallet: object[];
 }
 
 const INITIAL_STATE: AccountState = {
-    accounts: []
+    accounts: [],
+    newTradeWallet: undefined
 };
 
 let reducerMap = {};
 
 reducerMap[AccountActions.SET_ACCOUNTS] = (state: AccountState, action: Action<any>): AccountState => {
     return { ...state, accounts: action.payload };
+};
+
+reducerMap[AccountActions.SET_TRADE] = (state: AccountState, action: Action<any>): AccountState => {
+    return { ...state, newTradeWallet: action.payload.tradeWallet };
+};
+
+reducerMap[AccountActions.RESET_NEW_TRADE] = (state: AccountState, action: Action<void>): AccountState => {
+    return { ...state, newTradeWallet: undefined };
 };
 
 reducerMap[AccountActions.UPDATE_FETCHED_ACCOUNT_TRADES] = (state: AccountState, action: Action<{ accountName: string, trades: OrderStatus[] }>): AccountState => {
