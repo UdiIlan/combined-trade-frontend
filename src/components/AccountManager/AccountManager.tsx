@@ -63,6 +63,10 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
     this.props.getAccounts();
   }
 
+  componentDidMount() {
+    this.props.accounts.length > 0 ? this.changeAccount(this.props.accounts[0]) : '';
+  }
+
   createAccount() {
     const name = this.accountName.value;
     const description = this.accountDescription.value;
@@ -70,6 +74,8 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
     this.setState({ createAccountPressed: false }, () => {
       this.props.createNewAccount(name, description);
     });
+
+    this.setState({ selectedAccountName: name });
   }
 
   editAccount() {
@@ -92,9 +98,6 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
     this.props.createTrade(account, trade);
   }
 
-
-
-
   changeAccount(account: Account) {
     this.setState({ selectedAccountName: account.name }, () => {
       this.props.getTrades(account);
@@ -109,7 +112,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
 
   render() {
     const pathName = this.props.location.pathname.substr(1);
-    const selectedAccount = _.find(this.props.accounts, { name: this.state.selectedAccountName });
+    const selectedAccount = _.find(this.props.accounts, { name: this.state.selectedAccountName }) ? _.find(this.props.accounts, { name: this.state.selectedAccountName }) : this.props.accounts[0];
     return (
       <div className={styles.accountManager}>
         <AccountsNavigator
@@ -128,13 +131,13 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
           </Dialog>
           : ''
         }
-        {this.state.selectedAccountName ?
+        {selectedAccount ?
 
           <div className={styles.accountContent}>
             {this.renderHeader(pathName)}
             <div className={styles.curRoute}>
               <Switch >
-                <Route exact path='/' render={(props) => <AccountDashboard account={selectedAccount} />} />
+                <Route exact path='/' render={(props) => <AccountDashboard account={selectedAccount} selectAccount={(account) => this.changeAccount(account)}/>} />
                 <Route path='/trades' render={(props) => <TradeManager ref={(tardeManager) => this.tardeManager = tardeManager}
                   account={selectedAccount} getTrades={this.props.getTrades}
                   createNewTrade={this.props.createTrade}
@@ -152,7 +155,7 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
         {this.state.editAccountPressed ?
           <Dialog title={`Edit Account ${this.state.selectedAccountName}`} open={true} onOkClick={this.editAccount} onCancelClick={() => this.setState({ editAccountPressed: false })}>
             <div className={styles.accountDialogContent} >
-              <InputText className={styles.userInput} ref={(input) => this.accountDescription = input} label='description' type='text' name='description' />
+              <InputText className={styles.userInput} ref={(input) => this.accountDescription = input} label='description' type='text' name='description' value={selectedAccount ? selectedAccount.description : ''} />
             </div>
           </Dialog>
           : ''

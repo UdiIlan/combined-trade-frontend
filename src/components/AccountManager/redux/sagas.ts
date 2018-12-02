@@ -18,6 +18,10 @@ function* createAccountAsync(action) {
         const account = action.payload;
         yield createNewAccount(account);
         yield getAccountsAsync();
+         const trades = yield getAccountTrades(account);
+         yield put(updateFetchedAccountTrades(account.name, trades));
+         const balance = yield getAccountBalance(account);
+         yield put(updateFetchedAccountBalance(account.name, balance));
     }
     catch (err) {
         console.error('Failed to create a new account: ', err);
@@ -29,6 +33,10 @@ function* editAccountAsync(action) {
         const account = action.payload;
         yield updateAccount(account);
         yield getAccountsAsync();
+        const trades = yield getAccountTrades(account);
+        yield put(updateFetchedAccountTrades(account.name, trades));
+        const balance = yield getAccountBalance(account);
+        yield put(updateFetchedAccountBalance(account.name, balance));
     }
     catch (err) {
         console.error('Failed to edit an account: ', err);

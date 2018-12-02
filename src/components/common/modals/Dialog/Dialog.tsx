@@ -14,6 +14,7 @@ export interface DialogProps {
     title: string;
     subTitle?: string | JSX.Element | JSX.Element[];
     open?: boolean;
+    fullWidth?: boolean;
     okBtnText?: string;
     okBtnDisabled?: boolean;
     okBtnHidden?: boolean;
@@ -42,6 +43,7 @@ export default class Dialog extends React.Component<DialogProps, any> {
         return (
             <MUDialog
                 open={this.props.open}
+                fullWidth={this.props.fullWidth}
                 onClose={this.handleClose}
                 classes={{ paper: styles.dialog }}
                 aria-labelledby='form-dialog-title'>

@@ -104,7 +104,7 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
 
         {this.state.newTradePressed ? this.openNewTradeDialog() : ''}
 
-        {this.props.newTradeWallet ? this.openWalletPlane(this.props.newTradeWallet) : ''}
+        {this.props.newTradeWallet ? this.openWalletPlane(this.props.newTradeWallet, 'New trade was successfully added!') : ''}
 
       </div>
 
@@ -115,10 +115,10 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
     this.setState({ selectedTradeItem: undefined }, () => this.props.resetNewTrade(this.props.account.name));
   }
 
-  openWalletPlane(walletPlane) {
+  openWalletPlane(walletPlane, title?) {
     return (
-      <Dialog title='New trade was successfully added!' open={true} cancelBtnHidden={true} onOkClick={() => { this.walletPlaneDialogOk(); }}>
-      <span className={styles.walletPlanTitle}> Wallet Plan: </span>
+      <Dialog fullWidth title={title} open={true} cancelBtnHidden={true} onOkClick={() => { this.walletPlaneDialogOk(); }}>
+        <span className={styles.walletPlanTitle}> Wallet Plan: </span>
         {_.map(walletPlane, (wallet: DepositRequest, index) => {
           return (
             <div className={styles.wallet} >
@@ -155,18 +155,18 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
 
   openNewTradeDialog() {
     return (
-      <Dialog title='Wallet Plan' open={true} onCancelClick={() => { }} onOkClick={() => { this.createTrade(); }}>
+      <Dialog title='Wallet Plan' open={true} onCancelClick={() => { this.setState({ newTradePressed: false }); }} onOkClick={() => { this.createTrade(); }}>
         <div className={styles.newTrade} >
           <InputText className={styles.newTradeProp} ref={(input) => this.tradeSize = input} label='Size' type='text' name='Size' />
           <InputText className={styles.newTradeProp} ref={(input) => this.tradePrice = input} label='Price' type='text' name='Price' />
           <InputText className={styles.newTradeProp} ref={(input) => this.durationMinutes = input} label='Duration (minutes)' type='text' name='Duration' />
-          <Select theme='dark' selectedValue={this.state.assetPairOption} formLabelText='Asset Pair' className={styles.tradingOption} onChange={selection => this.tradeAssetPair = selection}>
+          <Select theme='dark' formControl formLabelText='Asset Pair' className={styles.tradingOption} onChange={selection => this.tradeAssetPair = selection}>
             <option value=''></option>
             <option value='BTC'>BTC-USD</option>
             <option value='BCH'>BCH-USD</option>
             <option value='ETH'>ETH-USD</option>
           </Select>
-          <Select theme='dark' selectedValue={this.state.tradingOption} formLabelText='Action' className={styles.tradingOption} onChange={selection => this.tradeAction = selection}>
+          <Select theme='dark' formControl formLabelText='Action' className={styles.tradingOption} onChange={selection => this.tradeAction = selection}>
             <option value=''></option>
             <option value='BTC'>sell</option>
             <option value='BCH'>buy</option>

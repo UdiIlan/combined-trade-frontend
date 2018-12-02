@@ -26,6 +26,7 @@ const TRADES_COLUMNS = [
 
 export interface AccountDashboardProps {
     account: Account;
+    selectAccount(account);
 }
 
 
@@ -36,6 +37,7 @@ export default class AccountDashboard extends React.Component<AccountDashboardPr
     }
 
     componentWillMount() {
+        this.props.selectAccount(this.props.account);
     }
 
     render() {

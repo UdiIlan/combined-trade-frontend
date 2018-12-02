@@ -147,7 +147,7 @@ export default class Select extends React.Component<SelectProps, SelectState> {
 
         return (
             <FormControl>
-                {!!this.props.formLabelText && <InputLabel className={inputClassName} classes={{ root: styles.className }} >{this.props.formLabelText}</InputLabel>}
+                {!!this.props.formLabelText && <InputLabel className={this.props.className} classes={{ root: styles.className }} >{this.props.formLabelText}</InputLabel>}
                 {select}
                 {!!this.props.formHelperText && <FormHelperText>{this.props.formHelperText}</FormHelperText>}
             </FormControl>
