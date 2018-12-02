@@ -117,7 +117,8 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
 
   openWalletPlane(walletPlane) {
     return (
-      <Dialog title='Wallet Plane' open={true} cancelBtnHidden={true} onOkClick={() => { this.walletPlaneDialogOk(); }}>
+      <Dialog title='New trade was successfully added!' open={true} cancelBtnHidden={true} onOkClick={() => { this.walletPlaneDialogOk(); }}>
+      <span className={styles.walletPlanTitle}> Wallet Plan: </span>
         {_.map(walletPlane, (wallet: DepositRequest, index) => {
           return (
             <div className={styles.wallet} >
@@ -154,9 +155,8 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
 
   openNewTradeDialog() {
     return (
-      <Dialog title='New trade was successfully added!' open={true} onCancelClick={() => { }} onOkClick={() => { this.createTrade(); }}>
+      <Dialog title='Wallet Plan' open={true} onCancelClick={() => { }} onOkClick={() => { this.createTrade(); }}>
         <div className={styles.newTrade} >
-          <span className={styles.walletPlanTitle}> Wallet Plane: </span>
           <InputText className={styles.newTradeProp} ref={(input) => this.tradeSize = input} label='Size' type='text' name='Size' />
           <InputText className={styles.newTradeProp} ref={(input) => this.tradePrice = input} label='Price' type='text' name='Price' />
           <InputText className={styles.newTradeProp} ref={(input) => this.durationMinutes = input} label='Duration (minutes)' type='text' name='Duration' />
