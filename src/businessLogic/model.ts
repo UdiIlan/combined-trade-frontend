@@ -156,3 +156,23 @@ export interface TradeRequest {
     price: number;
     durationMinutes: number;
 }
+
+
+/********************************************* Funds *************************************************** */
+
+export type WithdrawalStatusMode = 'Done' | 'Failed' | 'In-Progress' | 'Canceled';
+
+
+export interface WithdrawalStatus {
+    account: string;
+    transactionId: string;
+    requestTime: Date;
+    amount: number;
+    assetType: string;
+    status: WithdrawalStatusMode;
+}
+
+export interface WithdrawalRequest {
+    assetType: string;
+    amount: number;
+}

@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 const config = require('config');
 import { Fetcher } from 'rest-fetcher';
-import { AccountCredentials, OrderAction, Account, OrderStatus, TradeRequest } from './model';
+import { AccountCredentials, OrderAction, Account, OrderStatus, TradeRequest, WithdrawalRequest, WithdrawalStatus } from './model';
 
 const fetcher = new Fetcher({
     baseUrl: config.baseUrl,
@@ -138,6 +138,7 @@ export const createTrade = async (account: Account, trade: TradeRequest): Promis
     return res;
 };
 
+
 export const getAccountTrades = async (account: Account, index = 0, size = 1000): Promise<OrderStatus[]> => {
     // const res = await fetcher.get(`/accounts/${account.name}/trades/?index=${index}&size=${size}`);
     // return res;
@@ -225,9 +226,47 @@ export const getAccountBalance = async (account: Account, index = 0, size = 1000
     // const res = await fetcher.get(`/accounts/${account.name}/trades/?index=${index}&size=${size}`);
     // return res;
 
-    const balance = {usd: 2000, btc: 500, bch: 350, eth: 1000};
+    const balance = { usd: 2000, btc: 500, bch: 350, eth: 1000 };
 
     return new Promise<object>((resolve, reject) => {
         return resolve(balance);
     });
+}
+
+    ;
+export const getAccountWithdrawals = async (account: Account, index = 0, size = 1000): Promise<WithdrawalStatus[]> => {
+    // const res = await fetcher.get(`/accounts/${account.name}/trades/?index=${index}&size=${size}`);
+    // return res;
+
+    const withdrawals: WithdrawalStatus[] = [{
+        account: 'btc.com',
+        transactionId: '12345',
+        requestTime: new Date('2017-05-20T21:25:52.651638+00:00'),
+        amount: 2700,
+        assetType: 'USD',
+        status: 'Done'
+    }, {
+        account: 'aaa.com',
+        transactionId: '6789',
+        requestTime: new Date('2017-07-20T21:25:52.651638+00:00'),
+        amount: 3100,
+        assetType: 'USD',
+        status: 'Canceled'
+    }];
+
+    return new Promise<WithdrawalStatus[]>((resolve, reject) => {
+        return resolve(withdrawals);
+    });
+};
+
+
+export const createWithdrawal = async (account: Account, withdrawal: WithdrawalRequest): Promise<any> => {
+    // const res = await fetcher.delete(`/accounts/${accountName}`, undefined, undefined, { userid: 5 });
+    const res = {
+        transactionId: 'FDSGDFHT15DS',
+        assetType: 'USD',
+        amount: 2000000,
+        requestTime: '2018-10-10 11:37:13.384'
+      };
+    return res;
 };
