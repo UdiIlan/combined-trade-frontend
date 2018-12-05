@@ -7,7 +7,9 @@ export const AppActions = {
     SET_LANG: 'APP/SET_LANG',
     SET_CURRENCY: 'APP/SET_CURRENCY',
     SHOW_TOAST: 'APP/SHOW_TOAST',
+    SHOW_ERROR_MESSAGE: 'APP/SHOW_ERROR_MESSAGE',
     RESET_TOAST: 'APP/RESET_TOAST',
+    RESET_ERROR_MESSAGE: 'APP/RESET_ERROR_MESSAGE',
     SET_THEME: 'APP/SET_THEME',
     LOGIN: 'APP/LOGIN',
     SET_LOGGED_IN_USER_DETAILS: 'APP/SET_LOGGED_IN_USER_DETAILS',
@@ -21,7 +23,11 @@ export const setCurrency = createAction(AppActions.SET_CURRENCY, (newCurrency: S
 
 export const showToast = createAction(AppActions.SHOW_TOAST, (toast: ToastProps) => toast);
 
+export const showErrorMessage = createAction(AppActions.SHOW_ERROR_MESSAGE, (errorMessage: string) => errorMessage);
+
 export const resetToast = createAction(AppActions.RESET_TOAST, () => { });
+
+export const resetErrorMessage = createAction(AppActions.RESET_ERROR_MESSAGE, () => { });
 
 export const setTheme = createAction(AppActions.SET_THEME, (theme: AppTheme) => theme);
 

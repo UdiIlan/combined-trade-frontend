@@ -261,12 +261,13 @@ export const getAccountWithdrawals = async (account: Account, index = 0, size = 
 
 
 export const createWithdrawal = async (account: Account, withdrawal: WithdrawalRequest): Promise<any> => {
-    // const res = await fetcher.delete(`/accounts/${accountName}`, undefined, undefined, { userid: 5 });
+    //  const res = await fetcher.delete(`/accounts/${account.name}`, undefined, undefined, { userid: 5 });
     const res = {
         transactionId: 'FDSGDFHT15DS',
         assetType: 'USD',
         amount: 2000000,
         requestTime: '2018-10-10 11:37:13.384'
-      };
+    };
+
     return res;
 };

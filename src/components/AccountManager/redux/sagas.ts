@@ -1,6 +1,7 @@
 import { AccountActions, setAccounts, updateFetchedAccountTrades, updateFetchedAccountBalance, setTrade, updateFetchedAccountWithdrawals, setWithdrawal } from './actions';
 import { takeEvery, all, put } from 'redux-saga/effects';
 import { getAccounts, createNewAccount, getAccountTrades, updateAccount, deleteAccount, getAccountBalance, createTrade, getAccountWithdrawals, createWithdrawal } from 'businessLogic/serverApi';
+import { showErrorMessage } from '../../App/redux/actions';
 
 
 function* getAccountsAsync() {
@@ -10,6 +11,7 @@ function* getAccountsAsync() {
     }
     catch (err) {
         console.error('Failed to fetch accounts info: ', err);
+        yield put(showErrorMessage('Failed to fetch accounts info'));
     }
 }
 
@@ -27,6 +29,7 @@ function* createAccountAsync(action) {
     }
     catch (err) {
         console.error('Failed to create a new account: ', err);
+        yield put(showErrorMessage('Failed to create a new account'));
     }
 }
 
@@ -44,6 +47,7 @@ function* editAccountAsync(action) {
     }
     catch (err) {
         console.error('Failed to edit an account: ', err);
+        yield put(showErrorMessage('Failed to edit an account'));
     }
 }
 
@@ -54,7 +58,8 @@ function* deleteAccountAsync(action) {
         yield getAccountsAsync();
     }
     catch (err) {
-        console.error('Failed to create new trade: ', err);
+        console.error('Failed to delete account: ', err);
+        yield put(showErrorMessage('Failed to delete account'));
     }
 }
 
@@ -66,7 +71,8 @@ function* createTradeAsync(action) {
         yield put(setTrade(account.name, tradeWallet));
     }
     catch (err) {
-        console.error('Failed to delete an account: ', err);
+        console.error('Failed to create a new trade request: ', err);
+        yield put(showErrorMessage('Failed to create a new trade request'));
     }
 }
 
@@ -79,7 +85,8 @@ function* createWithdrawalAsync(action) {
 
     }
     catch (err) {
-        console.error('Failed to delete an account: ', err);
+        console.error('Failed to withdrawal: ', err);
+        yield put(showErrorMessage('Failed to withdrawal'));
     }
 }
 
@@ -91,6 +98,7 @@ function* fetchAccountTradesAsync(action) {
     }
     catch (err) {
         console.error('Failed to fetch account trades: ', err);
+        yield put(showErrorMessage('Failed to fetch account trades'));
     }
 }
 
@@ -101,7 +109,8 @@ function* fetchAccountWithdrawalsAsync(action) {
         yield put(updateFetchedAccountWithdrawals(account.name, withdrawals));
     }
     catch (err) {
-        console.error('Failed to fetch account trades: ', err);
+        console.error('Failed to fetch account withdrawals: ', err);
+        yield put(showErrorMessage('Failed to fetch account withdrawals'));
     }
 }
 
@@ -112,7 +121,8 @@ function* fetchAccountBalanceAsync(action) {
         yield put(updateFetchedAccountBalance(account.name, balance));
     }
     catch (err) {
-        console.error('Failed to fetch account trades: ', err);
+        console.error('Failed to fetch account balance: ', err);
+        yield put(showErrorMessage('Failed to fetch account balance'));
     }
 }
 

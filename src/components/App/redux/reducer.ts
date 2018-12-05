@@ -9,6 +9,7 @@ export interface AppState {
     currency: SupportedCurrencies;
     theme: AppTheme;
     toast?: ToastProps;
+    errorMessage?: string;
     userDetails: UserDetails;
     wrongUserDetails: boolean;
 }
@@ -33,6 +34,14 @@ reducerMap[AppActions.SET_CURRENCY] = (state: AppState, action: Action<Supported
 
 reducerMap[AppActions.SHOW_TOAST] = (state: AppState, action: Action<ToastProps>): AppState => {
     return { ...state, toast: { ...action.payload, open: true } };
+};
+
+reducerMap[AppActions.SHOW_ERROR_MESSAGE] = (state: AppState, action: Action<string>): AppState => {
+    return { ...state, errorMessage: action.payload };
+};
+
+reducerMap[AppActions.RESET_ERROR_MESSAGE] = (state: AppState, action: Action<void>): AppState => {
+    return { ...state, errorMessage: undefined };
 };
 
 reducerMap[AppActions.RESET_TOAST] = (state: AppState, action: Action<void>): AppState => {

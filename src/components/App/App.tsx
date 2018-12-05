@@ -8,23 +8,26 @@ const styles = require('./styles.scss');
 import Header from './Header';
 import { SupportedLanguages } from 'lang';
 import { SupportedCurrencies, AppTheme, UserDetails } from 'businessLogic/model';
-import { sesLanguage, setCurrency, resetToast, setTheme, login, logout } from './redux/actions';
+import { sesLanguage, setCurrency, resetToast, setTheme, login, logout, resetErrorMessage } from './redux/actions';
 import Login from './Login';
 import AccountManager from 'components/AccountManager';
 import ReportManager from 'components/ReportManager';
 import { default as Toast, ToastProps } from 'components/common/core/Toast';
 import EnsureLogin from './EnsureLogin';
+import Dialog from 'components/common/modals/Dialog';
 
 export interface AppProps {
     currentLang: SupportedLanguages;
     currentCurrency: SupportedCurrencies;
     toast?: ToastProps;
+    errorMessage?: string;
     theme: AppTheme;
     userDetails: UserDetails;
     wrongUserDetails?: boolean;
     sesLanguage(newLang: SupportedLanguages);
     setCurrency(newCurrency: SupportedCurrencies);
     resetToast();
+    resetErrorMessage();
     setTheme(theme: AppTheme);
     doLogin(userName: string, password: string);
     doLogout();
@@ -33,6 +36,7 @@ export interface AppProps {
 
 export interface AppState {
     toast?: ToastProps;
+    errorMessage?: string;
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -54,6 +58,13 @@ class App extends React.Component<AppProps, AppState> {
         }
         else if (!this.props.toast && !nextProps.toast) {
             this.setState({ toast: undefined });
+        }
+
+        if (!!nextProps.errorMessage && !_.isEqual(this.state.errorMessage, nextProps.errorMessage)) {
+            this.setState({ errorMessage: nextProps.errorMessage }, nextProps.resetErrorMessage);
+        }
+        else if (!this.props.errorMessage && !nextProps.errorMessage) {
+            this.setState({ errorMessage: undefined });
         }
     }
 
@@ -96,7 +107,7 @@ class App extends React.Component<AppProps, AppState> {
                     </div>
 
                     {!!this.state.toast && <Toast intent={this.state.toast.intent} message={this.state.toast.message} open={true} />}
-
+                    {!!this.state.errorMessage && <Dialog intent='danger' cancelBtnHidden open={true} title={this.state.errorMessage} onOkClick={() => { this.setState({errorMessage: undefined}); }} />}
                 </div>
 
             </MuiThemeProvider >
@@ -109,6 +120,7 @@ const mapStateToProps = (state, ownProps) => {
         currentLang: _.get(state, 'app.language', 'en_us'),
         currentCurrency: _.get(state, 'app.currency', 'BTC'),
         toast: _.get(state, 'app.toast', undefined),
+        errorMessage: _.get(state, 'app.errorMessage', undefined),
         theme: _.get(state, 'app.theme', 'light'),
         userDetails: _.get(state, 'app.userDetails', undefined),
         wrongUserDetails: _.get(state, 'app.wrongUserDetails', false)
@@ -120,6 +132,7 @@ const mapDispatchToProps = (dispatch) => {
         sesLanguage: (newLang: SupportedLanguages) => dispatch(sesLanguage(newLang)),
         setCurrency: (newCurrency: SupportedCurrencies) => dispatch(setCurrency(newCurrency)),
         resetToast: () => dispatch(resetToast()),
+        resetErrorMessage: () => dispatch(resetErrorMessage()),
         setTheme: (theme: AppTheme) => {
             const prevTheme = `theme_${theme === 'dark' ? 'light' : 'dark'}`;
             const newTheme = `theme_${theme}`;
