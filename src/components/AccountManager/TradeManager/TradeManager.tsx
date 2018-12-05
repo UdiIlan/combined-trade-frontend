@@ -123,10 +123,12 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
   }
 
   openWalletPlan(walletPlan: object[], title) {
+    let intent = title.includes('successfully') ? 'success' : undefined;
     const dialog = {
       title: title,
       fullWidth: true,
       cancelBtnHidden: true,
+      intent: intent,
       onOkClick: () => this.walletPlanDialogOk(),
       children: this.renderWalletPlanBody(walletPlan),
     } as DialogProps;

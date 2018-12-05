@@ -196,8 +196,8 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
               [
                 <span key='title' className={styles.title}>{selectedAccountName}</span>,
                 <div key='actions'>
-                  <Button className={styles.btn} intent='primary' type='contained' iconName='edit' onClick={this.editAccountPressed} />
-                  <Button className={styles.btn} intent='primary' type='contained' iconName='delete' onClick={this.deleteAccountPressed} />
+                  <Button className={styles.btn} intent='primary' type='contained' iconName='edit' tooltip='Edit Account' onClick={this.editAccountPressed} />
+                  <Button className={styles.btn} intent='primary' type='contained' iconName='delete' tooltip='Delete Account' onClick={this.deleteAccountPressed} />
                 </div>
               ]
 
@@ -206,9 +206,9 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
               [
                 <span key='title' className={styles.title}>{selectedAccountName} -> {pathName}</span>,
                 <div key='actions'>
-                  <Button className={styles.btn} intent='primary' type='contained' iconName='add' onClick={e => this.tradeManager.createNewTradePressed()} />
-                  <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' onClick={e => this.tradeManager.load()} />
-                  <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' linkTo='/' />
+                  <Button className={styles.btn} intent='primary' type='contained' iconName='add' tooltip='Trade Request' onClick={e => this.tradeManager.createNewTradePressed()} />
+                  <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' tooltip='Refresh' onClick={e => this.tradeManager.load()} />
+                  <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' linkTo='/' tooltip='Back' />
                 </div>
               ]
 
@@ -216,9 +216,9 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
             <Route path='/funds' render={(props) =>
               [<span key='title' className={styles.title}>{selectedAccountName} -> {pathName}</span>,
               <div key='actions'>
-                <Button className={styles.btn} intent='primary' type='contained' iconName='add' onClick={e => this.fundsManager.createNewWithdrawalPressed()} />
-                <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' onClick={e => this.fundsManager.load()} />
-                <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' linkTo='/' />
+                <Button className={styles.btn} intent='primary' type='contained' iconName='add' tooltip='Withdrawal Request' onClick={e => this.fundsManager.createNewWithdrawalPressed()} />
+                <Button className={styles.btn} intent='primary' type='contained' iconName='refresh' tooltip='Refresh' onClick={e => this.fundsManager.load()} />
+                <Button className={styles.btn} intent='primary' type='contained' iconName='arrow_back' linkTo='/' tooltip='Back'/>
               </div>
               ]
             } />
