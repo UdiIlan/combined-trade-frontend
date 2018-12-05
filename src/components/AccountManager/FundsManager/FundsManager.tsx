@@ -8,7 +8,7 @@ const cx = classNames.bind(styles);
 import { Account, WithdrawalStatus, WithdrawalRequest } from 'businessLogic/model';
 import { DateUtils } from 'businessLogic/utils';
 import { InputText } from 'components/common/core';
-import Dialog from 'components/common/modals/Dialog';
+import Dialog, { DialogProps } from 'components/common/modals/Dialog';
 import Button from 'components/common/core/Button/Button';
 import Select from 'components/common/core/Select/Select';
 
@@ -24,9 +24,8 @@ export const FUNDS_COLUMNS = [
 
 interface FundsManagerProps {
     account: Account;
-    // newTradeWallet?: object[];
+    newWithdrawalId: string;
     getFunds(account: Account);
-    // submitTrades?(order: any);
     createNewWithdrawal(account: Account, Withdrawal: WithdrawalRequest);
     resetNewWithdrawal(accountName: string);
 }
@@ -34,10 +33,7 @@ interface FundsManagerProps {
 
 interface FundsManagerState {
     loading: boolean;
-    // selectedWithdrawalItem?: WithdrawalStatus;
-    newWithdrawalPressed?: boolean;
-    // assetPairOption?: AssetPairType;
-    // tradingOption?: TradingType;
+    openDialog?: DialogProps;
 }
 
 export default class FundsManager extends React.Component<FundsManagerProps, FundsManagerState> {
@@ -45,8 +41,6 @@ export default class FundsManager extends React.Component<FundsManagerProps, Fun
     constructor(props) {
         super(props);
         this.state = { loading: false };
-        // this.openWalletPlanePressed = this.openWalletPlanePressed.bind(this);
-        // this.openWalletPlane = this.openWalletPlane.bind(this);
     }
 
     componentWillMount() {
@@ -57,10 +51,60 @@ export default class FundsManager extends React.Component<FundsManagerProps, Fun
         if (this.state.loading) {
             this.setState({ loading: false });
         }
+        if (newProps.newWithdrawalId) {
+            this.openWithdrawalRes(newProps.newWithdrawalId, 'New withdrawal request was successfully submitted!');
+        }
+    }
+
+    openWithdrawalRes(transactionId: string, title: string) {
+
+        const dialog = {
+            title: title,
+            cancelBtnHidden: true,
+            intent: 'success',
+            onOkClick: () => this.setState({ openDialog: undefined }),
+            children: this.renderNewWithdrawalResBody(transactionId),
+        } as DialogProps;
+
+        this.setState({ openDialog: dialog });
+    }
+
+    renderNewWithdrawalResBody(transactionId: string) {
+        return (
+            <div>
+              <span className={styles.transactionIdTitle}> Whithdrawal transaction ID: {transactionId} </span>
+            </div>
+          );
     }
 
     createNewWithdrawalPressed() {
-        this.setState({ newWithdrawalPressed: true });
+        const dialog = {
+            title: 'New Withdrawal',
+            onCancelClick: () => this.setState({ openDialog: undefined }),
+            onOkClick: () => this.createWithdrawalOk(),
+            children: this.renderNewWithdrawalDialogBody(),
+        } as DialogProps;
+
+        this.setState({ openDialog: dialog });
+    }
+
+    createWithdrawalOk() {
+        const confirmDialog = {
+            title: 'Are you sure you want to submit withdrawal request?',
+            onOkClick: () => {
+                this.setState({ openDialog: undefined });
+                this.createWithdrawalConfirmed();
+            },
+            onCancelClick: () => this.setState({ openDialog: undefined }),
+            okBtnText: 'Yes, Confirm',
+            cancelBtnText: 'No, Ignore'
+        } as DialogProps;
+
+        this.setState({ openDialog: confirmDialog });
+    }
+
+    createWithdrawalConfirmed() {
+        this.props.createNewWithdrawal(this.props.account, this.createWithdrawalObject());
     }
 
     load(props = this.props) {
@@ -89,38 +133,17 @@ export default class FundsManager extends React.Component<FundsManagerProps, Fun
 
                     </Card>
                 }
-                {this.state.newWithdrawalPressed ? this.openNewWithdrawaleDialog() : ''}
 
-                {/* {this.state.selectedTradeItem ? this.openWalletPlane(this.state.selectedTradeItem.walletPlan) : ''} */}
-
-
-
-                {/* {this.props.newTradeWallet ? this.openWalletPlane(this.props.newTradeWallet, 'New trade was successfully added!') : ''} */}
+                {!!this.state.openDialog &&
+                    <Dialog open={true}
+                        {...this.state.openDialog}>
+                    </Dialog>
+                }
 
             </div>
 
         );
     }
-
-    // walletPlaneDialogOk() {
-    //     this.setState({ selectedTradeItem: undefined }, () => this.props.resetNewTrade(this.props.account.name));
-    // }
-
-    // openWalletPlane(walletPlane, title?) {
-    //     return (
-    //         <Dialog fullWidth title={title} open={true} cancelBtnHidden={true} onOkClick={() => { this.walletPlaneDialogOk(); }}>
-    //             <span className={styles.walletPlanTitle}> Wallet Plan: </span>
-    //             {_.map(walletPlane, (wallet: DepositRequest, index) => {
-    //                 return (
-    //                     <div className={styles.wallet} >
-    //                         <InputText className={styles.addressWalletItem} label='Address' type='text' name='Address' value={wallet.walletAddress} disabled={true} />
-    //                         <InputText className={styles.sizeWalletItem} label='Size' type='text' name='Size' value={wallet.size} disabled={true} />
-    //                     </div>
-    //                 );
-    //             })}
-    //         </Dialog>
-    //     );
-    // }
 
     private assetType;
     private amount;
@@ -132,41 +155,14 @@ export default class FundsManager extends React.Component<FundsManagerProps, Fun
         });
     }
 
-    createWithdrawal() {
-        this.setState({ newWithdrawalPressed: false });
-        this.props.createNewWithdrawal(this.props.account, this.createWithdrawalObject());
+    renderNewWithdrawalDialogBody() {
+        return (<div className={styles.newWithdrawal} >
+            <InputText className={styles.newWithdrawalProp} onChange={(e) => this.amount = e.target.value} label='Amount' type='number' name='Amount' />
+            <Select theme='dark' formControl formLabelText='Asset Type' className={styles.WithdrawalOption} onChange={selection => this.assetType = selection}>
+                <option value=''></option>
+                <option value='USD'>USD</option>
+                <option value='EUR'>EUR</option>
+            </Select>
+        </div>);
     }
-
-
-    openNewWithdrawaleDialog() {
-        return (
-            <Dialog title='New Withdrawal' open={true} onCancelClick={() => { this.setState({ newWithdrawalPressed: false }); }} onOkClick={() => { this.createWithdrawal(); }}>
-                <div className={styles.newWithdrawal} >
-                    <InputText className={styles.newWithdrawalProp} ref={(input) => this.amount = input} label='Amount' type='text' name='Amount' />
-                    <Select theme='dark' formControl formLabelText='Asset Type' className={styles.WithdrawalOption} onChange={selection => this.assetType = selection}>
-                        <option value=''></option>
-                        <option value='USD'>USD</option>
-                        <option value='EUR'>EUR</option>
-                    </Select>
-                </div>
-            </Dialog>
-        );
-    }
-
-    // openWalletPlanePressed(item: WithdrawalStatus) {
-    //     this.setState({ selectedWithdrawalItem: item });
-    // }
-
-    // renderOrderChildren(item: OrderStatus) {
-    //     return (
-    //         <div className={styles.orderNestedContainer}>
-    //             <InputText className={styles.InputText} outlined disabled value={item.executionSize} label={'Executed so far'} />
-    //             <InputText outlined disabled value={item.elapsedTimeMinutes} label={'Elapsed Time (in minutes)'} />
-    //             <InputText outlined disabled value={item.executedTargetSize} label={'Target asset executed so far'} />
-    //             <InputText outlined disabled value={item.tradeOrderId} label={'Order Id'} />
-    //             {item.executionMessage && <InputText outlined disabled value={item.executionMessage} label={'Execution Message'} />}
-    //             <Button className={styles.btn} intent='primary' type='contained' tooltip='Wallet Plane' onClick={(e) => this.openWalletPlanePressed(item)} iconName='account_balance_wallet'> </Button>
-    //         </div>
-    //     );
-    // }
 }

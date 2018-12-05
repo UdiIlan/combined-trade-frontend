@@ -13,6 +13,7 @@ export interface InputTextProps {
     name?: string;
     value?: any;
     type?: any;
+    getInputRef ?(input);
     disabled?: boolean;
     outlined?: boolean;
     onChange?(e);

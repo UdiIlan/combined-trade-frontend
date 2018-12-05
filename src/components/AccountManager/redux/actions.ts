@@ -19,6 +19,7 @@ export const AccountActions = {
     UPDATE_FETCHED_ACCOUNT_WITHDRAWALS: 'ACCOUNT/FUNDS/UPDATE_FETCHED_ACCOUNT_WITHDRAWALS',
     CREATE_WITHDRAWAL: 'ACCOUNT/FUNDS/CREATE_WITHDRAWAL',
     RESET_NEW_WITHDRAWAL: 'ACCOUNT/FUNDS/RESET_NEW_WITHDRAWAL',
+    SET_WITHDRAWAL: 'ACCOUNT/FUNDS/SET_WITHDRAWAL',
 };
 
 
@@ -33,6 +34,7 @@ export const fetchAccountWithdrawals = createAction(AccountActions.FETCH_ACCOUNT
 export const createTrade = createAction(AccountActions.CREATE_TRADE, (account: Account, trade: TradeRequest) => { return { account, trade }; });
 export const createWithdrawal = createAction(AccountActions.CREATE_WITHDRAWAL, (account: Account, withdrawal: WithdrawalRequest) => { return { account, withdrawal }; });
 export const setTrade = createAction(AccountActions.SET_TRADE, (accountName: string, tradeWallet: object[]) => { return {accountName, tradeWallet}; });
+export const setWithdrawal = createAction(AccountActions.SET_WITHDRAWAL, (accountName: string, transactionId: string) => { return {accountName, transactionId}; });
 export const updateFetchedAccountTrades = createAction(AccountActions.UPDATE_FETCHED_ACCOUNT_TRADES, (accountName: string, trades: OrderStatus[]) => { return { accountName, trades }; });
 export const updateFetchedAccountBalance = createAction(AccountActions.UPDATE_FETCHED_ACCOUNT_BALANCE, (accountName: string, balance: object) => { return { accountName, balance }; });
 export const updateFetchedAccountWithdrawals = createAction(AccountActions.UPDATE_FETCHED_ACCOUNT_WITHDRAWALS, (accountName: string, withdrawals: object) => { return { accountName, withdrawals }; });

@@ -16,6 +16,7 @@ import Button from 'components/common/core/Button';
 interface AccountManagerProps {
   accounts: Account[];
   newTradeWallet: object[];
+  newWithdrawalId: string;
   location: any;
   getAccounts();
   getTrades(account: Account);
@@ -157,7 +158,8 @@ class AccountManager extends React.Component<AccountManagerProps, AccountManager
                 <Route path='/funds' render={(props) => <FundsManager ref={(fundsManager) => this.fundsManager = fundsManager}
                   account={selectedAccount} getFunds={this.props.getFunds}
                   createNewWithdrawal={this.props.createWithdrawal}
-                  resetNewWithdrawal={this.props.resetNewWithdrawal} />} />
+                  resetNewWithdrawal={this.props.resetNewWithdrawal}
+                  newWithdrawalId={this.props.newWithdrawalId} />} />
               </Switch>
             </div>
 
@@ -234,6 +236,7 @@ const mapStateToProps = (state) => {
   return {
     accounts: _.get(state, 'account.accounts'),
     newTradeWallet: _.get(state, 'account.newTradeWallet'),
+    newWithdrawalId: _.get(state, 'account.newWithdrawalId'),
   };
 };
 

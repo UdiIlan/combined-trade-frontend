@@ -8,11 +8,13 @@ import { Account, OrderStatus, WithdrawalStatus } from 'businessLogic/model';
 export interface AccountState {
     accounts: Account[];
     newTradeWallet: object[];
+    newWithdrawalId: string;
 }
 
 const INITIAL_STATE: AccountState = {
     accounts: [],
-    newTradeWallet: undefined
+    newTradeWallet: undefined,
+    newWithdrawalId: undefined
 };
 
 let reducerMap = {};
@@ -23,6 +25,10 @@ reducerMap[AccountActions.SET_ACCOUNTS] = (state: AccountState, action: Action<a
 
 reducerMap[AccountActions.SET_TRADE] = (state: AccountState, action: Action<any>): AccountState => {
     return { ...state, newTradeWallet: action.payload.tradeWallet };
+};
+
+reducerMap[AccountActions.SET_WITHDRAWAL] = (state: AccountState, action: Action<any>): AccountState => {
+    return { ...state, newWithdrawalId: action.payload.transactionId };
 };
 
 reducerMap[AccountActions.RESET_NEW_TRADE] = (state: AccountState, action: Action<void>): AccountState => {

@@ -1,4 +1,4 @@
-import { AccountActions, setAccounts, updateFetchedAccountTrades, updateFetchedAccountBalance, setTrade, updateFetchedAccountWithdrawals } from './actions';
+import { AccountActions, setAccounts, updateFetchedAccountTrades, updateFetchedAccountBalance, setTrade, updateFetchedAccountWithdrawals, setWithdrawal } from './actions';
 import { takeEvery, all, put } from 'redux-saga/effects';
 import { getAccounts, createNewAccount, getAccountTrades, updateAccount, deleteAccount, getAccountBalance, createTrade, getAccountWithdrawals, createWithdrawal } from 'businessLogic/serverApi';
 
@@ -22,6 +22,8 @@ function* createAccountAsync(action) {
          yield put(updateFetchedAccountTrades(account.name, trades));
          const balance = yield getAccountBalance(account);
          yield put(updateFetchedAccountBalance(account.name, balance));
+         const funds = yield getAccountWithdrawals(account);
+         yield put(updateFetchedAccountWithdrawals(account.name, funds));
     }
     catch (err) {
         console.error('Failed to create a new account: ', err);
@@ -37,6 +39,8 @@ function* editAccountAsync(action) {
         yield put(updateFetchedAccountTrades(account.name, trades));
         const balance = yield getAccountBalance(account);
         yield put(updateFetchedAccountBalance(account.name, balance));
+        const funds = yield getAccountWithdrawals(account);
+        yield put(updateFetchedAccountWithdrawals(account.name, funds));
     }
     catch (err) {
         console.error('Failed to edit an account: ', err);
@@ -60,7 +64,6 @@ function* createTradeAsync(action) {
         const trade = action.payload.trade;
         const tradeWallet = yield createTrade(account, trade);
         yield put(setTrade(account.name, tradeWallet));
-        // yield getAccountsAsync();
     }
     catch (err) {
         console.error('Failed to delete an account: ', err);
@@ -71,8 +74,8 @@ function* createWithdrawalAsync(action) {
     try {
         const account = action.payload.account;
         const withdrawal = action.payload.withdrawal;
-        yield createWithdrawal(account, withdrawal);
-        // yield put(setwithdrawal(account.name, withdrawal));
+        const res = yield createWithdrawal(account, withdrawal);
+        yield put(setWithdrawal(account.name, res.transactionId));
 
     }
     catch (err) {

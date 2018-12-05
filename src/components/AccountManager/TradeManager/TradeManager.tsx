@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as _ from 'lodash';
 import Card from 'components/common/containers/Card';
 import Grid from 'components/common/dataLayouts/Grid';
@@ -7,7 +8,6 @@ import * as classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 import { Account, OrderStatus, DepositRequest, TradeRequest } from 'businessLogic/model';
 import { DateUtils, MathUtils } from 'businessLogic/utils';
-import { getLocalizedText } from 'lang';
 import { InputText } from 'components/common/core';
 import { default as Dialog, DialogProps } from 'components/common/modals/Dialog';
 import Button from 'components/common/core/Button/Button';
@@ -38,7 +38,6 @@ export type TradingType = 'buy' | 'sell';
 interface TradeManagerState {
   loading: boolean;
   selectedTradeItem?: OrderStatus;
-  newTradePressed?: boolean;
   assetPairOption?: AssetPairType;
   tradingOption?: TradingType;
   openDialog?: DialogProps;
@@ -49,8 +48,12 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
   constructor(props) {
     super(props);
     this.state = { loading: false, assetPairOption: 'BTC-USD' };
-    this.openWalletPlanPressed = this.openWalletPlanPressed.bind(this);
     this.openWalletPlan = this.openWalletPlan.bind(this);
+    this.createTradeObject = this.createTradeObject.bind(this);
+    this.createTradeConfirmed = this.createTradeConfirmed.bind(this);
+    this.renderNewTradeDialogBody = this.renderNewTradeDialogBody.bind(this);
+    this.createNewTradePressed = this.createNewTradePressed.bind(this);
+    this.createTradeOk = this.createTradeOk.bind(this);
   }
 
   componentWillMount() {
@@ -61,15 +64,80 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
     if (this.state.loading) {
       this.setState({ loading: false });
     }
+    if (newProps.newTradeWallet) {
+      this.openWalletPlan(newProps.newTradeWallet, 'New trade request was successfully submitted!');
+    }
   }
 
+
+  renderNewTradeDialogBody() {
+    return (
+      <div className={styles.newTrade} >
+
+        <InputText className={styles.newTradeProp} onChange={(e) => this.tradeSize = e.target.value} label='Size' type='number' name='Size' />
+        <InputText className={styles.newTradeProp} onChange={(e) => this.tradePrice = e.target.value} label='Price' type='number' name='Price' />
+        <InputText className={styles.newTradeProp} onChange={(e) => this.durationMinutes = e.target.value} label='Duration (minutes)' type='number' name='Duration' />
+        <Select theme='dark' formControl formLabelText='Asset Pair' className={styles.tradingOption} onChange={selection => this.tradeAssetPair = selection}>
+          <option value=''></option>
+          <option value='BTC'>BTC-USD</option>
+          <option value='BCH'>BCH-USD</option>
+          <option value='ETH'>ETH-USD</option>
+        </Select>
+        <Select theme='dark' formControl formLabelText='Action' className={styles.tradingOption} onChange={selection => this.tradeAction = selection}>
+          <option value=''></option>
+          <option value='sell'>sell</option>
+          <option value='buy'>buy</option>
+        </Select>
+      </div>
+    );
+  }
+
+  renderWalletPlanBody(walletPlan) {
+    return (
+      <div>
+        <span className={styles.walletPlanTitle}> Wallet Plan: </span>
+        {
+          _.map(walletPlan, (wallet: DepositRequest, index) => {
+            return (
+              <div className={styles.wallet} >
+                <InputText className={styles.addressWalletItem} label='Address' type='text' name='Address' value={wallet.walletAddress} disabled={true} />
+                <InputText className={styles.sizeWalletItem} label='Size' type='text' name='Size' value={wallet.size} disabled={true} />
+              </div>
+            );
+          })
+        }
+      </div>
+    );
+  }
+
+
   createNewTradePressed() {
-    this.setState({ newTradePressed: true });
+    const dialog = {
+      title: 'New Trade',
+      onCancelClick: () => this.setState({ openDialog: undefined }),
+      onOkClick: () => this.createTradeOk(),
+      children: this.renderNewTradeDialogBody(),
+    } as DialogProps;
+
+    this.setState({ openDialog: dialog });
+  }
+
+  openWalletPlan(walletPlan: object[], title) {
+    const dialog = {
+      title: title,
+      fullWidth: true,
+      cancelBtnHidden: true,
+      onOkClick: () => this.walletPlanDialogOk(),
+      children: this.renderWalletPlanBody(walletPlan),
+    } as DialogProps;
+
+    this.setState({ openDialog: dialog });
   }
 
   load(props = this.props) {
     this.setState({ loading: true }, () => props.getTrades(props.account));
   }
+
 
   render() {
     const { account } = this.props;
@@ -96,11 +164,7 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
           </Card>
         }
 
-        {this.state.selectedTradeItem ? this.openWalletPlan(this.state.selectedTradeItem.walletPlan) : ''}
-
-        {this.state.newTradePressed ? this.openNewTradeDialog() : ''}
-
-        {this.props.newTradeWallet ? this.openWalletPlan(this.props.newTradeWallet, 'New trade request was successfully submitted!') : ''}
+        {!!this.state.openDialog && <Dialog open={true} {...this.state.openDialog} />}
 
       </div>
 
@@ -108,24 +172,9 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
   }
 
   walletPlanDialogOk() {
-    this.setState({ selectedTradeItem: undefined }, () => this.props.resetNewTrade(this.props.account.name));
+    this.setState({ openDialog: undefined }, () => this.props.resetNewTrade(this.props.account.name));
   }
 
-  openWalletPlan(walletPlan, title?) {
-    return (
-      <Dialog fullWidth title={title} open={true} cancelBtnHidden={true} onOkClick={() => { this.walletPlanDialogOk(); }}>
-        <span className={styles.walletPlanTitle}> Wallet Plan: </span>
-        {_.map(walletPlan, (wallet: DepositRequest, index) => {
-          return (
-            <div className={styles.wallet} >
-              <InputText className={styles.addressWalletItem} label='Address' type='text' name='Address' value={wallet.walletAddress} disabled={true} />
-              <InputText className={styles.sizeWalletItem} label='Size' type='text' name='Size' value={wallet.size} disabled={true} />
-            </div>
-          );
-        })}
-      </Dialog>
-    );
-  }
 
   private tradeSize;
   private tradePrice;
@@ -143,38 +192,29 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
     });
   }
 
-  createTrade() {
-    this.setState({ newTradePressed: false, openDialog: undefined });
+  createTradeOk() {
+    let cb = () => {
+      this.setState({ openDialog: undefined });
+      this.createTradeConfirmed();
+    };
+    cb = cb.bind(this);
+
+    const confirmDialog = {
+      title: 'Are you sure you want to submit trade request?',
+      onOkClick: cb,
+      onCancelClick: () => this.setState({ openDialog: undefined }),
+      okBtnText: 'Yes, Confirm',
+      cancelBtnText: 'No, Ignore'
+    } as DialogProps;
+
+    this.setState({ openDialog: confirmDialog });
+  }
+
+  createTradeConfirmed() {
     this.props.createNewTrade(this.props.account, this.createTradeObject());
   }
 
 
-  openNewTradeDialog() {
-    return (
-      <Dialog title='New Trade' open={true} onCancelClick={() => { this.setState({ newTradePressed: false, openDialog: undefined }); }} onOkClick={() => { this.createTrade(); }}>
-        <div className={styles.newTrade} >
-          <InputText className={styles.newTradeProp} ref={(input) => this.tradeSize = input} label='Size' type='text' name='Size' />
-          <InputText className={styles.newTradeProp} ref={(input) => this.tradePrice = input} label='Price' type='text' name='Price' />
-          <InputText className={styles.newTradeProp} ref={(input) => this.durationMinutes = input} label='Duration (minutes)' type='text' name='Duration' />
-          <Select theme='dark' formControl formLabelText='Asset Pair' className={styles.tradingOption} onChange={selection => this.tradeAssetPair = selection}>
-            <option value=''></option>
-            <option value='BTC'>BTC-USD</option>
-            <option value='BCH'>BCH-USD</option>
-            <option value='ETH'>ETH-USD</option>
-          </Select>
-          <Select theme='dark' formControl formLabelText='Action' className={styles.tradingOption} onChange={selection => this.tradeAction = selection}>
-            <option value=''></option>
-            <option value='BTC'>sell</option>
-            <option value='BCH'>buy</option>
-          </Select>
-        </div>
-      </Dialog>
-    );
-  }
-
-  openWalletPlanPressed(item: OrderStatus) {
-    this.setState({ selectedTradeItem: item });
-  }
 
   renderOrderChildren(item: OrderStatus) {
     return (
@@ -184,7 +224,7 @@ export default class TradeManager extends React.Component<TradeManagerProps, Tra
         <InputText outlined disabled value={item.executedTargetSize} label={'Target asset executed so far'} />
         <InputText outlined disabled value={item.tradeOrderId} label={'Order Id'} />
         {item.executionMessage && <InputText outlined disabled value={item.executionMessage} label={'Execution Message'} />}
-        <Button className={styles.btn} intent='primary' type='contained' tooltip='Wallet Plan' onClick={(e) => this.openWalletPlanPressed(item)} iconName='account_balance_wallet'> </Button>
+        <Button className={styles.btn} intent='primary' type='contained' tooltip='Wallet Plan' onClick={(e) => this.openWalletPlan(item.walletPlan, 'Wallet Plan')} iconName='account_balance_wallet'> </Button>
       </div>
     );
   }

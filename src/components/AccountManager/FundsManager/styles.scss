@@ -1,10 +1,10 @@
 @import "~styles/colors.scss";
 
 .newWithdrawal {
-    width: 15vw;
+    width: 10vw;
   
     .newWithdrawalProp {
-      width: 100%;
+      width: 70%;
       margin: 10px;
       margin-top: 5px;
     }
@@ -16,5 +16,10 @@
       margin-left: 10px;
       width: 133px;
     }
+  }
+
+  .transactionIdTitle {
+    font-size: 1.2rem;
+    padding: 5px;
   }
   
